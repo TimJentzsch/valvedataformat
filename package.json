@@ -12,8 +12,29 @@
   "activationEvents": [
     "onCommand:valvedataformat.helloWorld"
   ],
-  "main": "./out/extension.js",
+  "main": "./client/out/extension.js",
   "contributes": {
+    "languages": [
+      {
+        "id": "vdf.unescaped",
+        "aliases": [
+          "VDF (unescaped)",
+          "VDF",
+          "Valve Data Format",
+          "KeyValues"
+        ],
+        "extensions": [
+          ".vdf"
+        ]
+      }
+    ],
+    "grammars": [
+      {
+        "language": "vdf.unescaped",
+        "scopeName": "source.vdf.unescaped",
+        "path": "./syntaxes/vdf.unescaped.tmGrammar.json"
+      }
+    ],
     "commands": [
       {
         "command": "valvedataformat.helloWorld",

@@ -1,0 +1,67 @@
+{
+  "scopeName": "source.vdf.unescaped",
+  "patterns": [{ "include": "#keyvalues" }],
+  "repository": {
+    "keyvalues": {
+      "patterns": [
+        { "include": "#comment" },
+        { "include": "#property" },
+        { "include": "#key" },
+        { "include": "#object" }
+      ]
+    },
+    "comment": {
+      "match": "//.*",
+      "name": "comment.line.double-slash"
+    },
+    "property": {
+      "match": "(\"[^\"]*\"|[^\\s{}\"]+)\\s*(\"[^\"]*\"|[^\\s{}\"]+)",
+      "name": "property.vdf.unescaped",
+      "captures": {
+        "1": {
+          "patterns": [{ "include": "#key" }]
+        },
+        "2": {
+          "patterns": [{ "include": "#literal" }]
+        }
+      }
+    },
+    "key": {
+      "patterns": [{ "include": "#key.quoted" }, { "include": "#key.unquoted" }]
+    },
+    "key.quoted": {
+      "match": "\"[^\"]*\"",
+      "name": "support.type.property-name.quoted.double.vdf.unescaped"
+    },
+    "key.unquoted": {
+      "match": "[^\\s{}\"]+",
+      "name": "support.type.property-name.unquoted.vdf.unescaped"
+    },
+    "literal": {
+      "patterns": [
+        { "include": "#literal.quoted" },
+        { "include": "#literal.unquoted" }
+      ]
+    },
+    "literal.quoted": {
+      "match": "\"[^\"]*\"",
+      "name": "string.quoted.double.vdf.unescaped"
+    },
+    "literal.unquoted": {
+      "match": "[^\\s{}\"]+",
+      "name": "string.unquoted.vdf.unescaped"
+    },
+    "object": {
+      "begin": "{",
+      "end": "}",
+      "beginCaptures": {
+        "0": { "name": "punctuation.definition.dictionary.begin.vdf.unescaped" }
+      },
+      "endCaptures": {
+        "0": { "name": "punctuation.definition.dictionary.end.vdf.unescaped" }
+      },
+      "name": "meta.structure.dictionary.vdf.unescaped",
+      "patterns": [{ "include": "#keyvalues" }]
+    }
+  }
+}

@@ -1,7 +1,7 @@
 {
-  "name": "keyvalues",
-  "displayName": "KeyValues",
-  "description": "Language support for KeyValues (also known as Valve Data Format). Used for data files in the Source Engine.",
+  "name": "valvedataformat",
+  "displayName": "Valve Data Format (VDF)",
+  "description": "A language server for Valve Data Format (VDF), also called KeyValues. VDF is a data format used in the Source Engine.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.59.0"
@@ -10,13 +10,13 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:keyvalues.helloWorld"
+    "onCommand:valvedataformat.helloWorld"
   ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
-        "command": "keyvalues.helloWorld",
+        "command": "valvedataformat.helloWorld",
         "title": "Hello World"
       }
     ]

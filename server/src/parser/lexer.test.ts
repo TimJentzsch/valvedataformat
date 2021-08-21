@@ -1,11 +1,26 @@
 import { getTokenStream, VDFToken } from "./lexer";
 
+/** Makes the whitespace in the input visible to display the test names. */
+function showWhitespace(input: string): string {
+  return (
+    input
+      // Spaces
+      .replace(/ /g, "\u00B7")
+      // Tabs
+      .replace(/\t/g, "\\t")
+      // LF
+      .replace(/\n/g, "\\n")
+      // CR
+      .replace(/\r/g, "\\r")
+  );
+}
+
 // Comment
 describe("should tokenize single comment", () => {
   const params = ["//", "// Comment", "//========", "// with spaces and stuff"];
 
   for (const input of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.comment]);
     });
@@ -23,7 +38,7 @@ describe("should tokenize single quoted string", () => {
   ];
 
   for (const input of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.quotedString]);
     });
@@ -42,7 +57,7 @@ describe("should tokenize single unquoted string", () => {
   ];
 
   for (const input of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.quotedString]);
     });
@@ -54,7 +69,7 @@ describe("should tokenize single left bracket", () => {
   const params = ["{"];
 
   for (const input of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.lBracket]);
     });
@@ -66,7 +81,7 @@ describe("should tokenize single right bracket", () => {
   const params = ["}"];
 
   for (const input of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.rBracket]);
     });
@@ -78,7 +93,7 @@ describe("should tokenize single line break", () => {
   const params = ["\n", "\n\r"];
 
   for (const input of params) {
-    test(input.replace(/\n/g, "\\n").replace(/\r/g, "\\r"), () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.lineBreak]);
     });
@@ -90,7 +105,7 @@ describe("should tokenize single whitespace", () => {
   const params = [" ", "\t", "    ", "\t\t", "\t  \t  ", "  \t  \t"];
 
   for (const input of params) {
-    test(input.replace(/ /g, "\u00B7").replace(/\t/g, "\\t"), () => {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
       expect(actual).toEqual([VDFToken.space]);
     });
@@ -151,7 +166,53 @@ describe("should tokenize key-value pairs", () => {
   ];
 
   for (const [input, expected] of params) {
-    test(input, () => {
+    test(showWhitespace(input), () => {
+      const actual = getTokenStream(input).map((token) => [
+        token.kind,
+        token.text,
+      ]);
+      expect(actual).toEqual(expected);
+    });
+  }
+});
+
+// Objects
+describe("should tokenize objects", () => {
+  // An array of the input strings and expected output
+  // The output is a list of token kinds and matched string
+  const params: Array<[string, Array<[VDFToken, string]>]> = [
+    [
+      "{}",
+      [
+        [VDFToken.lBracket, "{"],
+        [VDFToken.rBracket, "}"],
+      ],
+    ],
+    [
+      "{ }",
+      [
+        [VDFToken.lBracket, "{"],
+        [VDFToken.space, " "],
+        [VDFToken.rBracket, "}"],
+      ],
+    ],
+    [
+      '{\n\t"key"\t"value"\n}',
+      [
+        [VDFToken.lBracket, "{"],
+        [VDFToken.lineBreak, "\n"],
+        [VDFToken.space, "\t"],
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.space, "\t"],
+        [VDFToken.quotedString, '"value"'],
+        [VDFToken.lineBreak, "\n"],
+        [VDFToken.rBracket, "}"],
+      ],
+    ],
+  ];
+
+  for (const [input, expected] of params) {
+    test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => [
         token.kind,
         token.text,

@@ -3,6 +3,10 @@
   "displayName": "Valve Data Format (VDF)",
   "description": "A language server for Valve Data Format (VDF), also called KeyValues. VDF is a data format used in the Source Engine.",
   "version": "0.0.1",
+  "author": "Tim Jentzsch",
+  "repository": "guthub:TimJentzsch/vdf-extension",
+  "homepage": "https://github.com/TimJentzsch/vdf-extension#readme",
+  "license": "MIT",
   "engines": {
     "vscode": "^1.59.0"
   },

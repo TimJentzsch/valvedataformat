@@ -1,6 +1,10 @@
 {
 	"name": "valvedataformat-server",
 	"description": "The server for the Valve Data Format language server.",
+  "author": "Tim Jentzsch",
+  "repository": "guthub:TimJentzsch/vdf-extension",
+  "homepage": "https://github.com/TimJentzsch/vdf-extension#readme",
+  "license": "MIT",
 	"engines": {
 		"node": "*"
 	},

@@ -10,7 +10,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onCommand:valvedataformat.helloWorld"
+    "onLanguage:vdf.unescaped"
   ],
   "main": "./client/out/extension.js",
   "contributes": {
@@ -35,20 +35,38 @@
         "path": "./syntaxes/vdf.unescaped.tmGrammar.json"
       }
     ],
-    "commands": [
-      {
-        "command": "valvedataformat.helloWorld",
-        "title": "Hello World"
-      }
-    ]
+		"configuration": {
+			"type": "object",
+			"title": "Example configuration",
+			"properties": {
+				"languageServerExample.maxNumberOfProblems": {
+					"scope": "resource",
+					"type": "number",
+					"default": 100,
+					"description": "Controls the maximum number of problems produced by the server."
+				},
+				"languageServerExample.trace.server": {
+					"scope": "window",
+					"type": "string",
+					"enum": [
+						"off",
+						"messages",
+						"verbose"
+					],
+					"default": "off",
+					"description": "Traces the communication between VS Code and the language server."
+				}
+			}
+		}
   },
   "scripts": {
     "vscode:prepublish": "yarn run compile",
-    "compile": "tsc -p ./",
-    "watch": "tsc -watch -p ./",
+    "compile": "tsc -b",
+    "watch": "tsc -b -w",
     "pretest": "yarn run compile && yarn run lint",
-    "lint": "eslint src --ext ts",
-    "test": "node ./out/test/runTest.js"
+    "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
+    "lint": "eslint client/src --ext ts && eslint server/src --ext ts",
+    "test": "sh ./scripts/e2e.sh"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

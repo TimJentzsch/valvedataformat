@@ -7,6 +7,7 @@ export type AstKey = AstString;
 /** The value of a property. */
 export type AstValue = AstString | AstObject;
 
+/** A key-value pair within an object. */
 export default interface AstProperty extends AstNode {
   type: "property";
   /** The key of the property. */

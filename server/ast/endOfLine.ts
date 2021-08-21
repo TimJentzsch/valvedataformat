@@ -1,5 +1,6 @@
 import AstNode from "./node";
 
+/** A line ending. */
 export default interface AstEndOfLine extends AstNode {
   type: "endOfLine";
   children: [];

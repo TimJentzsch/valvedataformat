@@ -1,5 +1,6 @@
 import AstNode from "./node";
 
+/** A string literal value. */
 export default interface AstString extends AstNode {
   type: "string";
   children: [];

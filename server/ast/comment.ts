@@ -1,5 +1,6 @@
 import AstNode from "./node";
 
+/** A line comment. */
 export default interface AstComment extends AstNode {
   type: "comment";
   children: [];

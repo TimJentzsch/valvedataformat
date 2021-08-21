@@ -1,6 +1,13 @@
 import { Range } from "vscode-languageserver/node";
 
-export type NodeType = "comment" | "string" | "property" | "object" | "endOfLine" | "space";
+export type NodeType =
+  | "comment"
+  | "string"
+  | "property"
+  | "object"
+  | "endOfLine"
+  | "space"
+  | "bracket";
 
 export default interface AstNode {
   /** The type of the node. */

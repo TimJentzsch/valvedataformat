@@ -221,3 +221,46 @@ describe("should tokenize objects", () => {
     });
   }
 });
+
+// Comments interacting with others
+describe("should tokenize comments before others", () => {
+  // An array of the input strings and expected output
+  // The output is a list of token kinds and matched string
+  const params: Array<[string, Array<[VDFToken, string]>]> = [
+    [
+      '// Comment "key" "value"',
+      [[VDFToken.comment, '// Comment "key" "value"']],
+    ],
+    [
+      '"key" // "value"',
+      [
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.space, " "],
+        [VDFToken.comment, '// "value"'],
+      ],
+    ],
+    [
+      "// Comment\n",
+      [
+        [VDFToken.comment, "// Comment"],
+        [VDFToken.lineBreak, "\n"],
+      ],
+    ],
+    [
+      '"open string // Comment',
+      [
+        [VDFToken.quotedString, '"open string // Comment'],
+      ],
+    ],
+  ];
+
+  for (const [input, expected] of params) {
+    test(showWhitespace(input), () => {
+      const actual = getTokenStream(input).map((token) => [
+        token.kind,
+        token.text,
+      ]);
+      expect(actual).toEqual(expected);
+    });
+  }
+});

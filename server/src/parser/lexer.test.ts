@@ -96,3 +96,67 @@ describe("should tokenize single whitespace", () => {
     });
   }
 });
+
+// Key Value pairs
+describe("should tokenize key-value pairs", () => {
+  // An array of the input strings and expected output
+  // The output is a list of token kinds and matched string
+  const params: Array<[string, Array<[VDFToken, string]>]> = [
+    [
+      "key value",
+      [
+        [VDFToken.unquotedString, "key"],
+        [VDFToken.space, " "],
+        [VDFToken.unquotedString, "value"],
+      ],
+    ],
+    [
+      '"key" "value"',
+      [
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.space, " "],
+        [VDFToken.quotedString, '"value"'],
+      ],
+    ],
+    [
+      'key "value"',
+      [
+        [VDFToken.unquotedString, "key"],
+        [VDFToken.space, " "],
+        [VDFToken.quotedString, '"value"'],
+      ],
+    ],
+    [
+      '"key" value',
+      [
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.space, " "],
+        [VDFToken.unquotedString, "value"],
+      ],
+    ],
+    [
+      '"key""value"',
+      [
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.quotedString, '"value"'],
+      ],
+    ],
+    [
+      'key"value"',
+      [
+        [VDFToken.unquotedString, "key"],
+        [VDFToken.quotedString, '"value"'],
+      ],
+    ],
+  ];
+
+  for (const [input, expected] of params) {
+    test(input, () => {
+      const actual = getTokenStream(input).map((token) => [
+        token.kind,
+        token.text,
+      ]);
+      expect(actual).toEqual(expected);
+    });
+  }
+});

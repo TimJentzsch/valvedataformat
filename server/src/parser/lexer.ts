@@ -6,7 +6,7 @@ export enum VDFToken {
   unquotedString,
   lBracket,
   rBracket,
-  lineBreak,
+  endOfLine,
   space,
 }
 
@@ -22,8 +22,8 @@ export const tokenizer = buildLexer([
   [true, /^{/g, VDFToken.lBracket],
   // Closing bracket
   [true, /^}/g, VDFToken.rBracket],
-  // Line break
-  [true, /^\n\r?/g, VDFToken.lineBreak],
+  // End of line (line break)
+  [true, /^\r?\n/g, VDFToken.endOfLine],
   // Whitespace (without line breaks)
   [true, /^[ \t]+/g, VDFToken.space],
 ]);

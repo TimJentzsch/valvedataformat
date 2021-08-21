@@ -90,12 +90,12 @@ describe("should tokenize single right bracket", () => {
 
 // Line break
 describe("should tokenize single line break", () => {
-  const params = ["\n", "\n\r"];
+  const params = ["\n", "\r\n"];
 
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.lineBreak]);
+      expect(actual).toEqual([VDFToken.endOfLine]);
     });
   }
 });
@@ -200,12 +200,12 @@ describe("should tokenize objects", () => {
       '{\n\t"key"\t"value"\n}',
       [
         [VDFToken.lBracket, "{"],
-        [VDFToken.lineBreak, "\n"],
+        [VDFToken.endOfLine, "\n"],
         [VDFToken.space, "\t"],
         [VDFToken.quotedString, '"key"'],
         [VDFToken.space, "\t"],
         [VDFToken.quotedString, '"value"'],
-        [VDFToken.lineBreak, "\n"],
+        [VDFToken.endOfLine, "\n"],
         [VDFToken.rBracket, "}"],
       ],
     ],
@@ -243,7 +243,7 @@ describe("should tokenize comments before others", () => {
       "// Comment\n",
       [
         [VDFToken.comment, "// Comment"],
-        [VDFToken.lineBreak, "\n"],
+        [VDFToken.endOfLine, "\n"],
       ],
     ],
     [

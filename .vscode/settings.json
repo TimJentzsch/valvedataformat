@@ -3,11 +3,12 @@
   "editor.insertSpaces": true,
   "editor.tabSize": 2,
   "files.exclude": {
-    "out": true,
-    "node_modules": true
+    "**/out": true,
+    "**/node_modules": true,
+    "**/yarn.lock": true
   },
   "search.exclude": {
-    "out": true
+    "**/out": true
   },
   // Turn off tsc task auto detection since we have the necessary tasks as npm scripts
   "typescript.tsc.autoDetect": "off"

@@ -1,6 +1,6 @@
 import AstNode from "./node";
 
-interface AstString extends AstNode {
+export default interface AstString extends AstNode {
   type: "string";
   children: [];
   /** Determines whether the string is quoted or unquoted. */

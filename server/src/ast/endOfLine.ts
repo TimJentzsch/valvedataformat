@@ -2,28 +2,35 @@ import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
 import AstNode from "./node";
 
+/** The type of the line ending.
+ * Can be Unix style (LF | \n) or Windows style (CRLF | \r\n).
+ */
+export type EolType = "LF" | "CRLF";
+
 /** A line ending. */
 export default interface AstEndOfLine extends AstBaseNode {
   type: "endOfLine";
   children: [];
   /** The text of the line break. */
   value: string;
-  /** Determines whether the line break is of Unix kind (LF) or Windows kind (CRLF).*/
-  isLf: boolean;
+  /** The type of the line ending.
+   * Can be Unix style (LF | \n) or Windows style (CRLF | \r\n).
+   */
+  eolType: "LF" | "CRLF";
 }
 
 /** Create an AST node for an end of line. */
 export function astEndOfLine(
   value: string,
-  isLf: boolean,
+  eolType: EolType,
   range: Range,
-  parent?: AstNode,
+  parent?: AstNode
 ): AstEndOfLine {
   return {
     type: "endOfLine",
     children: [],
     value,
-    isLf,
+    eolType,
     range,
     parent,
   };
@@ -31,10 +38,10 @@ export function astEndOfLine(
 
 /** Create an AST node for a Unix kind end of line (LF). */
 export function astLf(range: Range, parent?: AstNode): AstEndOfLine {
-  return astEndOfLine("\n", true, range, parent);
+  return astEndOfLine("\n", "LF", range, parent);
 }
 
 /** Create an AST node for a Windows kind end of line (CRLF). */
 export function astCrLf(range: Range, parent?: AstNode): AstEndOfLine {
-  return astEndOfLine("\r\n", false, range, parent);
+  return astEndOfLine("\r\n", "CRLF", range, parent);
 }

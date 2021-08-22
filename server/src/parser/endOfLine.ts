@@ -8,10 +8,10 @@ const endOfLineParser: Parser<VDFToken, AstEndOfLine> = apply(
   tok(VDFToken.endOfLine),
   (token) => {
     const value = token.text;
-    const isLf = token.text === "\n";
+    const eolType = token.text === "\n" ? "LF" : "CRLF";
     const range = getRangeFromToken(token);
     
-    return astEndOfLine(value, isLf, range);
+    return astEndOfLine(value, eolType, range);
   }
 );
 

@@ -1,4 +1,4 @@
-import AstNode from "./node";
+import AstBaseNode from "./baseNode";
 import AstObject from "./object";
 import AstString from "./string";
 
@@ -8,7 +8,7 @@ export type AstKey = AstString;
 export type AstValue = AstString | AstObject;
 
 /** A key-value pair within an object. */
-export default interface AstProperty extends AstNode {
+export default interface AstProperty extends AstBaseNode {
   type: "property";
   /** The key of the property. */
   key: AstKey;

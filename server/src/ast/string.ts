@@ -1,8 +1,8 @@
 import { Range } from "vscode-languageserver/node";
-import AstNode from "./node";
+import AstBaseNode from "./baseNode";
 
 /** A string literal value. */
-export default interface AstString extends AstNode {
+export default interface AstString extends AstBaseNode {
   type: "string";
   children: [];
   /** Determines whether the string is quoted or unquoted. */

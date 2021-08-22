@@ -1,8 +1,8 @@
 import { Range } from "vscode-languageserver/node";
-import AstNode from "./node";
+import AstBaseNode from "./baseNode";
 
 /** A line ending. */
-export default interface AstEndOfLine extends AstNode {
+export default interface AstEndOfLine extends AstBaseNode {
   type: "endOfLine";
   children: [];
   /** The text of the line break. */

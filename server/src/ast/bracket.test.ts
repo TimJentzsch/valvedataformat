@@ -1,4 +1,4 @@
-import { getInlineRange, getRange } from "../parser/utils";
+import { getInlineRange } from "../parser/utils";
 import AstBracket, { astBracket, astLBracket, astRBracket } from "./bracket";
 
 describe('astBracket', () => {

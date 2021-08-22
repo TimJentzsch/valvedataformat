@@ -1,19 +1,18 @@
-import { Range } from "vscode-languageserver/node";
+import AstBracket from "./bracket";
+import AstComment from "./comment";
+import AstEndOfLine from "./endOfLine";
+import AstObject from "./object";
+import AstProperty from "./property";
+import AstSpace from "./space";
+import AstString from "./string";
 
-export type NodeType =
-  | "comment"
-  | "string"
-  | "property"
-  | "object"
-  | "endOfLine"
-  | "space"
-  | "bracket";
+type AstNode =
+  | AstBracket
+  | AstComment
+  | AstEndOfLine
+  | AstObject
+  | AstProperty
+  | AstSpace
+  | AstString;
 
-export default interface AstNode {
-  /** The type of the node. */
-  type: NodeType;
-  /** The list of all children of the node. */
-  children: AstNode[];
-  /** The range of the node in the full text. */
-  range: Range;
-}
+export default AstNode;

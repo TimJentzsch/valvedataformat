@@ -5,7 +5,7 @@ import { getRangeFromToken } from "./utils";
 
 /** Parse line endings. */
 const endOfLineParser: Parser<VDFToken, AstEndOfLine> = apply(
-  tok(VDFToken.space),
+  tok(VDFToken.endOfLine),
   (token) => {
     const astEndOfLine: AstEndOfLine = {
       type: "endOfLine",

@@ -1,9 +1,9 @@
 import AstEndOfLine from "../ast/endOfLine";
 import endOfLineParser from "./endOfLine";
-import { applyParser, getInlineRange } from "./utils";
+import { applyParser, getRange } from "./utils";
 
 // End of line parsing
-describe("should parse end of lline", () => {
+describe("should parse end of line", () => {
   const params: Array<[string, AstEndOfLine]> = [
     [
       "\n",
@@ -13,7 +13,7 @@ describe("should parse end of lline", () => {
         value: "\n",
         isLf: true,
         isCrLf: false,
-        range: getInlineRange(0, 0, 1),
+        range: getRange(0, 0, 1, 0),
       },
     ],
     [
@@ -24,7 +24,7 @@ describe("should parse end of lline", () => {
         value: "\r\n",
         isLf: false,
         isCrLf: true,
-        range: getInlineRange(0, 0, 2),
+        range: getRange(0, 0, 1, 0),
       },
     ],
   ];

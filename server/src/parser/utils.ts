@@ -13,7 +13,7 @@ import { tokenizer, VDFToken } from "../lexer/lexer";
  * Note that the row and column of the tokens are one-based,
  * while the line and character of the range are zero-based.
  */
-export function tokenPositionToDocumentRange(pos: TokenPosition): Range {
+export function getRangeFromTokenPosition(pos: TokenPosition): Range {
   const start: Position = {
     line: pos.rowBegin - 1,
     character: pos.columnBegin - 1,
@@ -27,9 +27,29 @@ export function tokenPositionToDocumentRange(pos: TokenPosition): Range {
   return { start, end };
 }
 
+/** Get a range without constructing an object. */
+export function getRange(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range {
+  const start: Position = {
+    line: startLine,
+    character: startCharacter,
+  };
+
+  const end: Position = {
+    line: endLine,
+    character: endCharacter,
+  };
+
+  return { start, end };
+}
+
+/** Get a range from the same line. */
+export function getInlineRange(line: number, startCharacter: number, endCharacter?: number): Range {
+  return getRange(line, startCharacter, line, endCharacter ?? startCharacter);
+}
+
 /** Extract the range from a token. */
 export function getRangeFromToken<T>(token: Token<T>): Range {
-  return tokenPositionToDocumentRange(token.pos);
+  return getRangeFromTokenPosition(token.pos);
 }
 
 /** Apply the parser to the given input string. */

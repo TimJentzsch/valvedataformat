@@ -1,4 +1,4 @@
-import AstComment from "../ast/comment";
+import AstComment, { astComment } from "../ast/comment";
 import commentParser from "./comment";
 import { applyParser, getInlineRange } from "./utils";
 
@@ -7,21 +7,11 @@ describe("should parse comment", () => {
   const params: Array<[string, AstComment]> = [
     [
       "// Comment",
-      {
-        type: "comment",
-        children: [],
-        value: " Comment",
-        range: getInlineRange(0, 0, 10),
-      },
+      astComment(" Comment", getInlineRange(0, 0, 10)),
     ],
     [
       '// Comment with "key" "value"',
-      {
-        type: "comment",
-        children: [],
-        value: ' Comment with "key" "value"',
-        range: getInlineRange(0, 0, 29),
-      },
+      astComment(' Comment with "key" "value"', getInlineRange(0, 0, 29)),
     ],
   ];
 

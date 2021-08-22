@@ -1,5 +1,5 @@
 import { apply, Parser, tok } from "typescript-parsec";
-import AstComment from "../ast/comment";
+import AstComment, { astComment } from "../ast/comment";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
 
@@ -7,13 +7,10 @@ import { getRangeFromToken } from "./utils";
 const commentParser: Parser<VDFToken, AstComment> = apply(
   tok(VDFToken.comment),
   (token) => {
-    const astComment: AstComment = {
-      type: "comment",
-      children: [],
-      value: token.text.slice(2),
-      range: getRangeFromToken(token),
-    };
-    return astComment;
+    const value = token.text.slice(2);
+    const range = getRangeFromToken(token);
+
+    return astComment(value, range);
   }
 );
 

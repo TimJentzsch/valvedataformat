@@ -1,5 +1,5 @@
 import { apply, Parser, tok } from "typescript-parsec";
-import AstSpace from "../ast/space";
+import AstSpace, { astSpace } from "../ast/space";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
 
@@ -7,13 +7,10 @@ import { getRangeFromToken } from "./utils";
 const spaceParser: Parser<VDFToken, AstSpace> = apply(
   tok(VDFToken.space),
   (token) => {
-    const astSpace: AstSpace = {
-      type: "space",
-      children: [],
-      value: token.text,
-      range: getRangeFromToken(token),
-    };
-    return astSpace;
+    const value = token.text;
+    const range = getRangeFromToken(token);
+    
+    return astSpace(value, range);
   }
 );
 

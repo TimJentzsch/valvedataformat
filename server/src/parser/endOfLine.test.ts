@@ -1,4 +1,4 @@
-import AstEndOfLine from "../ast/endOfLine";
+import AstEndOfLine, { astCrLf, astLf } from "../ast/endOfLine";
 import endOfLineParser from "./endOfLine";
 import { applyParser, getRange } from "./utils";
 
@@ -7,25 +7,11 @@ describe("should parse end of line", () => {
   const params: Array<[string, AstEndOfLine]> = [
     [
       "\n",
-      {
-        type: "endOfLine",
-        children: [],
-        value: "\n",
-        isLf: true,
-        isCrLf: false,
-        range: getRange(0, 0, 1, 0),
-      },
+      astLf(getRange(0, 0, 1, 0)),
     ],
     [
       "\r\n",
-      {
-        type: "endOfLine",
-        children: [],
-        value: "\r\n",
-        isLf: false,
-        isCrLf: true,
-        range: getRange(0, 0, 1, 0),
-      },
+      astCrLf(getRange(0, 0, 1, 0)),
     ],
   ];
 

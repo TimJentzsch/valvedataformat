@@ -1,5 +1,5 @@
 import { alt, apply, Parser, tok } from "typescript-parsec";
-import AstString from "../ast/string";
+import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
 
@@ -9,29 +9,17 @@ const stringParser: Parser<VDFToken, AstString> = alt(
   apply(tok(VDFToken.quotedString), (token) => {
     const text = token.text;
     const isTerminated = text.length >= 2 && text[text.length - 1] === '"';
+    const value = isTerminated ? text.slice(1, text.length - 1) : text.slice(1);
+    const range = getRangeFromToken(token);
 
-    const str: AstString = {
-      type: "string",
-      children: [],
-      isQuoted: true,
-      isTerminated,
-      value: isTerminated ? text.slice(1, text.length - 1) : text.slice(1),
-      range: getRangeFromToken(token),
-    };
-
-    return str;
+    return astQuotedString(isTerminated, value, range);
   }),
   // Unquoted string
   apply(tok(VDFToken.unquotedString), (token) => {
-    const str: AstString = {
-      type: "string",
-      children: [],
-      isQuoted: false,
-      isTerminated: true,
-      value: token.text,
-      range: getRangeFromToken(token),
-    };
-    return str;
+    const value = token.text;
+    const range = getRangeFromToken(token);
+
+    return astUnquotedString(value, range);
   })
 );
 

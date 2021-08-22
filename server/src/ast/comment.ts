@@ -1,5 +1,6 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
+import AstNode from "./node";
 
 /** A line comment. */
 export default interface AstComment extends AstBaseNode {
@@ -10,11 +11,12 @@ export default interface AstComment extends AstBaseNode {
 }
 
 /** Create an AST node for a comment. */
-export function astComment(value: string, range: Range): AstComment {
+export function astComment(value: string, range: Range, parent?: AstNode): AstComment {
   return {
     type: "comment",
     children: [],
     value,
     range,
+    parent,
   };
 }

@@ -1,5 +1,6 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
+import AstNode from "./node";
 
 /** A string literal value. */
 export default interface AstString extends AstBaseNode {
@@ -16,7 +17,7 @@ export default interface AstString extends AstBaseNode {
 }
 
 /** Create an AST node for a string. */
-export function astString(isQuoted: boolean, isTerminated: boolean, value: string, range: Range): AstString {
+export function astString(isQuoted: boolean, isTerminated: boolean, value: string, range: Range, parent?: AstNode): AstString {
   return {
     type: "string",
     children: [],
@@ -24,16 +25,17 @@ export function astString(isQuoted: boolean, isTerminated: boolean, value: strin
     isTerminated,
     value,
     range,
+    parent,
   };
 }
 
 /** Create an AST node for a quoted string. */
-export function astQuotedString(isTerminated: boolean, value: string, range: Range): AstString {
-  return astString(true, isTerminated, value, range);
+export function astQuotedString(isTerminated: boolean, value: string, range: Range, parent?: AstNode): AstString {
+  return astString(true, isTerminated, value, range, parent);
 }
 
 
 /** Create an AST node for an unquoted string. */
-export function astUnquotedString(value: string, range: Range): AstString {
-  return astString(false, true, value, range);
+export function astUnquotedString(value: string, range: Range, parent?: AstNode): AstString {
+  return astString(false, true, value, range, parent);
 }

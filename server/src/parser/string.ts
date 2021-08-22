@@ -5,20 +5,23 @@ import { getRangeFromToken } from "./utils";
 
 /** Parse a string. */
 const stringParser: Parser<VDFToken, AstString> = alt(
+  // Quoted string
   apply(tok(VDFToken.quotedString), (token) => {
-    const isTerminated = token.text[token.text.length - 1] === '"';
+    const text = token.text;
+    const isTerminated = text.length >= 2 && text[text.length - 1] === '"';
+
     const str: AstString = {
       type: "string",
       children: [],
-      isQuoted: false,
+      isQuoted: true,
       isTerminated,
-      value: isTerminated
-        ? token.text.slice(1, token.text.length - 1)
-        : token.text.slice(1),
+      value: isTerminated ? text.slice(1, text.length - 1) : text.slice(1),
       range: getRangeFromToken(token),
     };
+
     return str;
   }),
+  // Unquoted string
   apply(tok(VDFToken.unquotedString), (token) => {
     const str: AstString = {
       type: "string",

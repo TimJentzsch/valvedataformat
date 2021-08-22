@@ -1,6 +1,6 @@
 import AstComment from "../ast/comment";
 import commentParser from "./comment";
-import { applyParser } from "./utils";
+import { applyParser, getInlineRange } from "./utils";
 
 // Comment parsing
 describe("should parse comment", () => {
@@ -11,16 +11,16 @@ describe("should parse comment", () => {
         type: "comment",
         children: [],
         value: " Comment",
-        range: {
-          start: {
-            line: 0,
-            character: 0,
-          },
-          end: {
-            line: 0,
-            character: 10,
-          },
-        },
+        range: getInlineRange(0, 0, 10),
+      },
+    ],
+    [
+      '// Comment with "key" "value"',
+      {
+        type: "comment",
+        children: [],
+        value: ' Comment with "key" "value"',
+        range: getInlineRange(0, 0, 29),
       },
     ],
   ];

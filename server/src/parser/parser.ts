@@ -1,15 +1,15 @@
-import { alt, apply, opt, rep_sc, rule, seq, tok } from "typescript-parsec";
+import { alt, apply, opt_sc, rep_sc, rule, seq, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
 import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
 import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
-import { getRangeFromNodeList, getRangeFromToken } from "./utils";
+import { getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
-import AstProperty, { astProperty, astStringProperty } from "../ast/property";
-import AstNode from "../ast/node";
+import AstProperty, { astStringProperty } from "../ast/property";
 import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
+import AstObject, { astObject } from "../ast/object";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -52,6 +52,9 @@ export const objectPropertyParser = rule<VDFToken, AstProperty>();
 
 /** Parse properties of an object. */
 export const propertyParser = rule<VDFToken, AstProperty>();
+
+/** Parse an object. */
+export const objectParser = rule<VDFToken, AstObject>();
 
 // ====================================================================
 // DEFINITIONS
@@ -173,7 +176,7 @@ stringPropertyParser.setPattern(
     seq(
       keyParser,
       inlineTriviaParser,
-      opt(seq(stringParser, inlineTriviaParser))
+      opt_sc(seq(stringParser, inlineTriviaParser))
     ),
     ([key, betweenTrivia, rest]) => {
       const value = rest ? rest[0] : undefined;
@@ -188,3 +191,19 @@ stringPropertyParser.setPattern(
 // "key" "value"
 // "key" {}
 propertyParser.setPattern(stringPropertyParser);
+
+// --------------------------------------------------------------------
+// Object
+// --------------------------------------------------------------------
+objectParser.setPattern(
+  apply(
+    seq(
+      lBracketParser,
+      rep_sc(alt(propertyParser, commentParser, indentParser, endOfLineParser)),
+      opt_sc(rBracketParser)
+    ),
+    ([lBracket, content, rBracket]) => {
+      return astObject(lBracket, content, rBracket);
+    }
+  )
+);

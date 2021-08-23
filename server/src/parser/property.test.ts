@@ -17,6 +17,14 @@ const stringParams: Array<[string, AstProperty]> = [
     ),
   ],
   [
+    "key\tvalue",
+    astStringProperty(
+      astUnquotedKey("key", getInlineRange(0, 0, 3)),
+      astUnquotedString("value", getInlineRange(0, 4, 9)),
+      [astIndent("\t", getInlineRange(0, 3, 4))]
+    ),
+  ],
+  [
     '"key" "value"',
     astStringProperty(
       astQuotedKey(true, "key", getInlineRange(0, 0, 5)),

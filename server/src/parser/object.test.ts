@@ -44,7 +44,7 @@ describe("objectParser", () => {
           astIndent(" ", getInlineRange(0, 1, 2)),
           astStringProperty(
             astQuotedKey("key", getInlineRange(0, 2, 7)),
-            astQuotedString(true, "value", getInlineRange(0, 8, 15)),
+            astQuotedString("value", getInlineRange(0, 8, 15)),
             [astIndent(" ", getInlineRange(0, 7, 8))],
             [astIndent(" ", getInlineRange(0, 15, 16))]
           ),

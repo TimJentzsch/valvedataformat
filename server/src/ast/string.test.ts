@@ -7,7 +7,7 @@ import AstString, {
 
 describe("astString", () => {
   test("should properly create quoted string", () => {
-    const actual = astString(true, true, "value", getInlineRange(0, 0, 7));
+    const actual = astString(true, "value", getInlineRange(0, 0, 7));
     const expected: AstString = {
       type: "string",
       children: [],
@@ -21,7 +21,7 @@ describe("astString", () => {
   });
 
   test("should properly create unquoted string", () => {
-    const actual = astString(false, true, "value", getInlineRange(0, 0, 5));
+    const actual = astString(false, "value", getInlineRange(0, 0, 5));
     const expected: AstString = {
       type: "string",
       children: [],
@@ -37,7 +37,7 @@ describe("astString", () => {
 
 describe("astQuotedString", () => {
   test("should properly create quoted terminated string", () => {
-    const actual = astQuotedString(true, "value", getInlineRange(0, 0, 7));
+    const actual = astQuotedString("value", getInlineRange(0, 0, 7));
     const expected: AstString = {
       type: "string",
       children: [],
@@ -51,7 +51,7 @@ describe("astQuotedString", () => {
   });
 
   test("should properly create quoted unterminated string", () => {
-    const actual = astQuotedString(false, "value", getInlineRange(0, 0, 6));
+    const actual = astQuotedString("value", getInlineRange(0, 0, 6), false);
     const expected: AstString = {
       type: "string",
       children: [],

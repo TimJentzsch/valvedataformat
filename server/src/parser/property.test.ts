@@ -28,7 +28,7 @@ const stringParams: Array<[string, AstProperty]> = [
     '"key" "value"',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString(true, "value", getInlineRange(0, 6, 13)),
+      astQuotedString("value", getInlineRange(0, 6, 13)),
       [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
   ],
@@ -36,14 +36,14 @@ const stringParams: Array<[string, AstProperty]> = [
     '"key""value"',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString(true, "value", getInlineRange(0, 5, 12))
+      astQuotedString("value", getInlineRange(0, 5, 12))
     ),
   ],
   [
     '"key" "value',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString(false, "value", getInlineRange(0, 6, 12)),
+      astQuotedString("value", getInlineRange(0, 6, 12), false),
       [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
   ],
@@ -57,7 +57,7 @@ const stringParams: Array<[string, AstProperty]> = [
     '"key" "value" // Comment',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString(true, "value", getInlineRange(0, 6, 13)),
+      astQuotedString("value", getInlineRange(0, 6, 13)),
       [astIndent(" ", getInlineRange(0, 5, 6))],
       [
         astIndent(" ", getInlineRange(0, 13, 14)),
@@ -88,10 +88,9 @@ describe("stringPropertyParser", () => {
   }
 });
 
-
 // Properties
 describe("propertyParser", () => {
-  describe('should parse string properties', () => {
+  describe("should parse string properties", () => {
     for (const [input, expected] of stringParams) {
       test(input, () => {
         const actual = applyParser(propertyParser, input);

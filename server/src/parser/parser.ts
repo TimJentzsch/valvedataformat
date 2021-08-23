@@ -108,7 +108,7 @@ stringParser.setPattern(
         : text.slice(1);
       const range = getRangeFromToken(token);
 
-      return astQuotedString(isTerminated, value, range);
+      return astQuotedString(value, range, isTerminated);
     }),
     // Unquoted string
     apply(tok(VDFToken.unquotedString), (token) => {

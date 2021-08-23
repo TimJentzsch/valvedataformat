@@ -2,13 +2,14 @@ import { Range } from "vscode-languageserver/node";
 import AstNode from "./node";
 
 export type NodeType =
+  | "bracket"
   | "comment"
-  | "string"
-  | "property"
-  | "object"
   | "endOfLine"
+  | "key"
+  | "object"
+  | "property"
   | "space"
-  | "bracket";
+  | "string";
 
 export default interface AstBaseNode {
   /** The type of the node. */

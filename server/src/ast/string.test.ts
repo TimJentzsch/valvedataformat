@@ -1,8 +1,12 @@
 import { getInlineRange } from "../parser/utils";
-import AstString, { astQuotedString, astString, astUnquotedString } from "./string";
+import AstString, {
+  astQuotedString,
+  astString,
+  astUnquotedString,
+} from "./string";
 
-describe('astString', () => {
-  test('should properly create quoted string', () => {
+describe("astString", () => {
+  test("should properly create quoted string", () => {
     const actual = astString(true, true, "value", getInlineRange(0, 0, 7));
     const expected: AstString = {
       type: "string",
@@ -16,7 +20,7 @@ describe('astString', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('should properly create unquoted string', () => {
+  test("should properly create unquoted string", () => {
     const actual = astString(false, true, "value", getInlineRange(0, 0, 5));
     const expected: AstString = {
       type: "string",
@@ -31,8 +35,8 @@ describe('astString', () => {
   });
 });
 
-describe('astQuotedString', () => {
-  test('should properly create quoted terminated string', () => {
+describe("astQuotedString", () => {
+  test("should properly create quoted terminated string", () => {
     const actual = astQuotedString(true, "value", getInlineRange(0, 0, 7));
     const expected: AstString = {
       type: "string",
@@ -46,7 +50,7 @@ describe('astQuotedString', () => {
     expect(actual).toEqual(expected);
   });
 
-  test('should properly create quoted unterminated string', () => {
+  test("should properly create quoted unterminated string", () => {
     const actual = astQuotedString(false, "value", getInlineRange(0, 0, 6));
     const expected: AstString = {
       type: "string",
@@ -61,8 +65,8 @@ describe('astQuotedString', () => {
   });
 });
 
-describe('astUnquotedString', () => {
-  test('should properly create unquotedstring', () => {
+describe("astUnquotedString", () => {
+  test("should properly create unquoted string", () => {
     const actual = astUnquotedString("value", getInlineRange(0, 0, 5));
     const expected: AstString = {
       type: "string",

@@ -40,6 +40,12 @@ export const multilineTriviaParser = rule<VDFToken, MultilineTrivia[]>();
 /** Parse string properties ("key" "value"). */
 export const stringPropertyParser = rule<VDFToken, AstProperty>();
 
+/** Parse object properties ("key" {}). */
+export const objectPropertyParser = rule<VDFToken, AstProperty>();
+
+/** Parse properties of an object. */
+export const propertyParser = rule<VDFToken, AstProperty>();
+
 // ====================================================================
 // DEFINITIONS
 // ====================================================================
@@ -148,3 +154,8 @@ stringPropertyParser.setPattern(
     }
   )
 );
+
+// Property
+// "key" "value"
+// "key" {}
+propertyParser.setPattern(stringPropertyParser);

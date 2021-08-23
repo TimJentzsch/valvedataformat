@@ -27,7 +27,7 @@ const stringParams: Array<[string, AstProperty]> = [
   [
     '"key" "value"',
     astStringProperty(
-      astQuotedKey(true, "key", getInlineRange(0, 0, 5)),
+      astQuotedKey("key", getInlineRange(0, 0, 5)),
       astQuotedString(true, "value", getInlineRange(0, 6, 13)),
       [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
@@ -35,14 +35,14 @@ const stringParams: Array<[string, AstProperty]> = [
   [
     '"key""value"',
     astStringProperty(
-      astQuotedKey(true, "key", getInlineRange(0, 0, 5)),
+      astQuotedKey("key", getInlineRange(0, 0, 5)),
       astQuotedString(true, "value", getInlineRange(0, 5, 12))
     ),
   ],
   [
     '"key" "value',
     astStringProperty(
-      astQuotedKey(true, "key", getInlineRange(0, 0, 5)),
+      astQuotedKey("key", getInlineRange(0, 0, 5)),
       astQuotedString(false, "value", getInlineRange(0, 6, 12)),
       [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
@@ -50,13 +50,13 @@ const stringParams: Array<[string, AstProperty]> = [
   [
     '"key and // stuff',
     astStringProperty(
-      astQuotedKey(false, "key and // stuff", getInlineRange(0, 0, 17))
+      astQuotedKey("key and // stuff", getInlineRange(0, 0, 17), false)
     ),
   ],
   [
     '"key" "value" // Comment',
     astStringProperty(
-      astQuotedKey(true, "key", getInlineRange(0, 0, 5)),
+      astQuotedKey("key", getInlineRange(0, 0, 5)),
       astQuotedString(true, "value", getInlineRange(0, 6, 13)),
       [astIndent(" ", getInlineRange(0, 5, 6))],
       [

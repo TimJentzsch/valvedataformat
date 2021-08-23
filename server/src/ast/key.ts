@@ -20,9 +20,9 @@ export default interface AstKey extends AstBaseNode {
 /** Create an AST node for a property key. */
 export function astKey(
   isQuoted: boolean,
-  isTerminated: boolean,
   value: string,
-  range: Range
+  range: Range,
+  isTerminated: boolean = true
 ): AstKey {
   return {
     type: "key",
@@ -36,24 +36,24 @@ export function astKey(
 
 /** Create an AST node for a quoted key. */
 export function astQuotedKey(
-  isTerminated: boolean,
   value: string,
-  range: Range
+  range: Range,
+  isTerminated: boolean = true
 ): AstKey {
-  return astKey(true, isTerminated, value, range);
+  return astKey(true, value, range, isTerminated);
 }
 
 /** Create an AST node for an unquoted key. */
 export function astUnquotedKey(value: string, range: Range): AstKey {
-  return astKey(false, true, value, range);
+  return astKey(false, value, range);
 }
 
 /** Convert a string node to a key node. */
 export function astKeyFromString(astString: AstString): AstKey {
   return astKey(
     astString.isQuoted,
-    astString.isTerminated,
     astString.value,
-    astString.range
+    astString.range,
+    astString.isTerminated
   );
 }

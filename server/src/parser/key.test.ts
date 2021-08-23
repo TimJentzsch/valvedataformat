@@ -19,21 +19,21 @@ describe("should parse unquoted key", () => {
 // Quoted key parsing
 describe("should parse quoted key", () => {
   const params: Array<[string, AstKey]> = [
-    ['""', astQuotedKey(true, "", getInlineRange(0, 0, 2))],
-    ['"', astQuotedKey(false, "", getInlineRange(0, 0, 1))],
-    ['"value"', astQuotedKey(true, "value", getInlineRange(0, 0, 7))],
-    ['"value', astQuotedKey(false, "value", getInlineRange(0, 0, 6))],
+    ['""', astQuotedKey( "", getInlineRange(0, 0, 2))],
+    ['"', astQuotedKey("", getInlineRange(0, 0, 1), false)],
+    ['"value"', astQuotedKey("value", getInlineRange(0, 0, 7))],
+    ['"value', astQuotedKey("value", getInlineRange(0, 0, 6), false)],
     [
       '"value with spaces"',
-      astQuotedKey(true, "value with spaces", getInlineRange(0, 0, 19)),
+      astQuotedKey("value with spaces", getInlineRange(0, 0, 19)),
     ],
     [
       '"value with {}"',
-      astQuotedKey(true, "value with {}", getInlineRange(0, 0, 15)),
+      astQuotedKey("value with {}", getInlineRange(0, 0, 15)),
     ],
     [
       '"value with \\"',
-      astQuotedKey(true, "value with \\", getInlineRange(0, 0, 14)),
+      astQuotedKey("value with \\", getInlineRange(0, 0, 14)),
     ],
   ];
 

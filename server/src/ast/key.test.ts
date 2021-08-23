@@ -4,7 +4,7 @@ import AstString from "./string";
 
 describe("astKey", () => {
   test("should properly create quoted key", () => {
-    const actual = astKey(true, true, "value", getInlineRange(0, 0, 7));
+    const actual = astKey(true, "value", getInlineRange(0, 0, 7));
     const expected: AstKey = {
       type: "key",
       children: [],
@@ -18,7 +18,7 @@ describe("astKey", () => {
   });
 
   test("should properly create unquoted key", () => {
-    const actual = astKey(false, true, "value", getInlineRange(0, 0, 5));
+    const actual = astKey(false, "value", getInlineRange(0, 0, 5));
     const expected: AstKey = {
       type: "key",
       children: [],
@@ -34,7 +34,7 @@ describe("astKey", () => {
 
 describe("astQuotedKey", () => {
   test("should properly create quoted terminated key", () => {
-    const actual = astQuotedKey(true, "value", getInlineRange(0, 0, 7));
+    const actual = astQuotedKey("value", getInlineRange(0, 0, 7));
     const expected: AstKey = {
       type: "key",
       children: [],
@@ -48,7 +48,7 @@ describe("astQuotedKey", () => {
   });
 
   test("should properly create quoted unterminated key", () => {
-    const actual = astQuotedKey(false, "value", getInlineRange(0, 0, 6));
+    const actual = astQuotedKey("value", getInlineRange(0, 0, 6), false);
     const expected: AstKey = {
       type: "key",
       children: [],

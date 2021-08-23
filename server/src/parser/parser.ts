@@ -15,6 +15,7 @@ import AstProperty, {
 import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
 import AstObject, { astObject } from "../ast/object";
 import AstNode from "../ast/node";
+import AstRoot, { astRoot } from "../ast/root";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -54,6 +55,9 @@ export const propertyParser = rule<VDFToken, AstProperty>();
 
 /** Parse an object. */
 export const objectParser = rule<VDFToken, AstObject>();
+
+/** Parse the root, i.e. a VDF document. */
+export const rootParser = rule<VDFToken, AstRoot>();
 
 // ====================================================================
 // DEFINITIONS
@@ -218,11 +222,21 @@ propertyParser.setPattern(
 
       if (valueStuff.type === "object") {
         // Object value due to bracket
-        return astObjectProperty(key, betweenInlineTrivia, valueStuff, postTrivia);
+        return astObjectProperty(
+          key,
+          betweenInlineTrivia,
+          valueStuff,
+          postTrivia
+        );
       }
 
       // String value
-      return astStringProperty(key, betweenInlineTrivia, valueStuff, postTrivia);
+      return astStringProperty(
+        key,
+        betweenInlineTrivia,
+        valueStuff,
+        postTrivia
+      );
     }
   )
 );
@@ -239,6 +253,20 @@ objectParser.setPattern(
     ),
     ([lBracket, content, rBracket]) => {
       return astObject(lBracket, content, rBracket);
+    }
+  )
+);
+
+// --------------------------------------------------------------------
+// Root
+// --------------------------------------------------------------------
+
+// Almost the same as an object, but without the brackets.
+rootParser.setPattern(
+  apply(
+    rep_sc(alt(propertyParser, commentParser, indentParser, endOfLineParser)),
+    (children) => {
+      return astRoot(children);
     }
   )
 );

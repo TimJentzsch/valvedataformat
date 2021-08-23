@@ -64,10 +64,16 @@ export function getRangeFromToken<T>(token: Token<T>): Range {
 
 /** Get the range from a list of nodes.
  * It will take the start of the range of the first node and the end of the range of the last node.
- * The list must have at least one element, otherwise an error is thrown.
+ * The list must have at least one element, otherwise a default range must be provided.
  */
-export function getRangeFromNodeList(nodes: AstNode[]): Range {
+export function getRangeFromNodeList(
+  nodes: AstNode[],
+  defaultRange?: Range
+): Range {
   if (nodes.length === 0) {
+    if (defaultRange !== undefined) {
+      return defaultRange;
+    }
     throw new Error("The node list must have at least one element.");
   }
 

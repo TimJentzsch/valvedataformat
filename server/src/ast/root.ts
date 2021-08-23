@@ -1,4 +1,4 @@
-import { getRangeFromNodeList } from "../parser/utils";
+import { getInlineRange, getRangeFromNodeList } from "../parser/utils";
 import AstBaseNode from "./baseNode";
 import AstNode from "./node";
 import AstProperty from "./property";
@@ -18,7 +18,7 @@ export function astRoot(
     (value) => (value as AstNode).type === "property"
   ) as AstProperty[];
 
-  const range = getRangeFromNodeList(children);
+  const range = getRangeFromNodeList(children, getInlineRange(0, 0));
 
   const root: AstRoot = {
     type: "root",

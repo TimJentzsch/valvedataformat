@@ -23,8 +23,7 @@ export default interface AstEndOfLine extends AstBaseNode {
 export function astEndOfLine(
   value: string,
   eolType: EolType,
-  range: Range,
-  parent?: AstNode
+  range: Range
 ): AstEndOfLine {
   return {
     type: "endOfLine",
@@ -32,16 +31,15 @@ export function astEndOfLine(
     value,
     eolType,
     range,
-    parent,
   };
 }
 
 /** Create an AST node for a Unix kind end of line (LF). */
-export function astLf(range: Range, parent?: AstNode): AstEndOfLine {
-  return astEndOfLine("\n", "LF", range, parent);
+export function astLf(range: Range): AstEndOfLine {
+  return astEndOfLine("\n", "LF", range);
 }
 
 /** Create an AST node for a Windows kind end of line (CRLF). */
-export function astCrLf(range: Range, parent?: AstNode): AstEndOfLine {
-  return astEndOfLine("\r\n", "CRLF", range, parent);
+export function astCrLf(range: Range): AstEndOfLine {
+  return astEndOfLine("\r\n", "CRLF", range);
 }

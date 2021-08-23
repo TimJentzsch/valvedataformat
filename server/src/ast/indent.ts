@@ -11,12 +11,11 @@ export default interface AstIndent extends AstBaseNode {
 }
 
 /** Create an AST node for indent (spaces and tabs). */
-export function astIndent(value: string, range: Range, parent?: AstNode): AstIndent {
+export function astIndent(value: string, range: Range): AstIndent {
   return {
     type: "indent",
     children: [],
     value,
     range,
-    parent,
   };
 }

@@ -22,8 +22,7 @@ export function astKey(
   isQuoted: boolean,
   isTerminated: boolean,
   value: string,
-  range: Range,
-  parent?: AstNode
+  range: Range
 ): AstKey {
   return {
     type: "key",
@@ -32,7 +31,6 @@ export function astKey(
     isTerminated,
     value,
     range,
-    parent,
   };
 }
 
@@ -40,19 +38,14 @@ export function astKey(
 export function astQuotedKey(
   isTerminated: boolean,
   value: string,
-  range: Range,
-  parent?: AstNode
+  range: Range
 ): AstKey {
-  return astKey(true, isTerminated, value, range, parent);
+  return astKey(true, isTerminated, value, range);
 }
 
 /** Create an AST node for an unquoted key. */
-export function astUnquotedKey(
-  value: string,
-  range: Range,
-  parent?: AstNode
-): AstKey {
-  return astKey(false, true, value, range, parent);
+export function astUnquotedKey(value: string, range: Range): AstKey {
+  return astKey(false, true, value, range);
 }
 
 /** Convert a string node to a key node. */
@@ -61,7 +54,6 @@ export function astKeyFromString(astString: AstString): AstKey {
     astString.isQuoted,
     astString.isTerminated,
     astString.value,
-    astString.range,
-    astString.parent
+    astString.range
   );
 }

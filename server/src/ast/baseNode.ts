@@ -18,6 +18,4 @@ export default interface AstBaseNode {
   children: AstNode[];
   /** The range of the node in the full text. */
   range: Range;
-  /** The parent AST node. If this is undefined, this node is the root of the AST. */
-  parent?: AstNode;
 }

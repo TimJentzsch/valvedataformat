@@ -26,16 +26,15 @@ export function astBracket(
     value,
     bracketType,
     range,
-    parent,
   };
 }
 
 /** Create an AST node for a left bracket ({). */
-export function astLBracket(range: Range, parent?: AstNode): AstBracket {
-  return astBracket("{", "left", range, parent);
+export function astLBracket(range: Range): AstBracket {
+  return astBracket("{", "left", range);
 }
 
 /** Create an AST node for a right bracket (}). */
-export function astRBracket(range: Range, parent?: AstNode): AstBracket {
-  return astBracket("}", "right", range, parent);
+export function astRBracket(range: Range): AstBracket {
+  return astBracket("}", "right", range);
 }

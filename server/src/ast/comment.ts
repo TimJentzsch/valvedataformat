@@ -11,12 +11,11 @@ export default interface AstComment extends AstBaseNode {
 }
 
 /** Create an AST node for a comment. */
-export function astComment(value: string, range: Range, parent?: AstNode): AstComment {
+export function astComment(value: string, range: Range): AstComment {
   return {
     type: "comment",
     children: [],
     value,
     range,
-    parent,
   };
 }

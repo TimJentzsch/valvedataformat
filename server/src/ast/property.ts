@@ -27,9 +27,5 @@ export function astProperty(key: AstKey, value: PropertyValue, children: AstNode
     range: getRangeFromNodeList(children),
   };
 
-  for (const child of property.children) {
-    child.parent = property;
-  }
-
   return property;
 }

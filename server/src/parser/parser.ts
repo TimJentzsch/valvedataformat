@@ -9,6 +9,7 @@ import { getRangeFromNodeList, getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
 import AstProperty, { astProperty, astStringProperty } from "../ast/property";
 import AstNode from "../ast/node";
+import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -18,6 +19,12 @@ import AstNode from "../ast/node";
 
 /** Parse a comment. */
 export const commentParser = rule<VDFToken, AstComment>();
+
+/** Parse an opening bracket. */
+export const lBracketParser = rule<VDFToken, AstBracket>();
+
+/** Parse a closing bracket. */
+export const rBracketParser = rule<VDFToken, AstBracket>();
 
 /** Parse a string literal value. */
 export const stringParser = rule<VDFToken, AstString>();
@@ -59,6 +66,28 @@ commentParser.setPattern(
     const range = getRangeFromToken(token);
 
     return astComment(value, range);
+  })
+);
+
+// --------------------------------------------------------------------
+// Bracket
+// --------------------------------------------------------------------
+
+// Opening bracket
+lBracketParser.setPattern(
+  apply(tok(VDFToken.lBracket), (token) => {
+    const range = getRangeFromToken(token);
+
+    return astLBracket(range);
+  })
+);
+
+// Closing bracket
+rBracketParser.setPattern(
+  apply(tok(VDFToken.rBracket), (token) => {
+    const range = getRangeFromToken(token);
+
+    return astRBracket(range);
   })
 );
 

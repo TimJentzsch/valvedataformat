@@ -3,7 +3,7 @@ import AstComment from "./comment";
 import AstEndOfLine from "./endOfLine";
 import AstObject from "./object";
 import AstProperty from "./property";
-import AstSpace from "./space";
+import AstIndent from "./indent";
 import AstString from "./string";
 
 type AstNode =
@@ -12,7 +12,7 @@ type AstNode =
   | AstEndOfLine
   | AstObject
   | AstProperty
-  | AstSpace
+  | AstIndent
   | AstString;
 
 export default AstNode;

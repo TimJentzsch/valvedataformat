@@ -2,7 +2,7 @@ import { alt, apply, rule, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
 import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
-import AstSpace, { astSpace } from "../ast/space";
+import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
@@ -23,7 +23,7 @@ export const stringParser = rule<VDFToken, AstString>();
 export const keyParser = rule<VDFToken, AstKey>();
 
 /** Parse spaces and tabs (no line endings). */
-export const spaceParser = rule<VDFToken, AstSpace>();
+export const indentParser = rule<VDFToken, AstIndent>();
 
 /** Parse line endings. */
 export const endOfLineParser = rule<VDFToken, AstEndOfLine>();
@@ -80,14 +80,14 @@ keyParser.setPattern(
 );
 
 // --------------------------------------------------------------------
-// Space
+// Indent (spaces and tabs)
 // --------------------------------------------------------------------
-spaceParser.setPattern(
+indentParser.setPattern(
   apply(tok(VDFToken.space), (token) => {
     const value = token.text;
     const range = getRangeFromToken(token);
 
-    return astSpace(value, range);
+    return astIndent(value, range);
   })
 );
 

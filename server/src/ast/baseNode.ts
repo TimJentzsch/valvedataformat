@@ -8,7 +8,7 @@ export type NodeType =
   | "key"
   | "object"
   | "property"
-  | "space"
+  | "indent"
   | "string";
 
 export default interface AstBaseNode {

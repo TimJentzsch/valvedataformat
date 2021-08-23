@@ -6,7 +6,7 @@ import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
-import Trivia from "../ast/trivia";
+import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -29,8 +29,11 @@ export const indentParser = rule<VDFToken, AstIndent>();
 /** Parse line endings. */
 export const endOfLineParser = rule<VDFToken, AstEndOfLine>();
 
-/** Parse trivia (spaces, tabs and comments). */
-export const triviaParser = rule<VDFToken, Trivia[]>();
+/** Parse inline trivia (spaces, tabs and comments). */
+export const inlineTriviaParser = rule<VDFToken, InlineTrivia[]>();
+
+/** Parse multiline trivia (spaces, tabs, comments and line endings). */
+export const multilineTriviaParser = rule<VDFToken, MultilineTrivia[]>();
 
 // ====================================================================
 // DEFINITIONS
@@ -111,4 +114,5 @@ endOfLineParser.setPattern(
 // --------------------------------------------------------------------
 // Trivia
 // --------------------------------------------------------------------
-triviaParser.setPattern(rep_sc(alt(commentParser, indentParser)));
+inlineTriviaParser.setPattern(rep_sc(alt(commentParser, indentParser)));
+multilineTriviaParser.setPattern(rep_sc(alt(commentParser, indentParser, endOfLineParser)));

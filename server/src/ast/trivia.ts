@@ -1,7 +1,9 @@
 import AstComment from "./comment";
+import AstEndOfLine from "./endOfLine";
 import AstIndent from "./indent";
 
-/** Trivia, i.e. indent or comments. */
-type Trivia = AstIndent | AstComment;
+/** Inline trivia, i.e. comments or indent. */
+export type InlineTrivia = AstComment | AstIndent;
 
-export default Trivia;
+/** Multiline trivia, i.e. comments, indent or end of line. */
+export type MultilineTrivia = AstComment | AstIndent | AstEndOfLine;

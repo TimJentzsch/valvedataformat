@@ -72,7 +72,7 @@ export async function validateString(str: AstString): Promise<Diagnostic[]> {
       {
         severity: DiagnosticSeverity.Error,
         range: str.range,
-        message: "Missing closing quotation marks.",
+        message: `Missing closing quotation marks for value "${str.value}".`,
       },
     ];
   }
@@ -87,7 +87,7 @@ export async function validateKey(key: AstKey): Promise<Diagnostic[]> {
       {
         severity: DiagnosticSeverity.Error,
         range: key.range,
-        message: "Missing closing quotation marks.",
+        message: `Missing closing quotation marks for key "${key.value}".`,
       },
     ];
   }

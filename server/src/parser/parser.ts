@@ -7,9 +7,14 @@ import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
-import AstProperty, { astStringProperty } from "../ast/property";
+import AstProperty, {
+  astObjectProperty,
+  astProperty,
+  astStringProperty,
+} from "../ast/property";
 import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
 import AstObject, { astObject } from "../ast/object";
+import AstNode from "../ast/node";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -43,12 +48,6 @@ export const inlineTriviaParser = rule<VDFToken, InlineTrivia[]>();
 
 /** Parse multiline trivia (spaces, tabs, comments and line endings). */
 export const multilineTriviaParser = rule<VDFToken, MultilineTrivia[]>();
-
-/** Parse string properties ("key" "value"). */
-export const stringPropertyParser = rule<VDFToken, AstProperty>();
-
-/** Parse object properties ("key" {}). */
-export const objectPropertyParser = rule<VDFToken, AstProperty>();
 
 /** Parse properties of an object. */
 export const propertyParser = rule<VDFToken, AstProperty>();
@@ -168,29 +167,65 @@ multilineTriviaParser.setPattern(
 // --------------------------------------------------------------------
 // Property
 // --------------------------------------------------------------------
-
-// String property
-// "key" "value"
-stringPropertyParser.setPattern(
+propertyParser.setPattern(
   apply(
     seq(
       keyParser,
       inlineTriviaParser,
-      opt_sc(seq(stringParser, inlineTriviaParser))
+      // The value is optional (for incomplete documents)
+      opt_sc(
+        // The value with optional trailing trivia
+        seq(
+          // The value is either a string or an object
+          alt(
+            stringParser,
+            // If the value is an object, we have two possibilites:
+            alt(
+              // It's either on the same line and we can parse it directly.
+              objectParser,
+              // Or we hit a line break. In that case we can have additional trivia with line breaks.
+              // Due to the line break, we don't have a guaranteed value anymore.
+              seq(endOfLineParser, multilineTriviaParser, opt_sc(objectParser))
+            )
+          ),
+          // Optional trailing whitespace (no line breaks)
+          inlineTriviaParser
+        )
+      )
     ),
-    ([key, betweenTrivia, rest]) => {
-      const value = rest ? rest[0] : undefined;
+    ([key, betweenInlineTrivia, rest]) => {
+      const valueStuff = rest ? rest[0] : undefined;
       const postTrivia = rest ? rest[1] : [];
 
-      return astStringProperty(key, betweenTrivia, value, postTrivia);
+      if (valueStuff === undefined) {
+        // No value provided
+        const children: AstNode[] = [key as AstNode]
+          .concat(betweenInlineTrivia)
+          .concat(postTrivia);
+
+        return astProperty(children, key);
+      }
+
+      if (Array.isArray(valueStuff)) {
+        // Object value due to line break
+        const [endOfLine, multiTrivia, value] = valueStuff;
+        const betweenTrivia = (betweenInlineTrivia as MultilineTrivia[])
+          .concat([endOfLine])
+          .concat(multiTrivia);
+
+        return astObjectProperty(key, betweenTrivia, value, postTrivia);
+      }
+
+      if (valueStuff.type === "object") {
+        // Object value due to bracket
+        return astObjectProperty(key, betweenInlineTrivia, valueStuff, postTrivia);
+      }
+
+      // String value
+      return astStringProperty(key, betweenInlineTrivia, valueStuff, postTrivia);
     }
   )
 );
-
-// Property
-// "key" "value"
-// "key" {}
-propertyParser.setPattern(stringPropertyParser);
 
 // --------------------------------------------------------------------
 // Object

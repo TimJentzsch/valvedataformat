@@ -4,7 +4,7 @@ import AstKey from "./key";
 import AstNode from "./node";
 import AstObject from "./object";
 import AstString from "./string";
-import { InlineTrivia } from "./trivia";
+import { InlineTrivia, MultilineTrivia } from "./trivia";
 
 /** The value of a property. */
 export type PropertyValue = AstString | AstObject;
@@ -40,6 +40,21 @@ export function astStringProperty(
   key: AstKey,
   betweenTrivia: InlineTrivia[] = [],
   value: AstString | undefined = undefined,
+  postTrivia: InlineTrivia[] = []
+) {
+  const children = ([key] as AstNode[])
+    .concat(betweenTrivia)
+    .concat(value !== undefined ? [value] : [])
+    .concat(postTrivia);
+
+  return astProperty(children, key, value);
+}
+
+/** Create a new AST object property node. */
+export function astObjectProperty(
+  key: AstKey,
+  betweenTrivia: MultilineTrivia[] = [],
+  value: AstObject | undefined = undefined,
   postTrivia: InlineTrivia[] = []
 ) {
   const children = ([key] as AstNode[])

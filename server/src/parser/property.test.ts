@@ -3,7 +3,7 @@ import { astIndent } from "../ast/indent";
 import { astQuotedKey, astUnquotedKey } from "../ast/key";
 import AstProperty, { astStringProperty } from "../ast/property";
 import { astQuotedString, astUnquotedString } from "../ast/string";
-import { propertyParser, stringPropertyParser } from "./parser";
+import { propertyParser } from "./parser";
 import { applyParser, getInlineRange } from "./utils";
 
 /** Parameters for string properties */
@@ -77,16 +77,6 @@ const stringParams: Array<[string, AstProperty]> = [
     ),
   ],
 ];
-
-// String properties
-describe("stringPropertyParser", () => {
-  for (const [input, expected] of stringParams) {
-    test(input, () => {
-      const actual = applyParser(stringPropertyParser, input);
-      expect(actual).toEqual(expected);
-    });
-  }
-});
 
 // Properties
 describe("propertyParser", () => {

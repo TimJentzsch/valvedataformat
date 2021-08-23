@@ -1,6 +1,10 @@
 import { TokenPosition } from "typescript-parsec";
 import { Range } from "vscode-languageserver/node";
-import { getInlineRange, getRange, getRangeFromTokenPosition } from "./utils";
+import { astLf } from "../ast/endOfLine";
+import { astIndent } from "../ast/indent";
+import AstNode from "../ast/node";
+import { astQuotedString, astString, astUnquotedString } from "../ast/string";
+import { getInlineRange, getRange, getRangeFromNodeList, getRangeFromTokenPosition } from "./utils";
 
 describe("getRange", () => {
   const params: Array<[[number, number, number, number], Range]> = [
@@ -104,6 +108,35 @@ describe("getRangeFromTokenPosition", () => {
   for (const [input, expected] of params) {
     test(`should convert ${JSON.stringify(input, null, 0)}`, () => {
       const actual = getRangeFromTokenPosition(input);
+      expect(actual).toEqual(expected);
+    });
+  }
+});
+
+// Conversion from node list to document range
+describe("getRangeFromNodeList", () => {
+  const params: Array<[AstNode[], Range]> = [
+    [
+      [
+        astUnquotedString("key", getInlineRange(0, 0, 3)),
+        astIndent("    ", getInlineRange(0, 3, 7)),
+        astUnquotedString("value", getInlineRange(0, 7, 13)),
+      ],
+      getInlineRange(0, 0, 13),
+    ],
+    [
+      [
+        astUnquotedString("key", getInlineRange(0, 0, 3)),
+        astLf(getRange(0, 3, 1, 0)),
+        astUnquotedString("value", getInlineRange(1, 0, 5)),
+      ],
+      getRange(0, 0, 1, 5),
+    ],
+  ];
+
+  for (const [input, expected] of params) {
+    test(`should convert ${JSON.stringify(input, null, 0)}`, () => {
+      const actual = getRangeFromNodeList(input);
       expect(actual).toEqual(expected);
     });
   }

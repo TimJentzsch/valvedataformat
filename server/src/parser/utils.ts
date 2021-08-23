@@ -6,6 +6,7 @@ import {
   TokenPosition,
 } from "typescript-parsec";
 import { Position, Range } from "vscode-languageserver/node";
+import AstNode from "../ast/node";
 import { tokenizer, VDFToken } from "../lexer/lexer";
 
 /** Converts a token position to a document range.
@@ -28,7 +29,12 @@ export function getRangeFromTokenPosition(pos: TokenPosition): Range {
 }
 
 /** Get a range without constructing an object. */
-export function getRange(startLine: number, startCharacter: number, endLine: number, endCharacter: number): Range {
+export function getRange(
+  startLine: number,
+  startCharacter: number,
+  endLine: number,
+  endCharacter: number
+): Range {
   const start: Position = {
     line: startLine,
     character: startCharacter,
@@ -43,13 +49,32 @@ export function getRange(startLine: number, startCharacter: number, endLine: num
 }
 
 /** Get a range from the same line. */
-export function getInlineRange(line: number, startCharacter: number, endCharacter?: number): Range {
+export function getInlineRange(
+  line: number,
+  startCharacter: number,
+  endCharacter?: number
+): Range {
   return getRange(line, startCharacter, line, endCharacter ?? startCharacter);
 }
 
 /** Extract the range from a token. */
 export function getRangeFromToken<T>(token: Token<T>): Range {
   return getRangeFromTokenPosition(token.pos);
+}
+
+/** Get the range from a list of nodes.
+ * It will take the start of the range of the first node and the end of the range of the last node.
+ * The list must have at least one element, otherwise an error is thrown.
+ */
+export function getRangeFromNodeList(nodes: AstNode[]): Range {
+  if (nodes.length === 0) {
+    throw new Error("The node list must have at least one element.");
+  }
+
+  const start = nodes[0].range.start;
+  const end = nodes[nodes.length - 1].range.end;
+
+  return { start, end };
 }
 
 /** Apply the parser to the given input string. */

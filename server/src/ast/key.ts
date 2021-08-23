@@ -1,6 +1,5 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
-import AstNode from "./node";
 import AstString from "./string";
 
 /** A property key. Basically the same as a string. */

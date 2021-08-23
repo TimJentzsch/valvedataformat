@@ -5,10 +5,11 @@ export type NodeType =
   | "bracket"
   | "comment"
   | "endOfLine"
+  | "indent"
   | "key"
   | "object"
   | "property"
-  | "indent"
+  | "root"
   | "string";
 
 export default interface AstBaseNode {

@@ -1,6 +1,5 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
-import AstNode from "./node";
 
 export type BracketType = "left" | "right";
 
@@ -18,7 +17,6 @@ export function astBracket(
   value: string,
   bracketType: BracketType,
   range: Range,
-  parent?: AstNode
 ): AstBracket {
   return {
     type: "bracket",

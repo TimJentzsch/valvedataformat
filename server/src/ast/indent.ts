@@ -1,6 +1,5 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode from "./baseNode";
-import AstNode from "./node";
 
 /** Indent, i.e. spaces and tabs (no line endings). */
 export default interface AstIndent extends AstBaseNode {

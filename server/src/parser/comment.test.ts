@@ -1,5 +1,5 @@
 import AstComment, { astComment } from "../ast/comment";
-import commentParser from "./comment";
+import { commentParser } from "./parser";
 import { applyParser, getInlineRange } from "./utils";
 
 // Comment parsing

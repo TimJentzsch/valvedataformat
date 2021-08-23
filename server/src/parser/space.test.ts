@@ -1,5 +1,5 @@
 import AstSpace, { astSpace } from "../ast/space";
-import spaceParser from "./space";
+import { spaceParser } from "./parser";
 import { applyParser, getInlineRange } from "./utils";
 
 // Space parsing

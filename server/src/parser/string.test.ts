@@ -1,5 +1,5 @@
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
-import stringParser from "./string";
+import { stringParser } from "./parser";
 import { applyParser, getInlineRange } from "./utils";
 
 // Unquoted string parsing

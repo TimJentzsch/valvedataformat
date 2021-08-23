@@ -1,5 +1,5 @@
 import AstEndOfLine, { astCrLf, astLf } from "../ast/endOfLine";
-import endOfLineParser from "./endOfLine";
+import { endOfLineParser } from "./parser";
 import { applyParser, getRange } from "./utils";
 
 // End of line parsing

@@ -38,8 +38,8 @@ export function astProperty(
 /** Create a new AST string property node. */
 export function astStringProperty(
   key: AstKey,
-  value: AstString | undefined = undefined,
   betweenTrivia: InlineTrivia[] = [],
+  value: AstString | undefined = undefined,
   postTrivia: InlineTrivia[] = []
 ) {
   const children = ([key] as AstNode[])

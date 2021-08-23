@@ -182,7 +182,7 @@ stringPropertyParser.setPattern(
       const value = rest ? rest[0] : undefined;
       const postTrivia = rest ? rest[1] : [];
 
-      return astStringProperty(key, value, betweenTrivia, postTrivia);
+      return astStringProperty(key, betweenTrivia, value, postTrivia);
     }
   )
 );

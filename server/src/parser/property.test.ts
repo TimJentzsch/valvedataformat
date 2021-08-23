@@ -12,39 +12,40 @@ const stringParams: Array<[string, AstProperty]> = [
     "key value",
     astStringProperty(
       astUnquotedKey("key", getInlineRange(0, 0, 3)),
+      [astIndent(" ", getInlineRange(0, 3, 4))],
       astUnquotedString("value", getInlineRange(0, 4, 9)),
-      [astIndent(" ", getInlineRange(0, 3, 4))]
     ),
   ],
   [
     "key\tvalue",
     astStringProperty(
       astUnquotedKey("key", getInlineRange(0, 0, 3)),
+      [astIndent("\t", getInlineRange(0, 3, 4))],
       astUnquotedString("value", getInlineRange(0, 4, 9)),
-      [astIndent("\t", getInlineRange(0, 3, 4))]
     ),
   ],
   [
     '"key" "value"',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
+      [astIndent(" ", getInlineRange(0, 5, 6))],
       astQuotedString("value", getInlineRange(0, 6, 13)),
-      [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
   ],
   [
     '"key""value"',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString("value", getInlineRange(0, 5, 12))
-    ),
+      [],
+      astQuotedString("value", getInlineRange(0, 5, 12)),
+    )
   ],
   [
     '"key" "value',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
+      [astIndent(" ", getInlineRange(0, 5, 6))],
       astQuotedString("value", getInlineRange(0, 6, 12), false),
-      [astIndent(" ", getInlineRange(0, 5, 6))]
     ),
   ],
   [
@@ -57,8 +58,8 @@ const stringParams: Array<[string, AstProperty]> = [
     '"key" "value" // Comment',
     astStringProperty(
       astQuotedKey("key", getInlineRange(0, 0, 5)),
-      astQuotedString("value", getInlineRange(0, 6, 13)),
       [astIndent(" ", getInlineRange(0, 5, 6))],
+      astQuotedString("value", getInlineRange(0, 6, 13)),
       [
         astIndent(" ", getInlineRange(0, 13, 14)),
         astComment(" Comment", getInlineRange(0, 14, 24)),
@@ -69,7 +70,6 @@ const stringParams: Array<[string, AstProperty]> = [
     "key // Comment",
     astStringProperty(
       astUnquotedKey("key", getInlineRange(0, 0, 3)),
-      undefined,
       [
         astIndent(" ", getInlineRange(0, 3, 4)),
         astComment(" Comment", getInlineRange(0, 4, 14)),

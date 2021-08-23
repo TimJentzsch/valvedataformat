@@ -12,8 +12,8 @@ describe("astObject", () => {
     const lBracket = astLBracket(getInlineRange(0, 0, 1));
     const property = astStringProperty(
       astUnquotedKey("key", getInlineRange(1, 1, 4)),
-      astUnquotedString("value", getInlineRange(1, 5, 10)),
-      [astIndent("\t", getInlineRange(1, 4, 5))]
+      [astIndent("\t", getInlineRange(1, 4, 5))],
+      astUnquotedString("value", getInlineRange(1, 5, 10))
     );
     const content = [
       astLf(getRange(0, 1, 1, 0)),

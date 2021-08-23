@@ -1,4 +1,4 @@
-import { alt, apply, rule, tok } from "typescript-parsec";
+import { alt, apply, rep_sc, rule, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
 import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
@@ -6,6 +6,7 @@ import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
+import Trivia from "../ast/trivia";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -27,6 +28,9 @@ export const indentParser = rule<VDFToken, AstIndent>();
 
 /** Parse line endings. */
 export const endOfLineParser = rule<VDFToken, AstEndOfLine>();
+
+/** Parse trivia (spaces, tabs and comments). */
+export const triviaParser = rule<VDFToken, Trivia[]>();
 
 // ====================================================================
 // DEFINITIONS
@@ -103,3 +107,8 @@ endOfLineParser.setPattern(
     return astEndOfLine(value, eolType, range);
   })
 );
+
+// --------------------------------------------------------------------
+// Trivia
+// --------------------------------------------------------------------
+triviaParser.setPattern(rep_sc(alt(commentParser, indentParser)));

@@ -4,7 +4,7 @@ import AstObject from "./object";
 import AstString from "./string";
 
 /** The value of a property. */
-export type AstValue = AstString | AstObject;
+export type PropertyValue = AstString | AstObject;
 
 /** A key-value pair within an object. */
 export default interface AstProperty extends AstBaseNode {
@@ -12,5 +12,5 @@ export default interface AstProperty extends AstBaseNode {
   /** The key of the property. */
   key: AstKey;
   /** The value of the property. Can be undefined for incomplete documents. */
-  value?: AstValue;
+  value?: PropertyValue;
 }

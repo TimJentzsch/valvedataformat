@@ -7,7 +7,7 @@ import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
 import { getRangeFromNodeList, getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
-import AstProperty, { astProperty } from "../ast/property";
+import AstProperty, { astProperty, astStringProperty } from "../ast/property";
 import AstNode from "../ast/node";
 
 // To avoid circular imports, all parsers are defined in a single file
@@ -140,15 +140,11 @@ stringPropertyParser.setPattern(
       inlineTriviaParser,
       opt(seq(stringParser, inlineTriviaParser))
     ),
-    ([key, trivia1, rest]) => {
+    ([key, betweenTrivia, rest]) => {
       const value = rest ? rest[0] : undefined;
-      const trivia2 = rest ? rest[1] : [];
-      const children: AstNode[] = ([key] as AstNode[])
-        .concat(trivia1)
-        .concat(value ? [value] : [])
-        .concat(trivia2);
+      const postTrivia = rest ? rest[1] : [];
 
-      return astProperty(children, key, value);
+      return astStringProperty(key, value, betweenTrivia, postTrivia);
     }
   )
 );

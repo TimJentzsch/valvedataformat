@@ -1,9 +1,8 @@
 import AstBaseNode from "./baseNode";
+import AstKey from "./key";
 import AstObject from "./object";
 import AstString from "./string";
 
-/** The key of a property. */
-export type AstKey = AstString;
 /** The value of a property. */
 export type AstValue = AstString | AstObject;
 

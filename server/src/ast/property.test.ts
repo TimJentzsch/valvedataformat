@@ -12,7 +12,7 @@ describe("astProperty", () => {
     const indent = astIndent(" ", getInlineRange(0, 3, 4));
     const value = astQuotedString(true, "value", getInlineRange(0, 4, 11));
 
-    const actual = astProperty(key, value, [key, indent, value]);
+    const actual = astProperty([key, indent, value], key, value);
     const expected: AstProperty = {
       type: "property",
       key,

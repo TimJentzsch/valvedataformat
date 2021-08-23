@@ -1,12 +1,14 @@
-import { alt, apply, rep_sc, rule, tok } from "typescript-parsec";
+import { alt, apply, opt, rep_sc, rule, seq, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
 import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
 import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VDFToken } from "../lexer/lexer";
-import { getRangeFromToken } from "./utils";
+import { getRangeFromNodeList, getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
+import AstProperty, { astProperty } from "../ast/property";
+import AstNode from "../ast/node";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -34,6 +36,9 @@ export const inlineTriviaParser = rule<VDFToken, InlineTrivia[]>();
 
 /** Parse multiline trivia (spaces, tabs, comments and line endings). */
 export const multilineTriviaParser = rule<VDFToken, MultilineTrivia[]>();
+
+/** Parse string properties ("key" "value"). */
+export const stringPropertyParser = rule<VDFToken, AstProperty>();
 
 // ====================================================================
 // DEFINITIONS
@@ -114,5 +119,36 @@ endOfLineParser.setPattern(
 // --------------------------------------------------------------------
 // Trivia
 // --------------------------------------------------------------------
+
+// Inline trivia
 inlineTriviaParser.setPattern(rep_sc(alt(commentParser, indentParser)));
-multilineTriviaParser.setPattern(rep_sc(alt(commentParser, indentParser, endOfLineParser)));
+// Multiline trivia
+multilineTriviaParser.setPattern(
+  rep_sc(alt(commentParser, indentParser, endOfLineParser))
+);
+
+// --------------------------------------------------------------------
+// Property
+// --------------------------------------------------------------------
+
+// String property
+// "key" "value"
+stringPropertyParser.setPattern(
+  apply(
+    seq(
+      keyParser,
+      inlineTriviaParser,
+      opt(seq(stringParser, inlineTriviaParser))
+    ),
+    ([key, trivia1, rest]) => {
+      const value = rest ? rest[0] : undefined;
+      const trivia2 = rest ? rest[1] : [];
+      const children: AstNode[] = ([key] as AstNode[])
+        .concat(trivia1)
+        .concat(value ? [value] : [])
+        .concat(trivia2);
+
+      return astProperty(children, key, value);
+    }
+  )
+);

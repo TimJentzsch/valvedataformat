@@ -18,7 +18,7 @@ export default interface AstProperty extends AstBaseNode {
 }
 
 /** Create a new AST property node. */
-export function astProperty(key: AstKey, value: PropertyValue, children: AstNode[]) {
+export function astProperty(children: AstNode[], key: AstKey, value?: PropertyValue) {
   const property: AstProperty = {
     type: "property",
     key,

@@ -84,7 +84,7 @@ describe("validateProperty", () => {
       [],
     ],
     [
-      "should have error for property without value",
+      "should have error for string property without value",
       astStringProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
         astIndent(" ", getInlineRange(0, 3, 4)),
       ]),
@@ -100,7 +100,7 @@ describe("validateProperty", () => {
       [getInlineRange(0, 3, 4), getInlineRange(0, 10, 11)],
     ],
     [
-      "should have error for property without key",
+      "should have error for object property without key",
       astObjectProperty(
         undefined,
         [],
@@ -110,7 +110,7 @@ describe("validateProperty", () => {
           astRBracket(getInlineRange(0, 1, 2)),
         )
       ),
-      [getInlineRange(0, 0, 2)],
+      [getInlineRange(0, 0, 1)],
     ],
   ];
 

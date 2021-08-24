@@ -86,7 +86,7 @@ export async function validateProperty(
 
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
-      range: value.range,
+      range: value.lBracket.range,
       message: `Object property without a key.`,
     };
 

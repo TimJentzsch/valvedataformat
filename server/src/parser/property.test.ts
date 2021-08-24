@@ -213,6 +213,38 @@ describe("propertyParser", () => {
           )
         ),
       ],
+      [
+        "{}",
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(
+            astLBracket(getInlineRange(0, 0, 1)),
+            [],
+            astRBracket(getInlineRange(0, 1, 2))
+          )
+        ),
+      ],
+      [
+        "{ key value }",
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(
+            astLBracket(getInlineRange(0, 0, 1)),
+            [
+              astIndent(" ", getInlineRange(0, 1, 2)),
+              astStringProperty(
+                astUnquotedKey("key", getInlineRange(0, 2, 5)),
+                [astIndent(" ", getInlineRange(0, 5, 6))],
+                astUnquotedString("value", getInlineRange(0, 6, 11)),
+                [astIndent(" ", getInlineRange(0, 11, 12))]
+              ),
+            ],
+            astRBracket(getInlineRange(0, 12, 13))
+          )
+        ),
+      ],
     ];
 
     for (const [input, expected] of objectParams) {

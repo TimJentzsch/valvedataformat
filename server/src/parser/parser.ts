@@ -171,67 +171,80 @@ multilineTriviaParser.setPattern(
 // Property
 // --------------------------------------------------------------------
 propertyParser.setPattern(
-  apply(
-    seq(
-      keyParser,
-      inlineTriviaParser,
-      // The value is optional (for incomplete documents)
-      opt_sc(
-        // The value with optional trailing trivia
-        seq(
-          // The value is either a string or an object
-          alt(
-            stringParser,
-            // If the value is an object, we have two possibilites:
+  // It's either a key with optional value or an object without key.
+  alt(
+    // Key with optional value
+    apply(
+      seq(
+        keyParser,
+        inlineTriviaParser,
+        // The value is optional (for incomplete documents)
+        opt_sc(
+          // The value with optional trailing trivia
+          seq(
+            // The value is either a string or an object
             alt(
-              // It's either on the same line and we can parse it directly.
-              objectParser,
-              // Or we hit a line break. In that case we can have additional trivia with line breaks.
-              seq(endOfLineParser, multilineTriviaParser, objectParser)
-            )
-          ),
-          // Optional trailing whitespace (no line breaks)
-          inlineTriviaParser
+              stringParser,
+              // If the value is an object, we have two possibilites:
+              alt(
+                // It's either on the same line and we can parse it directly.
+                objectParser,
+                // Or we hit a line break. In that case we can have additional trivia with line breaks.
+                seq(endOfLineParser, multilineTriviaParser, objectParser)
+              )
+            ),
+            // Optional trailing whitespace (no line breaks)
+            inlineTriviaParser
+          )
         )
-      )
-    ),
-    ([key, betweenInlineTrivia, rest]) => {
-      const valueStuff = rest ? rest[0] : undefined;
-      const postTrivia = rest ? rest[1] : [];
+      ),
+      ([key, betweenInlineTrivia, rest]) => {
+        const valueStuff = rest ? rest[0] : undefined;
+        const postTrivia = rest ? rest[1] : [];
 
-      if (valueStuff === undefined) {
-        // No value provided
-        return astStringProperty(key, betweenInlineTrivia, undefined, postTrivia);
-      }
+        if (valueStuff === undefined) {
+          // No value provided
+          return astStringProperty(
+            key,
+            betweenInlineTrivia,
+            undefined,
+            postTrivia
+          );
+        }
 
-      if (Array.isArray(valueStuff)) {
-        // Object value due to line break
-        const [endOfLine, multiTrivia, value] = valueStuff;
-        const betweenTrivia = (betweenInlineTrivia as MultilineTrivia[])
-          .concat([endOfLine])
-          .concat(multiTrivia);
+        if (Array.isArray(valueStuff)) {
+          // Object value due to line break
+          const [endOfLine, multiTrivia, value] = valueStuff;
+          const betweenTrivia = (betweenInlineTrivia as MultilineTrivia[])
+            .concat([endOfLine])
+            .concat(multiTrivia);
 
-        return astObjectProperty(key, betweenTrivia, value, postTrivia);
-      }
+          return astObjectProperty(key, betweenTrivia, value, postTrivia);
+        }
 
-      if (valueStuff.type === "object") {
-        // Object value due to bracket
-        return astObjectProperty(
+        if (valueStuff.type === "object") {
+          // Object value due to bracket
+          return astObjectProperty(
+            key,
+            betweenInlineTrivia,
+            valueStuff,
+            postTrivia
+          );
+        }
+
+        // String value
+        return astStringProperty(
           key,
           betweenInlineTrivia,
           valueStuff,
           postTrivia
         );
       }
-
-      // String value
-      return astStringProperty(
-        key,
-        betweenInlineTrivia,
-        valueStuff,
-        postTrivia
-      );
-    }
+    ),
+    // Object without key
+    apply(seq(objectParser, inlineTriviaParser), ([value, postTrivia]) => {
+      return astObjectProperty(undefined, [], value, postTrivia);
+    })
   )
 );
 

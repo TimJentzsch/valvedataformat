@@ -23,7 +23,7 @@ describe("validateKey", () => {
     [
       "should have error for unterminated quoted key",
       astQuotedKey("key", getInlineRange(0, 0, 4), false),
-      [getInlineRange(0, 3, 4)],
+      [getInlineRange(0, 4, 4)],
     ],
   ];
 
@@ -54,7 +54,7 @@ describe("validateString", () => {
     [
       "should have error for unterminated quoted string",
       astQuotedString("value", getInlineRange(0, 0, 6), false),
-      [getInlineRange(0, 5, 6)],
+      [getInlineRange(0, 6, 6)],
     ],
   ];
 
@@ -95,7 +95,7 @@ describe("validateProperty", () => {
         [astIndent(" ", getInlineRange(0, 4, 5))],
         astQuotedString("value", getInlineRange(0, 5, 11), false)
       ),
-      [getInlineRange(0, 3, 4), getInlineRange(0, 10, 11)],
+      [getInlineRange(0, 4, 4), getInlineRange(0, 11, 11)],
     ],
   ];
 

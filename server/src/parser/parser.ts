@@ -9,7 +9,6 @@ import { getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
 import AstProperty, {
   astObjectProperty,
-  astProperty,
   astStringProperty,
 } from "../ast/property";
 import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
@@ -188,8 +187,7 @@ propertyParser.setPattern(
               // It's either on the same line and we can parse it directly.
               objectParser,
               // Or we hit a line break. In that case we can have additional trivia with line breaks.
-              // Due to the line break, we don't have a guaranteed value anymore.
-              seq(endOfLineParser, multilineTriviaParser, opt_sc(objectParser))
+              seq(endOfLineParser, multilineTriviaParser, objectParser)
             )
           ),
           // Optional trailing whitespace (no line breaks)
@@ -203,11 +201,7 @@ propertyParser.setPattern(
 
       if (valueStuff === undefined) {
         // No value provided
-        const children: AstNode[] = [key as AstNode]
-          .concat(betweenInlineTrivia)
-          .concat(postTrivia);
-
-        return astProperty(children, key);
+        return astStringProperty(key, betweenInlineTrivia, undefined, postTrivia);
       }
 
       if (Array.isArray(valueStuff)) {

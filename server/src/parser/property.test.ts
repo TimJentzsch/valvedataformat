@@ -128,12 +128,6 @@ describe("propertyParser", () => {
         ),
       ],
       [
-        "key\n",
-        astObjectProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
-          astLf(getRange(0, 3, 1, 0)),
-        ]),
-      ],
-      [
         "key\n{ key value }",
         astObjectProperty(
           astUnquotedKey("key", getInlineRange(0, 0, 3)),
@@ -174,6 +168,27 @@ describe("propertyParser", () => {
               ),
             ],
             astRBracket(getInlineRange(2, 12, 13))
+          )
+        ),
+      ],
+      [
+        "key\n{\n\tkey\tvalue\n}",
+        astObjectProperty(
+          astUnquotedKey("key", getInlineRange(0, 0, 3)),
+          [astLf(getRange(0, 3, 1, 0))],
+          astObject(
+            astLBracket(getInlineRange(1, 0, 1)),
+            [
+              astLf(getRange(1, 1, 2, 0)),
+              astIndent("\t", getInlineRange(2, 0, 1)),
+              astStringProperty(
+                astUnquotedKey("key", getInlineRange(2, 1, 4)),
+                [astIndent("\t", getInlineRange(2, 4, 5))],
+                astUnquotedString("value", getInlineRange(2, 5, 10))
+              ),
+              astLf(getRange(2, 10, 3, 0)),
+            ],
+            astRBracket(getInlineRange(3, 0, 1))
           )
         ),
       ],

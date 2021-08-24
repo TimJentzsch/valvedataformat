@@ -6,34 +6,27 @@ import AstObject from "./object";
 import AstString from "./string";
 import { InlineTrivia, MultilineTrivia } from "./trivia";
 
-/** The value of a property. */
-export type PropertyValue = AstString | AstObject;
-
-/** A key-value pair within an object. */
-export default interface AstProperty extends AstBaseNode {
+/** A string property, e.g. "key" "value". */
+export interface AstStringProperty extends AstBaseNode {
   type: "property";
   /** The key of the property. */
   key: AstKey;
   /** The value of the property. Can be undefined for incomplete documents. */
-  value?: PropertyValue;
+  value?: AstString;
 }
 
-/** Create a new AST property node. */
-export function astProperty(
-  children: AstNode[],
-  key: AstKey,
-  value?: PropertyValue
-) {
-  const property: AstProperty = {
-    type: "property",
-    key,
-    value,
-    children,
-    range: getRangeFromNodeList(children),
-  };
-
-  return property;
+/** An object property, e.g. "key" {}. */
+export interface AstObjectProperty extends AstBaseNode {
+  type: "property";
+  /** The key of the property. Can be undefined for incomplete documents. */
+  key?: AstKey;
+  /** The value of the property. */
+  value: AstObject;
 }
+
+/** A key-value pair within an object. */
+type AstProperty = AstStringProperty | AstObjectProperty;
+export default AstProperty;
 
 /** Create a new AST string property node. */
 export function astStringProperty(
@@ -42,25 +35,41 @@ export function astStringProperty(
   value: AstString | undefined = undefined,
   postTrivia: InlineTrivia[] = []
 ) {
-  const children = ([key] as AstNode[])
+  const children = [key as AstNode]
     .concat(betweenTrivia)
     .concat(value !== undefined ? [value] : [])
     .concat(postTrivia);
 
-  return astProperty(children, key, value);
+    const property: AstStringProperty = {
+      type: "property",
+      key,
+      value,
+      children,
+      range: getRangeFromNodeList(children),
+    };
+
+  return property;
 }
 
 /** Create a new AST object property node. */
 export function astObjectProperty(
-  key: AstKey,
+  key: AstKey | undefined = undefined,
   betweenTrivia: MultilineTrivia[] = [],
-  value: AstObject | undefined = undefined,
+  value: AstObject,
   postTrivia: InlineTrivia[] = []
 ) {
-  const children = ([key] as AstNode[])
+  const children = (key !== undefined ? [key as AstNode] : ([] as AstNode[]))
     .concat(betweenTrivia)
     .concat(value !== undefined ? [value] : [])
     .concat(postTrivia);
 
-  return astProperty(children, key, value);
+    const property: AstObjectProperty = {
+      type: "property",
+      key,
+      value,
+      children,
+      range: getRangeFromNodeList(children),
+    };
+
+  return property;
 }

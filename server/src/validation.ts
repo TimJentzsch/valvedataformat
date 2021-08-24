@@ -2,7 +2,7 @@ import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver/node";
 import AstKey from "./ast/key";
 import AstNode from "./ast/node";
 import AstObject from "./ast/object";
-import AstProperty from "./ast/property";
+import AstProperty, { AstStringProperty } from "./ast/property";
 import AstRoot from "./ast/root";
 import AstString from "./ast/string";
 
@@ -55,10 +55,13 @@ export async function validateProperty(
   const childDiagnostics = await validateChildren(property.children);
 
   if (property.value === undefined) {
+    // Only string properties can have undefined values
+    const key = (property as AstStringProperty).key;
+
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
-      range: property.key.range,
-      message: `The key "${property.key.value}" has no value.`,
+      range: key.range,
+      message: `The key "${key.value}" has no value.`,
     };
 
     return [missingValueDiagnostic].concat(childDiagnostics);

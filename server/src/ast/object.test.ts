@@ -29,7 +29,8 @@ describe("astObject", () => {
       type: "object",
       children: [lBracket, ...content, rBracket],
       properties: [property],
-      isTerminated: true,
+      lBracket,
+      rBracket,
       range: getRange(0, 0, 2, 1),
     };
 

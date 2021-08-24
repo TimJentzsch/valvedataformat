@@ -9,8 +9,10 @@ export default interface AstObject extends AstBaseNode {
   type: "object";
   /** The properties of the object. */
   properties: AstProperty[];
-  /** Determines whether the object has a closing bracket. */
-  isTerminated: boolean;
+  /** The opening bracket of the object. */
+  lBracket: AstBracket;
+  /** The closing bracket of the object. Can be missing in incomplete documents. */
+  rBracket?: AstBracket;
 }
 
 /** Create a new AST object node. */
@@ -35,7 +37,8 @@ export function astObject(
     type: "object",
     children,
     properties,
-    isTerminated,
+    lBracket,
+    rBracket,
     range,
   };
 

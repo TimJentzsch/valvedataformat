@@ -3,8 +3,10 @@ import { Range } from "vscode-languageserver/node";
 import { getInlineRange } from "./parser/utils";
 import { validateKey, validateProperty, validateString } from "./validation";
 import AstString, { astQuotedString, astUnquotedString } from "./ast/string";
-import AstProperty, { astStringProperty } from "./ast/property";
+import AstProperty, { astObjectProperty, astStringProperty } from "./ast/property";
 import { astIndent } from "./ast/indent";
+import { astObject } from "./ast/object";
+import { astLBracket, astRBracket } from "./ast/bracket";
 
 // Key
 describe("validateKey", () => {
@@ -96,6 +98,19 @@ describe("validateProperty", () => {
         astQuotedString("value", getInlineRange(0, 5, 11), false)
       ),
       [getInlineRange(0, 3, 4), getInlineRange(0, 10, 11)],
+    ],
+    [
+      "should have error for property without key",
+      astObjectProperty(
+        undefined,
+        [],
+        astObject(
+          astLBracket(getInlineRange(0, 0, 1)),
+          [],
+          astRBracket(getInlineRange(0, 1, 2)),
+        )
+      ),
+      [getInlineRange(0, 0, 2)],
     ],
   ];
 

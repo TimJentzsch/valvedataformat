@@ -2,7 +2,10 @@ import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver/node";
 import AstKey from "./ast/key";
 import AstNode from "./ast/node";
 import AstObject from "./ast/object";
-import AstProperty, { AstObjectProperty, AstStringProperty } from "./ast/property";
+import AstProperty, {
+  AstObjectProperty,
+  AstStringProperty,
+} from "./ast/property";
 import AstRoot from "./ast/root";
 import AstString from "./ast/string";
 
@@ -45,7 +48,19 @@ export async function validateRoot(root: AstRoot): Promise<Diagnostic[]> {
 
 /** Validate the given object AST node. */
 export async function validateObject(obj: AstObject): Promise<Diagnostic[]> {
-  return validateChildren(obj.children);
+  const childDiagnostics = await validateChildren(obj.children);
+
+  if (obj.rBracket === undefined) {
+    const missingClosingBracketDiagnostic: Diagnostic = {
+      severity: DiagnosticSeverity.Error,
+      range: obj.lBracket.range,
+      message: "Object without closing bracket.",
+    };
+
+    return [missingClosingBracketDiagnostic].concat(childDiagnostics);
+  }
+
+  return childDiagnostics;
 }
 
 /** Validate the given property AST node. */

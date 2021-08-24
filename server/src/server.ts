@@ -20,6 +20,7 @@ import { rootParser } from "./parser/parser";
 import validateNode from "./validation";
 import AstRoot from "./ast/root";
 import getNodeSymbols from "./symbols";
+import formatNode from "./formatting";
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -57,6 +58,7 @@ connection.onInitialize((params: InitializeParams) => {
         resolveProvider: true,
       },
       documentSymbolProvider: true,
+      documentFormattingProvider: true,
     },
   };
   if (hasWorkspaceFolderCapability) {
@@ -197,9 +199,14 @@ connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
   return item;
 });
 
-connection.onDocumentSymbol((docSymbolParams) => {
-  const rootNode = documentAsts.get(docSymbolParams.textDocument.uri);
+connection.onDocumentSymbol((params) => {
+  const rootNode = documentAsts.get(params.textDocument.uri);
   return rootNode ? getNodeSymbols(rootNode) : [];
+});
+
+connection.onDocumentFormatting((params) => {
+  const rootNode = documentAsts.get(params.textDocument.uri);
+  return rootNode ? formatNode(rootNode, params.options) : [];
 });
 
 // Make the text document manager listen on the connection

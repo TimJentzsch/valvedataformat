@@ -4,8 +4,6 @@
 import {
   createConnection,
   TextDocuments,
-  Diagnostic,
-  DiagnosticSeverity,
   ProposedFeatures,
   InitializeParams,
   DidChangeConfigurationNotification,
@@ -20,6 +18,7 @@ import { TextDocument } from "vscode-languageserver-textdocument";
 import { applyParser } from "./parser/utils";
 import { rootParser } from "./parser/parser";
 import validateNode from "./validation";
+import AstRoot from "./ast/root";
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -56,6 +55,7 @@ connection.onInitialize((params: InitializeParams) => {
       completionProvider: {
         resolveProvider: true,
       },
+      documentSymbolProvider: true,
     },
   };
   if (hasWorkspaceFolderCapability) {
@@ -97,6 +97,9 @@ let globalSettings: ExampleSettings = defaultSettings;
 // Cache the settings of all open documents
 const documentSettings: Map<string, Thenable<ExampleSettings>> = new Map();
 
+// Cache the ASTs of all open documents
+const documentAsts: Map<string, AstRoot> = new Map();
+
 connection.onDidChangeConfiguration((change) => {
   if (hasConfigurationCapability) {
     // Reset all cached document settings
@@ -129,23 +132,29 @@ function getDocumentSettings(resource: string): Thenable<ExampleSettings> {
 // Only keep settings for open documents
 documents.onDidClose((e) => {
   documentSettings.delete(e.document.uri);
+  documentAsts.delete(e.document.uri);
 });
 
 // The content of a text document has changed. This event is emitted
 // when the text document first opened or when its content has changed.
 documents.onDidChangeContent((change) => {
-  validateTextDocument(change.document);
+  const document = change.document;
+  parseTextDocument(document);
+  validateTextDocument(document);
 });
 
-async function validateTextDocument(textDocument: TextDocument): Promise<void> {
-  // In this simple example we get the settings for every validate run.
-  const settings = await getDocumentSettings(textDocument.uri);
-
+function parseTextDocument(textDocument: TextDocument): AstRoot {
   const rootNode = applyParser(rootParser, textDocument.getText());
-  const diagnostics = await validateNode(rootNode);
+  documentAsts.set(textDocument.uri, rootNode);
+  return rootNode;
+}
+
+async function validateTextDocument(document: TextDocument): Promise<void> {
+  const ast = documentAsts.get(document.uri);
+  const diagnostics = ast ? await validateNode(ast) : [];
 
   // Send the computed diagnostics to VSCode.
-  connection.sendDiagnostics({ uri: textDocument.uri, diagnostics });
+  connection.sendDiagnostics({ uri: document.uri, diagnostics });
 }
 
 connection.onDidChangeWatchedFiles((_change) => {
@@ -185,6 +194,11 @@ connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
     item.documentation = "JavaScript documentation";
   }
   return item;
+});
+
+connection.onDocumentSymbol((docSymbolParams) => {
+  const rootNode = documentAsts.get(docSymbolParams.textDocument.uri);
+  return [];
 });
 
 // Make the text document manager listen on the connection

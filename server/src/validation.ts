@@ -49,7 +49,9 @@ export async function validateObject(obj: AstObject): Promise<Diagnostic[]> {
 }
 
 /** Validate the given property AST node. */
-export async function validateProperty(property: AstProperty): Promise<Diagnostic[]> {
+export async function validateProperty(
+  property: AstProperty
+): Promise<Diagnostic[]> {
   const childDiagnostics = await validateChildren(property.children);
 
   if (property.value === undefined) {
@@ -71,7 +73,10 @@ export async function validateString(str: AstString): Promise<Diagnostic[]> {
     return [
       {
         severity: DiagnosticSeverity.Error,
-        range: str.range,
+        range: {
+          start: str.range.end,
+          end: str.range.end,
+        },
         message: `Missing closing quotation marks for value "${str.value}".`,
       },
     ];
@@ -86,7 +91,10 @@ export async function validateKey(key: AstKey): Promise<Diagnostic[]> {
     return [
       {
         severity: DiagnosticSeverity.Error,
-        range: key.range,
+        range: {
+          start: key.range.end,
+          end: key.range.end,
+        },
         message: `Missing closing quotation marks for key "${key.value}".`,
       },
     ];

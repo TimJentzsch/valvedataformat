@@ -70,12 +70,17 @@ export async function validateProperty(
 /** Validate the given string AST node. */
 export async function validateString(str: AstString): Promise<Diagnostic[]> {
   if (str.isTerminated === false) {
+    const end = str.range.end;
+
     return [
       {
         severity: DiagnosticSeverity.Error,
         range: {
-          start: str.range.end,
-          end: str.range.end,
+          start: {
+            line: end.line,
+            character: end.character - 1,
+          },
+          end,
         },
         message: `Missing closing quotation marks for value "${str.value}".`,
       },
@@ -88,12 +93,17 @@ export async function validateString(str: AstString): Promise<Diagnostic[]> {
 /** Validate the given key AST node. */
 export async function validateKey(key: AstKey): Promise<Diagnostic[]> {
   if (key.isTerminated === false) {
+    const end = key.range.end;
+
     return [
       {
         severity: DiagnosticSeverity.Error,
         range: {
-          start: key.range.end,
-          end: key.range.end,
+          start: {
+            line: end.line,
+            character: end.character - 1,
+          },
+          end,
         },
         message: `Missing closing quotation marks for key "${key.value}".`,
       },

@@ -6,7 +6,6 @@
       "patterns": [
         { "include": "#comment" },
         { "include": "#property" },
-        { "include": "#key" },
         { "include": "#object" }
       ]
     },
@@ -15,7 +14,7 @@
       "name": "comment.line.double-slash"
     },
     "property": {
-      "match": "(\"[^\"]*\"?|\\b[^\\s{}\"]+\\b)\\s*(\"[^\"]*\"?|\\b[^\\s{}\"]+\\b)",
+      "match": "(\"[^\"]*\"?|(?<!\"|[^\\s{}\"])[^\\s{}\"]+\\b)\\s*(\"[^\"]*\"?|(?<!\"|[^\\s{}\"])[^\\s{}\"]+\\b)?",
       "name": "property.vdf.unescaped",
       "captures": {
         "1": {
@@ -34,7 +33,7 @@
       "name": "support.type.property-name.quoted.double.vdf.unescaped"
     },
     "key.unquoted": {
-      "match": "\\b[^\\s{}\"]+\\b",
+      "match": "[^\\s{}\"]+",
       "name": "support.type.property-name.unquoted.vdf.unescaped"
     },
     "literal": {
@@ -48,7 +47,7 @@
       "name": "string.quoted.double.vdf.unescaped"
     },
     "literal.unquoted": {
-      "match": "\\b[^\\s{}\"]+\\b",
+      "match": "[^\\s{}\"]+",
       "name": "string.unquoted.vdf.unescaped"
     },
     "object": {

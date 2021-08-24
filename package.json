@@ -29,7 +29,8 @@
         ],
         "extensions": [
           ".vdf"
-        ]
+        ],
+        "configuration": "./language-configurations/vdf.unescaped.language-configuration.json"
       }
     ],
     "grammars": [

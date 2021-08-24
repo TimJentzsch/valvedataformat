@@ -19,6 +19,7 @@ import { applyParser } from "./parser/utils";
 import { rootParser } from "./parser/parser";
 import validateNode from "./validation";
 import AstRoot from "./ast/root";
+import getNodeSymbols from "./symbols";
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.
@@ -198,7 +199,7 @@ connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
 
 connection.onDocumentSymbol((docSymbolParams) => {
   const rootNode = documentAsts.get(docSymbolParams.textDocument.uri);
-  return [];
+  return rootNode ? getNodeSymbols(rootNode) : [];
 });
 
 // Make the text document manager listen on the connection

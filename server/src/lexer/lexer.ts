@@ -15,7 +15,7 @@ export const tokenizer = buildLexer([
   [true, /^\/\/.*/g, VDFToken.comment],
   // Quoted strings are between double quotes
   // The end quote is optional for error tolarance
-  [true, /^\"[^"]*\"?/g, VDFToken.quotedString],
+  [true, /^\"[^"\n]*\"?/g, VDFToken.quotedString],
   // Unquoted strings do not contain quotes, whitespace, or brackets
   [true, /^[^\s\"{}]+/g, VDFToken.unquotedString],
   // Opening bracket

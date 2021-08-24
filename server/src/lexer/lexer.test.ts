@@ -163,6 +163,22 @@ describe("should tokenize key-value pairs", () => {
         [VDFToken.quotedString, '"value"'],
       ],
     ],
+    [
+      '"key\n',
+      [
+        [VDFToken.quotedString, '"key'],
+        [VDFToken.endOfLine, "\n"],
+      ],
+    ],
+    [
+      '"key" "value\n',
+      [
+        [VDFToken.quotedString, '"key"'],
+        [VDFToken.space, " "],
+        [VDFToken.quotedString, '"value'],
+        [VDFToken.endOfLine, "\n"],
+      ],
+    ],
   ];
 
   for (const [input, expected] of params) {
@@ -248,9 +264,7 @@ describe("should tokenize comments before others", () => {
     ],
     [
       '"open string // Comment',
-      [
-        [VDFToken.quotedString, '"open string // Comment'],
-      ],
+      [[VDFToken.quotedString, '"open string // Comment']],
     ],
   ];
 

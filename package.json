@@ -74,7 +74,7 @@
     "lint": "eslint client/src --ext ts && eslint server/src --ext ts",
     "test-server": "cd server && yarn test && cd ..",
     "test-client": "cd client && yarn test && cd ..",
-    "test": "yarn run test-server && yarn run test-client"
+    "test": "yarn run test-server"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

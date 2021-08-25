@@ -35,10 +35,14 @@ export const getDocUri = (p: string) => {
   return vscode.Uri.file(getDocPath(p));
 };
 
-export async function setTestContent(content: string): Promise<boolean> {
+export async function setDocumentText(content: string): Promise<boolean> {
   const all = new vscode.Range(
     doc.positionAt(0),
     doc.positionAt(doc.getText().length)
   );
   return editor.edit((eb) => eb.replace(all, content));
+}
+
+export async function getDocumentText(): Promise<string> {
+    return editor.document.getText();
 }

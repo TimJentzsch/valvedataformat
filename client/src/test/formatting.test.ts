@@ -23,10 +23,21 @@ suite("formatting", () => {
       "abc\t\t\tdef\nabcdefgh\tij\n",
     ],
     [
+      "should align simple object property values with tabs",
+      "abc\n{\n\tabc ef\n\tg hij\n}\n",
+      "abc\n{\n\tabc\tef\n\tg\thij\n}\n",
+    ],
+    [
       "should align string property values with spaces",
       "abc def\nabcdefgh ij\n",
       "abc         def\nabcdefgh    ij\n",
       true,
+    ],
+    [
+      "should align simple object property values with spaces",
+      "abc\n{\n    abc ef\n    g hij\n}\n",
+      "abc\n{\n    abc ef\n    g   hij\n}\n",
+      true
     ],
   ];
 
@@ -45,7 +56,6 @@ async function testFormatting(
   tabSize?: number
 ) {
   await activate(docUri);
-  console.info("asdoiansd");
   // Update the settings
   setEditorOptions(insertSpaces, tabSize);
   // Set the text
@@ -54,7 +64,6 @@ async function testFormatting(
   await commands.executeCommand("editor.action.formatDocument", docUri);
   // Get the formatted text
   const actual = await getDocumentText();
-  await sleep(2000);
   // Compare the results
   assert.strictEqual(actual, expected);
 }

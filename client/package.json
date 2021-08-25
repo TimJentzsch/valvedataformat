@@ -3,7 +3,8 @@
   "description": "The VSCode client for the Valve Data Format language server.",
   "version": "0.0.1",
   "author": "Tim Jentzsch",
-  "repository": "guthub:TimJentzsch/vdf-extension",
+  "publisher": "timjen",
+  "repository": "github:TimJentzsch/vdf-extension",
   "homepage": "https://github.com/TimJentzsch/vdf-extension#readme",
   "license": "MIT",
   "scripts": {

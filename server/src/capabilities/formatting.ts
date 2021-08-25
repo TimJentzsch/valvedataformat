@@ -1,10 +1,10 @@
 import { TextEdit, FormattingOptions, Range } from "vscode-languageserver/node";
-import AstKey from "./ast/key";
-import AstNode from "./ast/node";
-import AstObject from "./ast/object";
-import AstProperty, { AstStringProperty } from "./ast/property";
-import AstRoot from "./ast/root";
-import AstString from "./ast/string";
+import AstKey from "../ast/key";
+import AstNode from "../ast/node";
+import AstObject from "../ast/object";
+import AstProperty, { AstStringProperty } from "../ast/property";
+import AstRoot from "../ast/root";
+import AstString from "../ast/string";
 
 /** Format the given node. */
 export default async function formatNode(

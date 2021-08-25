@@ -1,13 +1,13 @@
 import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver/node";
-import AstKey from "./ast/key";
-import AstNode from "./ast/node";
-import AstObject from "./ast/object";
+import AstKey from "../ast/key";
+import AstNode from "../ast/node";
+import AstObject from "../ast/object";
 import AstProperty, {
   AstObjectProperty,
   AstStringProperty,
-} from "./ast/property";
-import AstRoot from "./ast/root";
-import AstString from "./ast/string";
+} from "../ast/property";
+import AstRoot from "../ast/root";
+import AstString from "../ast/string";
 
 /** Validate the given AST node. */
 export default async function validateNode(

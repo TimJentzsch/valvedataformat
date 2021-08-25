@@ -1,12 +1,12 @@
-import AstKey, { astQuotedKey, astUnquotedKey } from "./ast/key";
+import AstKey, { astQuotedKey, astUnquotedKey } from "../ast/key";
 import { Range } from "vscode-languageserver/node";
-import { getInlineRange } from "./parser/utils";
+import { getInlineRange } from "../parser/utils";
 import { validateKey, validateObject, validateProperty, validateString } from "./validation";
-import AstString, { astQuotedString, astUnquotedString } from "./ast/string";
-import AstProperty, { astObjectProperty, astStringProperty } from "./ast/property";
-import { astIndent } from "./ast/indent";
-import AstObject, { astObject } from "./ast/object";
-import { astLBracket, astRBracket } from "./ast/bracket";
+import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
+import AstProperty, { astObjectProperty, astStringProperty } from "../ast/property";
+import { astIndent } from "../ast/indent";
+import AstObject, { astObject } from "../ast/object";
+import { astLBracket, astRBracket } from "../ast/bracket";
 
 // Key
 describe("validateKey", () => {

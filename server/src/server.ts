@@ -17,10 +17,10 @@ import {
 import { TextDocument } from "vscode-languageserver-textdocument";
 import { applyParser } from "./parser/utils";
 import { rootParser } from "./parser/parser";
-import validateNode from "./validation";
+import validateNode from "./capabilities/validation";
 import AstRoot from "./ast/root";
-import getNodeSymbols from "./symbols";
-import formatNode from "./formatting";
+import getNodeSymbols from "./capabilities/symbols";
+import formatNode from "./capabilities/formatting";
 
 // Create a connection for the server, using Node's IPC as a transport.
 // Also include all preview / proposed LSP features.

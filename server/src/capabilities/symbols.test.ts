@@ -1,12 +1,12 @@
 import { DocumentSymbol, SymbolKind } from "vscode-languageserver/node";
-import { astLBracket, astRBracket } from "./ast/bracket";
-import { astIndent } from "./ast/indent";
-import { astUnquotedKey } from "./ast/key";
-import AstNode from "./ast/node";
-import { astObject } from "./ast/object";
-import { astObjectProperty, astStringProperty } from "./ast/property";
-import { astQuotedString, astUnquotedString } from "./ast/string";
-import { getInlineRange } from "./parser/utils";
+import { astLBracket, astRBracket } from "../ast/bracket";
+import { astIndent } from "../ast/indent";
+import { astUnquotedKey } from "../ast/key";
+import AstNode from "../ast/node";
+import { astObject } from "../ast/object";
+import { astObjectProperty, astStringProperty } from "../ast/property";
+import { astQuotedString, astUnquotedString } from "../ast/string";
+import { getInlineRange } from "../parser/utils";
 import getNodeSymbols from "./symbols";
 
 describe("getNodeSymbols", () => {

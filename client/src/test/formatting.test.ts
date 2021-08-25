@@ -20,13 +20,13 @@ suite("formatting", () => {
     [
       "should align string property values with tabs",
       "abc def\nabcdefgh ij\n",
-      "abc\t\tdef\nabcdefgh\tij\n",
+      "abc\t\t\tdef\nabcdefgh\tij\n",
     ],
     [
       "should align string property values with spaces",
       "abc def\nabcdefgh ij\n",
-      "abc       def\nabcdefgh  ij\n",
-      true
+      "abc         def\nabcdefgh    ij\n",
+      true,
     ],
   ];
 
@@ -42,7 +42,7 @@ async function testFormatting(
   input: string,
   expected: string,
   insertSpaces?: boolean,
-  tabSize?: number,
+  tabSize?: number
 ) {
   await activate(docUri);
   console.info("asdoiansd");

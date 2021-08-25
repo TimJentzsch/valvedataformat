@@ -79,11 +79,6 @@ export async function setEditorOptions(
   insertSpaces: boolean = false,
   tabSize: number = 4
 ) {
-  console.info(`Setting options to ${insertSpaces}, ${tabSize}...`);
-  console.info(`Before: ${editor.options.insertSpaces}, ${editor.options.tabSize}`);
-
   editor.options.insertSpaces = insertSpaces;
   editor.options.tabSize = tabSize;
-
-  console.info(`After: ${editor.options.insertSpaces}, ${editor.options.tabSize}`);
 }

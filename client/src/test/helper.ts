@@ -24,13 +24,14 @@ export async function activate(docUri: vscode.Uri) {
   }
 }
 
-async function sleep(ms: number) {
+export async function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 export const getDocPath = (p: string) => {
   return path.resolve(__dirname, "../../testFixture", p);
 };
+
 export const getDocUri = (p: string) => {
   return vscode.Uri.file(getDocPath(p));
 };

@@ -45,5 +45,28 @@ export async function setDocumentText(content: string): Promise<boolean> {
 }
 
 export async function getDocumentText(): Promise<string> {
-    return editor.document.getText();
+  return editor.document.getText();
+}
+
+export type ConfigValue = string | boolean | number | null;
+
+export function mergeConfigs<T>(
+  defaultConfig: Record<string, T>,
+  config?: Record<string, T | undefined>
+): Record<string, T> {
+  if (config === undefined) {
+    return defaultConfig;
+  }
+
+  const mergedConfig: Record<string, T> = { ...defaultConfig };
+
+  // Override if the value is defined in the config
+  for (const key of Object.keys(config)) {
+    const value = config[key];
+    if (value !== undefined) {
+      mergedConfig[key] = value;
+    }
+  }
+
+  return mergedConfig;
 }

@@ -5,14 +5,23 @@ import {
   activate,
   getDocumentText,
   setDocumentText,
+  sleep,
+  mergeConfigs,
 } from "./helper";
 
 const docUri = getDocUri("formatting.vdf");
 
 interface FormattingConfig {
   insertSpaces?: boolean;
-  tabSize?: boolean;
+  tabSize?: number;
+  [key: string]: boolean | number | string | undefined;
 }
+
+// Options usually seen in Valve's files
+const defaultConfig: FormattingOptions = {
+  insertSpaces: false,
+  tabSize: 4,
+};
 
 suite("formatting", () => {
   // List of test values.
@@ -46,7 +55,7 @@ async function testFormatting(
 ) {
   await activate(docUri);
   // Update the settings
-  const settings = getMergedOptions(config);
+  const settings = mergeConfigs(defaultConfig, config);
   const configuration = workspace.getConfiguration();
   await configuration.update("editor.insertSpaces", settings.insertSpaces);
   await configuration.update("editor.tabSize", settings.tabSize);
@@ -56,31 +65,7 @@ async function testFormatting(
   await commands.executeCommand("editor.action.formatDocument", docUri);
   // Get the formatted text
   const actual = await getDocumentText();
+  await sleep(2000);
   // Compare the results
   assert.strictEqual(actual, expected);
-}
-
-/** Merge the options with the default options. */
-function getMergedOptions(config?: FormattingConfig): FormattingOptions {
-  const defaultOptions: FormattingOptions = {
-    insertSpaces: false,
-    tabSize: 4,
-  };
-
-  if (config === undefined) {
-    return defaultOptions;
-  }
-
-  const mergedOptions: FormattingOptions = {
-    ...defaultOptions,
-  };
-
-  for (const key in Object.keys(config)) {
-    const value = config[key];
-    if (value !== undefined) {
-      mergedOptions[key] = value;
-    }
-  }
-
-  return mergedOptions;
 }

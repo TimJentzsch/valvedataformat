@@ -68,10 +68,9 @@
   "scripts": {
     "vscode:prepublish": "yarn run compile",
     "compile": "tsc -b",
+    "lint": "cd client && yarn run lint && cd ../server && yarn run lint && cd ..",
     "watch": "tsc -b -w",
-    "pretest": "yarn run compile && yarn run lint",
     "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
-    "lint": "eslint client/src --ext ts && eslint server/src --ext ts",
     "test-server": "cd server && yarn test && cd ..",
     "test-client": "cd client && yarn test && cd ..",
     "test": "yarn run test-server"

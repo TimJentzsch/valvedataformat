@@ -8,6 +8,9 @@
   "homepage": "https://github.com/TimJentzsch/vdf-extension#readme",
   "license": "MIT",
   "scripts": {
+    "compile": "tsc -b",
+    "lint": "eslint --ext ts",
+    "pretest": "yarn run compile && yarn run lint",
     "test": "sh ./scripts/e2e-tests.sh"
   },
   "engines": {

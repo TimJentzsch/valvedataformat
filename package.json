@@ -72,7 +72,8 @@
     "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
     "lint": "eslint client/src --ext ts && eslint server/src --ext ts",
     "test-server": "cd server && yarn test && cd ..",
-    "test": "yarn run test-server"
+    "test-client": "cd client && yarn test && cd ..",
+    "test": "yarn run test-server && yarn run test-client"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

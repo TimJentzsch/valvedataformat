@@ -1,5 +1,7 @@
-// Derived from https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-sample
-// Licensed under the MIT License.
+/* -----------------------------------------------------------------------------------------
+ * Derived from https://github.com/microsoft/vscode-extension-samples/tree/main/lsp-sample.
+ * Licensed under the MIT License.
+ * ---------------------------------------------------------------------------------------*/
 
 import * as path from "path";
 import { workspace, ExtensionContext } from "vscode";

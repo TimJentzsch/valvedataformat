@@ -6,6 +6,9 @@
   "repository": "guthub:TimJentzsch/vdf-extension",
   "homepage": "https://github.com/TimJentzsch/vdf-extension#readme",
   "license": "MIT",
+  "scripts": {
+    "test": "sh ./scripts/e2e-tests.sh"
+  },
   "engines": {
     "vscode": "^1.59.0"
   },
@@ -13,7 +16,9 @@
     "vscode-languageclient": "^7.0.0"
   },
   "devDependencies": {
+    "@types/mocha": "^9.0.0",
     "@types/vscode": "^1.59.0",
-    "@vscode/test-electron": "^1.6.2"
+    "@vscode/test-electron": "^1.6.2",
+    "mocha": "^9.1.0"
   }
 }

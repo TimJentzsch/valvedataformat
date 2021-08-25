@@ -4,6 +4,7 @@
  * ---------------------------------------------------------------------------------------*/
 import * as vscode from "vscode";
 import * as path from "path";
+import { workspace } from "vscode";
 
 export let doc: vscode.TextDocument;
 export let editor: vscode.TextEditor;
@@ -69,4 +70,20 @@ export function mergeConfigs<T>(
   }
 
   return mergedConfig;
+}
+
+export type Config = Record<string, ConfigValue | undefined>;
+
+/** Set the options of the editor. */
+export async function setEditorOptions(
+  insertSpaces: boolean = false,
+  tabSize: number = 4
+) {
+  console.info(`Setting options to ${insertSpaces}, ${tabSize}...`);
+  console.info(`Before: ${editor.options.insertSpaces}, ${editor.options.tabSize}`);
+
+  editor.options.insertSpaces = insertSpaces;
+  editor.options.tabSize = tabSize;
+
+  console.info(`After: ${editor.options.insertSpaces}, ${editor.options.tabSize}`);
 }

@@ -1,4 +1,4 @@
-import { FormattingOptions, commands, workspace } from "vscode";
+import { FormattingOptions, commands } from "vscode";
 import * as assert from "assert";
 import {
   getDocUri,
@@ -7,26 +7,16 @@ import {
   setDocumentText,
   sleep,
   mergeConfigs,
+  setEditorOptions,
 } from "./helper";
 
 const docUri = getDocUri("formatting.vdf");
 
-interface FormattingConfig {
-  insertSpaces?: boolean;
-  tabSize?: number;
-  [key: string]: boolean | number | string | undefined;
-}
-
-// Options usually seen in Valve's files
-const defaultConfig: FormattingOptions = {
-  insertSpaces: false,
-  tabSize: 4,
-};
-
 suite("formatting", () => {
   // List of test values.
   // Test name, test input and expected output.
-  const params: Array<[string, string, string, FormattingConfig?]> = [
+  // Optional editor options: Insert spaces? Tab size?
+  const params: Array<[string, string, string, boolean?, number?]> = [
     [
       "should align string property values with tabs",
       "abc def\nabcdefgh ij\n",
@@ -36,13 +26,13 @@ suite("formatting", () => {
       "should align string property values with spaces",
       "abc def\nabcdefgh ij\n",
       "abc       def\nabcdefgh  ij\n",
-      { insertSpaces: true },
+      true
     ],
   ];
 
-  for (const [name, input, expected] of params) {
+  for (const [name, input, expected, insertSpaces, tabSize] of params) {
     test(name, async () => {
-      await testFormatting(input, expected);
+      await testFormatting(input, expected, insertSpaces, tabSize);
     });
   }
 });
@@ -51,14 +41,13 @@ suite("formatting", () => {
 async function testFormatting(
   input: string,
   expected: string,
-  config?: FormattingConfig
+  insertSpaces?: boolean,
+  tabSize?: number,
 ) {
   await activate(docUri);
+  console.info("asdoiansd");
   // Update the settings
-  const settings = mergeConfigs(defaultConfig, config);
-  const configuration = workspace.getConfiguration();
-  await configuration.update("editor.insertSpaces", settings.insertSpaces);
-  await configuration.update("editor.tabSize", settings.tabSize);
+  setEditorOptions(insertSpaces, tabSize);
   // Set the text
   await setDocumentText(input);
   // Format the document

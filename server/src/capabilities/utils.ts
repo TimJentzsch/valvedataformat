@@ -35,11 +35,11 @@ export function getMaxValueLength(obj: AstObject | AstRoot): number {
   return Math.max(
     0,
     ...obj.properties.map((property) => {
-      const value = property.value;
-      if (value === undefined || value.type === "object") {
+      if (property.valueType === "object") {
         return 0;
       }
-      return getStringLikeLength(value);
+
+      return getStringLikeLength(property.value);
     })
   );
 }

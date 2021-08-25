@@ -69,9 +69,7 @@ export async function getPropertySymbols(
       : value?.range ?? property.range;
 
   const kind =
-    value !== undefined && value.type === "object"
-      ? SymbolKind.Object
-      : SymbolKind.Property;
+    property.valueType === "object" ? SymbolKind.Object : SymbolKind.Property;
 
   const symbol: DocumentSymbol = {
     name: property.key?.value ?? "Property",

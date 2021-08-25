@@ -71,11 +71,9 @@ export async function formatProperty(
   maxKeyLength: number = 0,
   maxValueLength: number = 0
 ): Promise<TextEdit[]> {
-  const value = property.value;
-
-  if (value === undefined || value.type === "string") {
+  if (property.valueType === "string") {
     return formatStringProperty(
-      property as AstStringProperty,
+      property,
       options,
       curIndent,
       maxKeyLength,
@@ -83,7 +81,7 @@ export async function formatProperty(
     );
   }
 
-  return formatNode(value, options, curIndent);
+  return formatNode(property.value, options, curIndent);
 }
 
 /** Format the given object node. */

@@ -13,6 +13,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [], value);
     const expected: AstProperty = {
       type: "property",
+      valueType: "string",
       key,
       value,
       children: [key, value],
@@ -30,6 +31,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [betweenTrivia], value);
     const expected: AstProperty = {
       type: "property",
+      valueType: "string",
       key,
       value,
       children: [key, betweenTrivia, value],
@@ -47,6 +49,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, undefined, value, [postTrivia]);
     const expected: AstProperty = {
       type: "property",
+      valueType: "string",
       key,
       value,
       children: [key, value, postTrivia],
@@ -65,6 +68,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [betweenTrivia], value, [postTrivia]);
     const expected: AstProperty = {
       type: "property",
+      valueType: "string",
       key,
       value,
       children: [key, betweenTrivia, value, postTrivia],

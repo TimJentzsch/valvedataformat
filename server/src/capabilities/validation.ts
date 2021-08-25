@@ -69,9 +69,8 @@ export async function validateProperty(
 ): Promise<Diagnostic[]> {
   const childDiagnostics = await validateChildren(property.children);
 
-  if (property.value === undefined) {
-    // Only string properties can have undefined values
-    const key = (property as AstStringProperty).key;
+  if (property.valueType === "string" && property.value === undefined) {
+    const key = property.key;
 
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
@@ -80,9 +79,8 @@ export async function validateProperty(
     };
 
     return [missingValueDiagnostic].concat(childDiagnostics);
-  } else if (property.key === undefined) {
-    // Only object properties can have undefined keys
-    const value = (property as AstObjectProperty).value;
+  } else if (property.valueType === "object" && property.key === undefined) {
+    const value = property.value;
 
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,

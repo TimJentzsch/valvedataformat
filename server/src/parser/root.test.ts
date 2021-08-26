@@ -154,6 +154,29 @@ describe("rootParser", () => {
       ]),
     ],
     [
+      "key {",
+      astRoot([
+        astObjectProperty(
+          astUnquotedKey("key", getInlineRange(0, 0, 3)),
+          [astIndent(" ", getInlineRange(0, 3, 4))],
+          astObject(astLBracket(getInlineRange(0, 4, 5)), [])
+        ),
+      ]),
+    ],
+    [
+      "key }",
+      astRoot([
+        astStringProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
+          astIndent(" ", getInlineRange(0, 3, 4)),
+        ]),
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(undefined, [], astRBracket(getInlineRange(0, 4, 5)))
+        ),
+      ]),
+    ],
+    [
       '"object"\t{\n\t"string"\t"value"\n}',
       astRoot([
         astObjectProperty(
@@ -170,6 +193,33 @@ describe("rootParser", () => {
                 astQuotedString("value", getInlineRange(1, 10, 17))
               ),
               astLf(getRange(1, 17, 2, 0)),
+            ],
+            astRBracket(getInlineRange(2, 0, 1))
+          )
+        ),
+      ]),
+    ],
+    [
+      '"object"\t{\n\t"nested"\t{}\n}',
+      astRoot([
+        astObjectProperty(
+          astQuotedKey("object", getInlineRange(0, 0, 8)),
+          [astIndent("\t", getInlineRange(0, 8, 9))],
+          astObject(
+            astLBracket(getInlineRange(0, 9, 10)),
+            [
+              astLf(getRange(0, 10, 1, 0)),
+              astIndent("\t", getInlineRange(1, 0, 1)),
+              astObjectProperty(
+                astQuotedKey("nested", getInlineRange(1, 1, 9)),
+                [astIndent("\t", getInlineRange(1, 9, 10))],
+                astObject(
+                  astLBracket(getInlineRange(1, 10, 11)),
+                  [],
+                  astRBracket(getInlineRange(1, 11, 12))
+                )
+              ),
+              astLf(getRange(1, 12, 2, 0)),
             ],
             astRBracket(getInlineRange(2, 0, 1))
           )

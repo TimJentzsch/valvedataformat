@@ -271,7 +271,21 @@ objectParser.setPattern(
 // Almost the same as an object, but without the brackets.
 rootParser.setPattern(
   apply(
-    rep_sc(alt(propertyParser, commentParser, indentParser, endOfLineParser)),
+    rep_sc(
+      alt(
+        propertyParser,
+        commentParser,
+        indentParser,
+        endOfLineParser,
+        apply(rBracketParser, (rBracket) => {
+          return astObjectProperty(
+            undefined,
+            [],
+            astObject(undefined, [], rBracket)
+          );
+        })
+      )
+    ),
     (children) => {
       return astRoot(children);
     }

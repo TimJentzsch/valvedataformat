@@ -10,22 +10,22 @@ export default interface AstObject extends AstBaseNode {
   /** The properties of the object. */
   properties: AstProperty[];
   /** The opening bracket of the object. */
-  lBracket: AstBracket;
+  lBracket?: AstBracket;
   /** The closing bracket of the object. Can be missing in incomplete documents. */
   rBracket?: AstBracket;
 }
 
 /** Create a new AST object node. */
 export function astObject(
-  lBracket: AstBracket,
+  lBracket?: AstBracket,
   content: AstNode[] = [],
-  rBracket?: AstBracket,
+  rBracket?: AstBracket
 ): AstObject {
-  const isTerminated = rBracket !== undefined;
-
-  const children: AstNode[] = ([lBracket] as AstNode[])
+  const children: AstNode[] = (
+    lBracket !== undefined ? [lBracket as AstNode] : []
+  )
     .concat(content as AstNode[])
-    .concat(isTerminated ? [rBracket as AstNode] : []);
+    .concat(rBracket !== undefined ? [rBracket as AstNode] : []);
 
   const properties: AstProperty[] = content.filter(
     (value) => (value as AstNode).type === "property"

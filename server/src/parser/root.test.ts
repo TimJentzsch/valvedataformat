@@ -1,7 +1,9 @@
+import { astLBracket, astRBracket } from "../ast/bracket";
 import { astLf } from "../ast/endOfLine";
 import { astIndent } from "../ast/indent";
 import { astQuotedKey, astUnquotedKey } from "../ast/key";
-import { astStringProperty } from "../ast/property";
+import { astObject } from "../ast/object";
+import { astObjectProperty, astStringProperty } from "../ast/property";
 import AstRoot, { astRoot } from "../ast/root";
 import { astQuotedString, astUnquotedString } from "../ast/string";
 import { rootParser } from "./parser";
@@ -68,6 +70,24 @@ describe("rootParser", () => {
           astUnquotedString("value2", getInlineRange(1, 5, 11))
         ),
         astLf(getRange(1, 11, 2, 0)),
+      ]),
+    ],
+    [
+      "}",
+      astRoot([astObjectProperty(undefined, [], astObject(undefined, [], astRBracket(getInlineRange(0, 0, 1))))]),
+    ],
+    [
+      "key {}",
+      astRoot([
+        astObjectProperty(
+          astUnquotedKey("key", getInlineRange(0, 0, 3)),
+          [astIndent(" ", getInlineRange(0, 3, 4))],
+          astObject(
+            astLBracket(getInlineRange(0, 4, 5)),
+            [],
+            astRBracket(getInlineRange(0, 5, 6))
+          )
+        ),
       ]),
     ],
   ];

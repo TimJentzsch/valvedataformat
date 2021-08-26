@@ -62,7 +62,7 @@ describe("objectParser", () => {
           astStringProperty(
             astUnquotedKey("key", getInlineRange(1, 1, 4)),
             [astIndent("\t", getInlineRange(1, 4, 5))],
-            astUnquotedString("value", getInlineRange(1, 5, 10)),
+            astUnquotedString("value", getInlineRange(1, 5, 10))
           ),
           astLf(getRange(1, 10, 2, 0)),
         ],
@@ -79,14 +79,14 @@ describe("objectParser", () => {
           astStringProperty(
             astUnquotedKey("key1", getInlineRange(1, 1, 5)),
             [astIndent("\t", getInlineRange(1, 5, 6))],
-            astUnquotedString("value1", getInlineRange(1, 6, 12)),
+            astUnquotedString("value1", getInlineRange(1, 6, 12))
           ),
           astLf(getRange(1, 12, 2, 0)),
           astIndent("\t", getInlineRange(2, 0, 1)),
           astStringProperty(
             astUnquotedKey("key2", getInlineRange(2, 1, 5)),
             [astIndent("\t", getInlineRange(2, 5, 6))],
-            astUnquotedString("value2", getInlineRange(2, 6, 12)),
+            astUnquotedString("value2", getInlineRange(2, 6, 12))
           ),
           astLf(getRange(2, 12, 3, 0)),
         ],

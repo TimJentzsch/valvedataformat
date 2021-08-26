@@ -53,7 +53,7 @@ export async function validateObject(obj: AstObject): Promise<Diagnostic[]> {
   if (obj.rBracket === undefined) {
     const missingClosingBracketDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
-      range: obj.lBracket.range,
+      range: obj.lBracket?.range ?? obj.range,
       message: "Object without closing bracket.",
     };
 
@@ -84,7 +84,7 @@ export async function validateProperty(
 
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
-      range: value.lBracket.range,
+      range: value.lBracket?.range ?? value.range,
       message: `Object property without a key.`,
     };
 

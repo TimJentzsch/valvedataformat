@@ -73,8 +73,71 @@ describe("rootParser", () => {
       ]),
     ],
     [
+      "{",
+      astRoot([
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(astLBracket(getInlineRange(0, 0, 1)), [])
+        ),
+      ]),
+    ],
+    [
+      "{{",
+      astRoot([
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(astLBracket(getInlineRange(0, 0, 1)), [
+            astObjectProperty(
+              undefined,
+              [],
+              astObject(astLBracket(getInlineRange(0, 1, 2)), [])
+            ),
+          ])
+        ),
+      ]),
+    ],
+    [
+      "{ key value",
+      astRoot([
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(astLBracket(getInlineRange(0, 0, 1)), [
+            astIndent(" ", getInlineRange(0, 1, 2)),
+            astStringProperty(
+              astUnquotedKey("key", getInlineRange(0, 2, 5)),
+              [astIndent(" ", getInlineRange(0, 5, 6))],
+              astUnquotedString("value", getInlineRange(0, 6, 11))
+            ),
+          ])
+        ),
+      ]),
+    ],
+    [
       "}",
-      astRoot([astObjectProperty(undefined, [], astObject(undefined, [], astRBracket(getInlineRange(0, 0, 1))))]),
+      astRoot([
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(undefined, [], astRBracket(getInlineRange(0, 0, 1)))
+        ),
+      ]),
+    ],
+    [
+      "{}",
+      astRoot([
+        astObjectProperty(
+          undefined,
+          [],
+          astObject(
+            astLBracket(getInlineRange(0, 0, 1)),
+            [],
+            astRBracket(getInlineRange(0, 1, 2))
+          )
+        ),
+      ]),
     ],
     [
       "key {}",
@@ -86,6 +149,29 @@ describe("rootParser", () => {
             astLBracket(getInlineRange(0, 4, 5)),
             [],
             astRBracket(getInlineRange(0, 5, 6))
+          )
+        ),
+      ]),
+    ],
+    [
+      '"object"\t{\n\t"string"\t"value"\n}',
+      astRoot([
+        astObjectProperty(
+          astQuotedKey("object", getInlineRange(0, 0, 8)),
+          [astIndent("\t", getInlineRange(0, 8, 9))],
+          astObject(
+            astLBracket(getInlineRange(0, 9, 10)),
+            [
+              astLf(getRange(0, 10, 1, 0)),
+              astIndent("\t", getInlineRange(1, 0, 1)),
+              astStringProperty(
+                astQuotedKey("string", getInlineRange(1, 1, 9)),
+                [astIndent("\t", getInlineRange(1, 9, 10))],
+                astQuotedString("value", getInlineRange(1, 10, 17))
+              ),
+              astLf(getRange(1, 17, 2, 0)),
+            ],
+            astRBracket(getInlineRange(2, 0, 1))
           )
         ),
       ]),

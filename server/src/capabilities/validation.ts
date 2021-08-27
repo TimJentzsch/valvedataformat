@@ -8,6 +8,7 @@ import AstProperty, {
 } from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
+import { executeForNodeList } from "./utils";
 
 /** Validate the given AST node. */
 export default async function validateNode(
@@ -33,12 +34,7 @@ export default async function validateNode(
 export async function validateChildren(
   children: AstNode[]
 ): Promise<Diagnostic[]> {
-  const childDiagnostics = await Promise.all(
-    children.map((child) => validateNode(child))
-  );
-
-  // Merge results
-  return ([] as Diagnostic[]).concat(...childDiagnostics);
+  return executeForNodeList(children, validateNode);
 }
 
 /** Validate the given root AST node. */
@@ -78,6 +74,8 @@ export async function validateProperty(
       message: `The key "${key.value}" has no value.`,
     };
 
+    const end = Date.now();
+
     return [missingValueDiagnostic].concat(childDiagnostics);
   } else if (property.valueType === "object" && property.key === undefined) {
     const value = property.value;
@@ -90,7 +88,7 @@ export async function validateProperty(
 
     return [missingValueDiagnostic].concat(childDiagnostics);
   }
-
+  
   return childDiagnostics;
 }
 

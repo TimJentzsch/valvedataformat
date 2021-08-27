@@ -4,6 +4,7 @@ import AstObject from "../ast/object";
 import AstProperty from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
+import { executeForNodeList } from "./utils";
 
 export default async function getNodeSymbols(
   node: AstNode
@@ -26,12 +27,7 @@ export default async function getNodeSymbols(
 export async function getChildNodeSymbols(
   children: AstNode[]
 ): Promise<DocumentSymbol[]> {
-  const childSymbols = await Promise.all(
-    children.map((child) => getNodeSymbols(child))
-  );
-
-  // Merge results
-  return ([] as DocumentSymbol[]).concat(...childSymbols);
+  return executeForNodeList(children, getNodeSymbols);
 }
 
 /** Get the document symbols of a root node. */

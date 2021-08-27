@@ -146,15 +146,23 @@ documents.onDidChangeContent((change) => {
   validateTextDocument(document);
 });
 
-function parseTextDocument(textDocument: TextDocument): AstRoot {
-  const rootNode = applyParser(rootParser, textDocument.getText());
-  documentAsts.set(textDocument.uri, rootNode);
+function parseTextDocument(document: TextDocument): AstRoot {
+  const start = Date.now();
+  console.debug(`Parsing AST for ${document.uri}...`);
+  const rootNode = applyParser(rootParser, document.getText());
+  documentAsts.set(document.uri, rootNode);
+  const end = Date.now();
+  console.debug(`Parsed AST for ${document.uri} in ${end - start} ms.`);
   return rootNode;
 }
 
 async function validateTextDocument(document: TextDocument): Promise<void> {
+  const start = Date.now();
+  console.debug(`Validating ${document.uri}...`);
   const ast = documentAsts.get(document.uri);
   const diagnostics = ast ? await validateNode(ast) : [];
+  const end = Date.now();
+  console.debug(`Validated ${document.uri} in ${end - start} ms.`);
 
   // Send the computed diagnostics to VSCode.
   connection.sendDiagnostics({ uri: document.uri, diagnostics });
@@ -200,8 +208,13 @@ connection.onCompletionResolve((item: CompletionItem): CompletionItem => {
 });
 
 connection.onDocumentSymbol((params) => {
+  const start = Date.now();
+  console.debug(`Getting symbols for ${params.textDocument.uri}...`);
   const rootNode = documentAsts.get(params.textDocument.uri);
-  return rootNode ? getNodeSymbols(rootNode) : [];
+  const symbols = rootNode ? getNodeSymbols(rootNode) : [];
+  const end = Date.now();
+  console.debug(`Got symbols for ${params.textDocument.uri} in ${end - start} ms.`);
+  return symbols;
 });
 
 connection.onDocumentFormatting((params) => {

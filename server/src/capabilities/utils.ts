@@ -1,5 +1,6 @@
 import { FormattingOptions } from "vscode-languageserver/node";
 import AstKey from "../ast/key";
+import AstNode from "../ast/node";
 import AstObject from "../ast/object";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
@@ -72,4 +73,22 @@ export function getIndent(
   const indent = options.insertSpaces ? " " : "\t";
 
   return repeatStr(indent, count);
+}
+
+/** Execute the given function for a list of nodes. */
+export async function executeForNodeList<T>(nodes: AstNode[], fn: (node: AstNode) => Promise<T[]>): Promise<T[]> {
+  const fastResults: T[][] = [];
+  const slowResults: Promise<T[]>[] = [];
+
+  for (const node of nodes) {
+    if (node.children.length === 0) {
+      fastResults.push(await fn(node));
+    } else {
+      slowResults.push(fn(node));
+    }
+  }
+
+  const combinedResults = fastResults.concat(await Promise.all(slowResults));
+  const merged = ([] as T[]).concat(...combinedResults);
+  return merged;
 }

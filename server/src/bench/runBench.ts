@@ -26,15 +26,18 @@ function getDurationStr(duration: number): string {
   return `${seconds.toFixed(0).padStart(4, " ")} s `;
 }
 
-function getPerformanceString(name: string, times: number[]): string {
+function getPerformanceString(name: string, times: number[], lines: number): string {
   const nameStr = name.padEnd(10, " ");
   const total = times.reduce((a, b) => a + b, 0);
   const totalStr = getDurationStr(total);
   const minStr = getDurationStr(Math.min(...times));
   const maxStr = getDurationStr(Math.max(...times));
-  const avgStr = getDurationStr(total / times.length);
+  const avg = total / times.length;
+  const avgStr = getDurationStr(avg);
+  const normAvg = avg / lines * 100000;
+  const normAvgStr = getDurationStr(normAvg);
 
-  return `${nameStr} | ${totalStr} | ${avgStr} | ${minStr} - ${maxStr}`;
+  return `${nameStr} | ${totalStr} | ${avgStr} | ${normAvgStr} | ${minStr} - ${maxStr}`;
 }
 
 async function benchmarkFunction<I, T>(input: I, count: number, fn: (input: I) => Promise<T>): Promise<number[]> {
@@ -66,22 +69,22 @@ async function benchmarkFile(fileName: string) {
   const filePath = path.resolve(benchmarkFolder, fileName);
   const content = readFileSync(filePath, 'utf8');
   const lines = content.split("\n").length;
-  const iterations = 10;
+  const iterations = 20;
 
   console.info(`${fileName}, ${lines} lines\n`);
-  console.info("NAME       | SUM     | AVG     | MIN/MAX");
-  console.info("--------------------------------------------------");
+  console.info("NAME       | SUM     | AVG     | 100kAVG | MIN/MAX");
+  console.info("-------------------------------------------------------------");
 
   const parseTimes = await benchmarkParsing(content, iterations);
-  console.info(getPerformanceString("Parsing", parseTimes));
+  console.info(getPerformanceString("Parsing", parseTimes, lines));
 
   const astRoot = await applyParser(rootParser, content);
   
   const validateTimes = await benchmarkValidation(astRoot, iterations);
-  console.info(getPerformanceString("Validation", validateTimes));
+  console.info(getPerformanceString("Validation", validateTimes, lines));
   
   const symbolTimes = await benchmarkSymbols(astRoot, iterations);
-  console.info(getPerformanceString("Symbols", symbolTimes));
+  console.info(getPerformanceString("Symbols", symbolTimes, lines));
 
   console.info("\n\n");
 }

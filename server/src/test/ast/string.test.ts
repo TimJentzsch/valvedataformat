@@ -4,12 +4,13 @@ import AstString, {
   astString,
   astUnquotedString,
 } from "../../ast/string";
+import { NodeType } from "../../ast/baseNode";
 
 describe("astString", () => {
   test("should properly create quoted string", () => {
     const actual = astString(true, "value", getInlineRange(0, 0, 7));
     const expected: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: true,
       isTerminated: true,
@@ -23,7 +24,7 @@ describe("astString", () => {
   test("should properly create unquoted string", () => {
     const actual = astString(false, "value", getInlineRange(0, 0, 5));
     const expected: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: false,
       isTerminated: true,
@@ -39,7 +40,7 @@ describe("astQuotedString", () => {
   test("should properly create quoted terminated string", () => {
     const actual = astQuotedString("value", getInlineRange(0, 0, 7));
     const expected: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: true,
       isTerminated: true,
@@ -53,7 +54,7 @@ describe("astQuotedString", () => {
   test("should properly create quoted unterminated string", () => {
     const actual = astQuotedString("value", getInlineRange(0, 0, 6), false);
     const expected: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: true,
       isTerminated: false,
@@ -69,7 +70,7 @@ describe("astUnquotedString", () => {
   test("should properly create unquoted string", () => {
     const actual = astUnquotedString("value", getInlineRange(0, 0, 5));
     const expected: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: false,
       isTerminated: true,

@@ -1,6 +1,5 @@
 import { Range } from "vscode-languageserver/node";
-import AstBaseNode from "./baseNode";
-import AstNode from "./node";
+import AstBaseNode, { NodeType } from "./baseNode";
 
 /** The type of the line ending.
  * Can be Unix style (LF | \n) or Windows style (CRLF | \r\n).
@@ -9,7 +8,7 @@ export type EolType = "LF" | "CRLF";
 
 /** A line ending. */
 export default interface AstEndOfLine extends AstBaseNode {
-  type: "endOfLine";
+  type: NodeType.endOfLine;
   children: [];
   /** The text of the line break. */
   value: string;
@@ -26,7 +25,7 @@ export function astEndOfLine(
   range: Range
 ): AstEndOfLine {
   return {
-    type: "endOfLine",
+    type: NodeType.endOfLine,
     children: [],
     value,
     eolType,

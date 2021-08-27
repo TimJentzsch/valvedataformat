@@ -1,9 +1,9 @@
 import { Range } from "vscode-languageserver/node";
-import AstBaseNode from "./baseNode";
+import AstBaseNode, { NodeType } from "./baseNode";
 
 /** A string literal value. */
 export default interface AstString extends AstBaseNode {
-  type: "string";
+  type: NodeType.string;
   children: [];
   /** Determines whether the string is quoted or unquoted. */
   isQuoted: boolean;
@@ -23,7 +23,7 @@ export function astString(
   isTerminated: boolean = true
 ): AstString {
   return {
-    type: "string",
+    type: NodeType.string,
     children: [],
     isQuoted,
     isTerminated,

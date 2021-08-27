@@ -6,6 +6,7 @@ import { astUnquotedKey } from "../../ast/key";
 import { astStringProperty } from "../../ast/property";
 import AstRoot, { astRoot } from "../../ast/root";
 import { astUnquotedString } from "../../ast/string";
+import { NodeType } from "../../ast/baseNode";
 
 describe("astRoot", () => {
   test("should create a root node", () => {
@@ -25,7 +26,7 @@ describe("astRoot", () => {
     const actual = astRoot(content);
 
     const expected: AstRoot = {
-      type: "root",
+      type: NodeType.root,
       children: content,
       properties: [property],
       range: getRange(0, 0, 2, 0),

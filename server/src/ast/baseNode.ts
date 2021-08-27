@@ -1,16 +1,17 @@
 import { Range } from "vscode-languageserver/node";
 import AstNode from "./node";
 
-export type NodeType =
-  | "bracket"
-  | "comment"
-  | "endOfLine"
-  | "indent"
-  | "key"
-  | "object"
-  | "property"
-  | "root"
-  | "string";
+export enum NodeType {
+  bracket,
+  comment,
+  endOfLine,
+  indent,
+  key,
+  object,
+  property,
+  root,
+  string
+};
 
 export default interface AstBaseNode {
   /** The type of the node. */

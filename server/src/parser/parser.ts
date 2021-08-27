@@ -13,8 +13,8 @@ import AstProperty, {
 } from "../ast/property";
 import AstBracket, { astLBracket, astRBracket } from "../ast/bracket";
 import AstObject, { astObject } from "../ast/object";
-import AstNode from "../ast/node";
 import AstRoot, { astRoot } from "../ast/root";
+import { NodeType } from "../ast/baseNode";
 
 // To avoid circular imports, all parsers are defined in a single file
 
@@ -222,7 +222,7 @@ propertyParser.setPattern(
           return astObjectProperty(key, betweenTrivia, value, postTrivia);
         }
 
-        if (valueStuff.type === "object") {
+        if (valueStuff.type === NodeType.object) {
           // Object value due to bracket
           return astObjectProperty(
             key,

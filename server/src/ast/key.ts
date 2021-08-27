@@ -1,10 +1,10 @@
 import { Range } from "vscode-languageserver/node";
-import AstBaseNode from "./baseNode";
+import AstBaseNode, { NodeType } from "./baseNode";
 import AstString from "./string";
 
 /** A property key. Basically the same as a string. */
 export default interface AstKey extends AstBaseNode {
-  type: "key";
+  type: NodeType.key;
   children: [];
   /** Determines whether the key is quoted or unquoted. */
   isQuoted: boolean;
@@ -24,7 +24,7 @@ export function astKey(
   isTerminated: boolean = true
 ): AstKey {
   return {
-    type: "key",
+    type: NodeType.key,
     children: [],
     isQuoted,
     isTerminated,

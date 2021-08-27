@@ -4,6 +4,7 @@ import { astIndent } from "../../ast/indent";
 import { astUnquotedKey } from "../../ast/key";
 import AstProperty, {  astStringProperty } from "../../ast/property";
 import { astQuotedString } from "../../ast/string";
+import { NodeType } from "../../ast/baseNode";
 
 describe("astStringProperty", () => {
   test("should create string property without trivia", () => {
@@ -12,7 +13,7 @@ describe("astStringProperty", () => {
 
     const actual = astStringProperty(key, [], value);
     const expected: AstProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "string",
       key,
       value,
@@ -30,7 +31,7 @@ describe("astStringProperty", () => {
 
     const actual = astStringProperty(key, [betweenTrivia], value);
     const expected: AstProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "string",
       key,
       value,
@@ -48,7 +49,7 @@ describe("astStringProperty", () => {
 
     const actual = astStringProperty(key, undefined, value, [postTrivia]);
     const expected: AstProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "string",
       key,
       value,
@@ -67,7 +68,7 @@ describe("astStringProperty", () => {
 
     const actual = astStringProperty(key, [betweenTrivia], value, [postTrivia]);
     const expected: AstProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "string",
       key,
       value,

@@ -6,6 +6,7 @@ import { astUnquotedKey } from "../../ast/key";
 import AstObject, { astObject } from "../../ast/object";
 import { astStringProperty } from "../../ast/property";
 import { astUnquotedString } from "../../ast/string";
+import { NodeType } from "../../ast/baseNode";
 
 describe("astObject", () => {
   test("should create an object node", () => {
@@ -26,7 +27,7 @@ describe("astObject", () => {
     const actual = astObject(lBracket, content, rBracket);
 
     const expected: AstObject = {
-      type: "object",
+      type: NodeType.object,
       children: [lBracket, ...content, rBracket],
       properties: [property],
       lBracket,

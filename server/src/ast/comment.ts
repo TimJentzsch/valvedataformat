@@ -1,10 +1,9 @@
 import { Range } from "vscode-languageserver/node";
-import AstBaseNode from "./baseNode";
-import AstNode from "./node";
+import AstBaseNode, { NodeType } from "./baseNode";
 
 /** A line comment. */
 export default interface AstComment extends AstBaseNode {
-  type: "comment";
+  type: NodeType.comment;
   children: [];
   /** The content of the comment. */
   value: string;
@@ -13,7 +12,7 @@ export default interface AstComment extends AstBaseNode {
 /** Create an AST node for a comment. */
 export function astComment(value: string, range: Range): AstComment {
   return {
-    type: "comment",
+    type: NodeType.comment,
     children: [],
     value,
     range,

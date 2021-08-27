@@ -1,12 +1,12 @@
 import { getRangeFromNodeList } from "../parser/utils";
-import AstBaseNode from "./baseNode";
+import AstBaseNode, { NodeType } from "./baseNode";
 import AstBracket from "./bracket";
 import AstNode from "./node";
 import AstProperty from "./property";
 
 /** An object, i.e. a collection of properties. */
 export default interface AstObject extends AstBaseNode {
-  type: "object";
+  type: NodeType.object;
   /** The properties of the object. */
   properties: AstProperty[];
   /** The opening bracket of the object. */
@@ -28,13 +28,13 @@ export function astObject(
     .concat(rBracket !== undefined ? [rBracket as AstNode] : []);
 
   const properties: AstProperty[] = content.filter(
-    (value) => (value as AstNode).type === "property"
+    (value) => (value as AstNode).type === NodeType.property
   ) as AstProperty[];
 
   const range = getRangeFromNodeList(children);
 
   const obj: AstObject = {
-    type: "object",
+    type: NodeType.object,
     children,
     properties,
     lBracket,

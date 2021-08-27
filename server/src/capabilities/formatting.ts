@@ -1,4 +1,5 @@
 import { TextEdit, FormattingOptions, Range } from "vscode-languageserver/node";
+import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
 import AstProperty, { AstStringProperty } from "../ast/property";
@@ -17,11 +18,11 @@ export default async function formatNode(
   curIndent: number = 0
 ): Promise<TextEdit[]> {
   switch (node.type) {
-    case "root":
+    case NodeType.root:
       return formatRoot(node, options, curIndent);
-    case "object":
+    case NodeType.object:
       return formatObject(node, options, curIndent);
-    case "property":
+    case NodeType.property:
       return formatProperty(node, options, curIndent);
     default:
       return [];

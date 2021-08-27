@@ -1,5 +1,5 @@
 import { getRangeFromNodeList } from "../parser/utils";
-import AstBaseNode from "./baseNode";
+import AstBaseNode, { NodeType } from "./baseNode";
 import AstKey from "./key";
 import AstNode from "./node";
 import AstObject from "./object";
@@ -8,7 +8,7 @@ import { InlineTrivia, MultilineTrivia } from "./trivia";
 
 /** A string property, e.g. "key" "value". */
 export interface AstStringProperty extends AstBaseNode {
-  type: "property";
+  type: NodeType.property;
   valueType: "string";
   /** The key of the property. */
   key: AstKey;
@@ -18,7 +18,7 @@ export interface AstStringProperty extends AstBaseNode {
 
 /** An object property, e.g. "key" {}. */
 export interface AstObjectProperty extends AstBaseNode {
-  type: "property";
+  type: NodeType.property;
   valueType: "object";
   /** The key of the property. Can be undefined for incomplete documents. */
   key?: AstKey;
@@ -43,7 +43,7 @@ export function astStringProperty(
     .concat(postTrivia);
 
     const property: AstStringProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "string",
       key,
       value,
@@ -67,7 +67,7 @@ export function astObjectProperty(
     .concat(postTrivia);
 
     const property: AstObjectProperty = {
-      type: "property",
+      type: NodeType.property,
       valueType: "object",
       key,
       value,

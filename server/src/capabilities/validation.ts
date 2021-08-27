@@ -1,11 +1,9 @@
 import { Diagnostic, DiagnosticSeverity } from "vscode-languageserver/node";
+import { NodeType } from "../ast/baseNode";
 import AstKey from "../ast/key";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
-import AstProperty, {
-  AstObjectProperty,
-  AstStringProperty,
-} from "../ast/property";
+import AstProperty from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
 import { executeForNodeList } from "./utils";
@@ -15,15 +13,15 @@ export default async function validateNode(
   node: AstNode
 ): Promise<Diagnostic[]> {
   switch (node.type) {
-    case "string":
+    case NodeType.string:
       return validateString(node);
-    case "key":
+    case NodeType.key:
       return validateKey(node);
-    case "root":
+    case NodeType.root:
       return validateRoot(node);
-    case "object":
+    case NodeType.object:
       return validateObject(node);
-    case "property":
+    case NodeType.property:
       return validateProperty(node);
     default:
       return [];

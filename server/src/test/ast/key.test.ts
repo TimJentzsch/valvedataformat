@@ -1,12 +1,13 @@
 import { getInlineRange } from "../../parser/utils";
 import AstKey, { astKey, astKeyFromString, astQuotedKey, astUnquotedKey } from "../../ast/key";
 import AstString from "../../ast/string";
+import { NodeType } from "../../ast/baseNode";
 
 describe("astKey", () => {
   test("should properly create quoted key", () => {
     const actual = astKey(true, "value", getInlineRange(0, 0, 7));
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: true,
       isTerminated: true,
@@ -20,7 +21,7 @@ describe("astKey", () => {
   test("should properly create unquoted key", () => {
     const actual = astKey(false, "value", getInlineRange(0, 0, 5));
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: false,
       isTerminated: true,
@@ -36,7 +37,7 @@ describe("astQuotedKey", () => {
   test("should properly create quoted terminated key", () => {
     const actual = astQuotedKey("value", getInlineRange(0, 0, 7));
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: true,
       isTerminated: true,
@@ -50,7 +51,7 @@ describe("astQuotedKey", () => {
   test("should properly create quoted unterminated key", () => {
     const actual = astQuotedKey("value", getInlineRange(0, 0, 6), false);
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: true,
       isTerminated: false,
@@ -66,7 +67,7 @@ describe("astUnquotedKey", () => {
   test("should properly create unquoted key", () => {
     const actual = astUnquotedKey("value", getInlineRange(0, 0, 5));
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: false,
       isTerminated: true,
@@ -81,7 +82,7 @@ describe("astUnquotedKey", () => {
 describe("astKeyFromString", () => {
   test("should properly convert unquoted string node to key node", () => {
     const astString: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: false,
       isTerminated: true,
@@ -90,7 +91,7 @@ describe("astKeyFromString", () => {
     };
     const actual = astKeyFromString(astString);
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: false,
       isTerminated: true,
@@ -103,7 +104,7 @@ describe("astKeyFromString", () => {
 
   test("should properly convert quoted string node to key node", () => {
     const astString: AstString = {
-      type: "string",
+      type: NodeType.string,
       children: [],
       isQuoted: true,
       isTerminated: true,
@@ -112,7 +113,7 @@ describe("astKeyFromString", () => {
     };
     const actual = astKeyFromString(astString);
     const expected: AstKey = {
-      type: "key",
+      type: NodeType.key,
       children: [],
       isQuoted: true,
       isTerminated: true,

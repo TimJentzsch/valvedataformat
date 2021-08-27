@@ -1,4 +1,5 @@
 import { DocumentSymbol, SymbolKind } from "vscode-languageserver/node";
+import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
 import AstProperty from "../ast/property";
@@ -10,13 +11,13 @@ export default async function getNodeSymbols(
   node: AstNode
 ): Promise<DocumentSymbol[]> {
   switch (node.type) {
-    case "root":
+    case NodeType.root:
       return getRootSymbols(node);
-    case "object":
+    case NodeType.object:
       return getObjectSymbols(node);
-    case "property":
+    case NodeType.property:
       return getPropertySymbols(node);
-    case "string":
+    case NodeType.string:
       return getStringSymbols(node);
     default:
       return [];

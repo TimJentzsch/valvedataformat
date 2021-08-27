@@ -1,11 +1,11 @@
 import { getInlineRange, getRangeFromNodeList } from "../parser/utils";
-import AstBaseNode from "./baseNode";
+import AstBaseNode, { NodeType } from "./baseNode";
 import AstNode from "./node";
 import AstProperty from "./property";
 
 /** The root of a document. Like an object, but without the brackets. */
 export default interface AstRoot extends AstBaseNode {
-  type: "root";
+  type: NodeType.root;
   /** The properties of the root. */
   properties: AstProperty[];
 }
@@ -15,13 +15,13 @@ export function astRoot(
   children: AstNode[] = [],
 ): AstRoot {
   const properties: AstProperty[] = children.filter(
-    (value) => (value as AstNode).type === "property"
+    (value) => (value as AstNode).type === NodeType.property
   ) as AstProperty[];
 
   const range = getRangeFromNodeList(children, getInlineRange(0, 0));
 
   const root: AstRoot = {
-    type: "root",
+    type: NodeType.root,
     children,
     properties,
     range,

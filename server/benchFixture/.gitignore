@@ -1,0 +1,2 @@
+# Ignore any files that are made by Valve to avoid copyright issues
+*.valve.vdf

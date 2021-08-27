@@ -73,7 +73,9 @@
     "postinstall": "cd client && yarn install && cd ../server && yarn install && cd ..",
     "test-server": "cd server && yarn test && cd ..",
     "test-client": "cd client && yarn test && cd ..",
-    "test": "yarn run test-server"
+    "test": "yarn run test-server",
+    "bench-server": "cd server && yarn bench && cd ..",
+    "bench": "yarn run bench-server"
   },
   "devDependencies": {
     "@types/glob": "^7.1.3",

@@ -13,7 +13,9 @@
     "compile": "tsc -b",
     "lint": "eslint --ext ts",
     "pretest": "yarn run compile && yarn run lint",
-		"test": "jest ./src"
+		"test": "jest ./src",
+		"prebench": "yarn run compile",
+    "bench": "sh ./scripts/bench.sh"
 	},
 	"dependencies": {
 		"typescript-parsec": "^0.3.2",

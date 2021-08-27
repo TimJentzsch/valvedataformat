@@ -1,16 +1,16 @@
-import { astLBracket, astRBracket } from "../ast/bracket";
-import { astComment } from "../ast/comment";
-import { astLf } from "../ast/endOfLine";
-import { astIndent } from "../ast/indent";
-import { astQuotedKey, astUnquotedKey } from "../ast/key";
-import { astObject } from "../ast/object";
+import { astLBracket, astRBracket } from "../../ast/bracket";
+import { astComment } from "../../ast/comment";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import { astQuotedKey, astUnquotedKey } from "../../ast/key";
+import { astObject } from "../../ast/object";
 import AstProperty, {
   astObjectProperty,
   astStringProperty,
-} from "../ast/property";
-import { astQuotedString, astUnquotedString } from "../ast/string";
-import { propertyParser } from "./parser";
-import { applyParser, getInlineRange, getRange } from "./utils";
+} from "../../ast/property";
+import { astQuotedString, astUnquotedString } from "../../ast/string";
+import { propertyParser } from "../../parser/parser";
+import { applyParser, getInlineRange, getRange } from "../../parser/utils";
 
 // Properties
 describe("propertyParser", () => {

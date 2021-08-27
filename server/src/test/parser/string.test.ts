@@ -1,6 +1,6 @@
-import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
-import { stringParser } from "./parser";
-import { applyParser, getInlineRange } from "./utils";
+import AstString, { astQuotedString, astUnquotedString } from "../../ast/string";
+import { stringParser } from "../../parser/parser";
+import { applyParser, getInlineRange } from "../../parser/utils";
 
 // Unquoted string parsing
 describe("should parse unquoted string", () => {

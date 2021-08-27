@@ -1,9 +1,9 @@
-import { astComment } from "../ast/comment";
-import { astLf } from "../ast/endOfLine";
-import { astIndent } from "../ast/indent";
-import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
-import { inlineTriviaParser, multilineTriviaParser } from "./parser";
-import { applyParser, getInlineRange, getRange } from "./utils";
+import { astComment } from "../../ast/comment";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import { InlineTrivia, MultilineTrivia } from "../../ast/trivia";
+import { inlineTriviaParser, multilineTriviaParser } from "../../parser/parser";
+import { applyParser, getInlineRange, getRange } from "../../parser/utils";
 
 // Inline trivia parsing
 describe("should parse inline trivia", () => {

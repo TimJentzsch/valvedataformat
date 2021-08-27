@@ -1,8 +1,8 @@
 // Make sure that the parser is error tolerant.
 // Every string should be parsed to something.
 // The parser should never fail on any input.
-import { rootParser } from "./parser";
-import { applyParser } from "./utils";
+import { rootParser } from "../../parser/parser";
+import { applyParser } from "../../parser/utils";
 
 /** Get the set of characters in the given range. */
 function charRange(start: string, end: string): string[] {

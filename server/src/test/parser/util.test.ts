@@ -1,10 +1,10 @@
 import { TokenPosition } from "typescript-parsec";
 import { Range } from "vscode-languageserver/node";
-import { astLf } from "../ast/endOfLine";
-import { astIndent } from "../ast/indent";
-import AstNode from "../ast/node";
-import { astQuotedString, astString, astUnquotedString } from "../ast/string";
-import { getInlineRange, getRange, getRangeFromNodeList, getRangeFromTokenPosition } from "./utils";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import AstNode from "../../ast/node";
+import { astUnquotedString } from "../../ast/string";
+import { getInlineRange, getRange, getRangeFromNodeList, getRangeFromTokenPosition } from "../../parser/utils";
 
 describe("getRange", () => {
   const params: Array<[[number, number, number, number], Range]> = [

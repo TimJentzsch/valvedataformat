@@ -1,6 +1,6 @@
-import AstIndent, { astIndent } from "../ast/indent";
-import { indentParser } from "./parser";
-import { applyParser, getInlineRange } from "./utils";
+import AstIndent, { astIndent } from "../../ast/indent";
+import { indentParser } from "../../parser/parser";
+import { applyParser, getInlineRange } from "../../parser/utils";
 
 // Indent parsing (spaces and tabs)
 describe("should parse indent", () => {

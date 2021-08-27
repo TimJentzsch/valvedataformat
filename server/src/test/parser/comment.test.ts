@@ -1,6 +1,6 @@
-import AstComment, { astComment } from "../ast/comment";
-import { commentParser } from "./parser";
-import { applyParser, getInlineRange } from "./utils";
+import AstComment, { astComment } from "../../ast/comment";
+import { commentParser } from "../../parser/parser";
+import { applyParser, getInlineRange } from "../../parser/utils";
 
 // Comment parsing
 describe("should parse comment", () => {

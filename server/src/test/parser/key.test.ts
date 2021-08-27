@@ -1,6 +1,6 @@
-import AstKey, { astQuotedKey, astUnquotedKey } from "../ast/key";
-import { keyParser } from "./parser";
-import { applyParser, getInlineRange } from "./utils";
+import AstKey, { astQuotedKey, astUnquotedKey } from "../../ast/key";
+import { keyParser } from "../../parser/parser";
+import { applyParser, getInlineRange } from "../../parser/utils";
 
 // Unquoted key parsing
 describe("should parse unquoted key", () => {

@@ -1,13 +1,13 @@
-import { astLBracket, astRBracket } from "../ast/bracket";
-import { astLf } from "../ast/endOfLine";
-import { astIndent } from "../ast/indent";
-import { astQuotedKey, astUnquotedKey } from "../ast/key";
-import { astObject } from "../ast/object";
-import { astObjectProperty, astStringProperty } from "../ast/property";
-import AstRoot, { astRoot } from "../ast/root";
-import { astQuotedString, astUnquotedString } from "../ast/string";
-import { rootParser } from "./parser";
-import { applyParser, getInlineRange, getRange } from "./utils";
+import { astLBracket, astRBracket } from "../../ast/bracket";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import { astQuotedKey, astUnquotedKey } from "../../ast/key";
+import { astObject } from "../../ast/object";
+import { astObjectProperty, astStringProperty } from "../../ast/property";
+import AstRoot, { astRoot } from "../../ast/root";
+import { astQuotedString, astUnquotedString } from "../../ast/string";
+import { rootParser } from "../../parser/parser";
+import { applyParser, getInlineRange, getRange } from "../../parser/utils";
 
 // Root parsing, i.e. parsing a VDF document
 describe("rootParser", () => {

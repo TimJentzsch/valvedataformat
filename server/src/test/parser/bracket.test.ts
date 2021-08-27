@@ -1,6 +1,6 @@
-import { astLBracket, astRBracket } from "../ast/bracket";
-import { lBracketParser, rBracketParser } from "./parser";
-import { applyParser, getInlineRange } from "./utils";
+import { astLBracket, astRBracket } from "../../ast/bracket";
+import { lBracketParser, rBracketParser } from "../../parser/parser";
+import { applyParser, getInlineRange } from "../../parser/utils";
 
 describe("lBracketParser", () => {
   test("should parse opening bracket", () => {

@@ -1,6 +1,6 @@
-import AstEndOfLine, { astCrLf, astLf } from "../ast/endOfLine";
-import { endOfLineParser } from "./parser";
-import { applyParser, getRange } from "./utils";
+import AstEndOfLine, { astCrLf, astLf } from "../../ast/endOfLine";
+import { endOfLineParser } from "../../parser/parser";
+import { applyParser, getRange } from "../../parser/utils";
 
 // End of line parsing
 describe("should parse end of line", () => {

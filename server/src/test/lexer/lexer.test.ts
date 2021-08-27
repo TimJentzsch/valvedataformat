@@ -1,4 +1,4 @@
-import { getTokenStream, VDFToken } from "./lexer";
+import { getTokenStream, VDFToken } from "../../lexer/lexer";
 
 /** Makes the whitespace in the input visible to display the test names. */
 function showWhitespace(input: string): string {

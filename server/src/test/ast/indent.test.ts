@@ -1,5 +1,5 @@
-import { getInlineRange } from "../parser/utils";
-import AstIndent, { astIndent } from "./indent";
+import { getInlineRange } from "../../parser/utils";
+import AstIndent, { astIndent } from "../../ast/indent";
 
 describe("astIndent", () => {
   test("should properly create indent node", () => {

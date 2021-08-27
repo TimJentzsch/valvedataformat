@@ -1,5 +1,5 @@
-import { getInlineRange } from "../parser/utils";
-import AstBracket, { astBracket, astLBracket, astRBracket } from "./bracket";
+import { getInlineRange } from "../../parser/utils";
+import AstBracket, { astBracket, astLBracket, astRBracket } from "../../ast/bracket";
 
 describe('astBracket', () => {
   test('should properly create left bracket node', () => {

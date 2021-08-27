@@ -1,5 +1,5 @@
-import { getInlineRange } from "../parser/utils";
-import AstComment, { astComment } from "./comment";
+import { getInlineRange } from "../../parser/utils";
+import AstComment, { astComment } from "../../ast/comment";
 
 describe("astComment", () => {
   test("should properly create quoted string", () => {

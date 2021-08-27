@@ -1,9 +1,9 @@
-import { getInlineRange } from "../parser/utils";
+import { getInlineRange } from "../../parser/utils";
 import AstString, {
   astQuotedString,
   astString,
   astUnquotedString,
-} from "./string";
+} from "../../ast/string";
 
 describe("astString", () => {
   test("should properly create quoted string", () => {

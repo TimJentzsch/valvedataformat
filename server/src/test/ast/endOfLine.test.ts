@@ -1,5 +1,5 @@
-import { getInlineRange, getRange } from "../parser/utils";
-import AstEndOfLine, { astCrLf, astEndOfLine, astLf } from "./endOfLine";
+import { getInlineRange, getRange } from "../../parser/utils";
+import AstEndOfLine, { astCrLf, astEndOfLine, astLf } from "../../ast/endOfLine";
 
 describe("astEndOfLine", () => {
   test("should properly create LF node", () => {

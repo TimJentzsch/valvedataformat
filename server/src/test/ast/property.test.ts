@@ -1,9 +1,9 @@
-import { getInlineRange } from "../parser/utils";
-import { astComment } from "./comment";
-import { astIndent } from "./indent";
-import { astUnquotedKey } from "./key";
-import AstProperty, {  astStringProperty } from "./property";
-import { astQuotedString } from "./string";
+import { getInlineRange } from "../../parser/utils";
+import { astComment } from "../../ast/comment";
+import { astIndent } from "../../ast/indent";
+import { astUnquotedKey } from "../../ast/key";
+import AstProperty, {  astStringProperty } from "../../ast/property";
+import { astQuotedString } from "../../ast/string";
 
 describe("astStringProperty", () => {
   test("should create string property without trivia", () => {

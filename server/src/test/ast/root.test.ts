@@ -1,11 +1,11 @@
-import { getInlineRange, getRange } from "../parser/utils";
-import { astComment } from "./comment";
-import { astLf } from "./endOfLine";
-import { astIndent } from "./indent";
-import { astUnquotedKey } from "./key";
-import { astStringProperty } from "./property";
-import AstRoot, { astRoot } from "./root";
-import { astUnquotedString } from "./string";
+import { getInlineRange, getRange } from "../../parser/utils";
+import { astComment } from "../../ast/comment";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import { astUnquotedKey } from "../../ast/key";
+import { astStringProperty } from "../../ast/property";
+import AstRoot, { astRoot } from "../../ast/root";
+import { astUnquotedString } from "../../ast/string";
 
 describe("astRoot", () => {
   test("should create a root node", () => {

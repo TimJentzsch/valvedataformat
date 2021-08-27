@@ -1,6 +1,6 @@
-import { getInlineRange } from "../parser/utils";
-import AstKey, { astKey, astKeyFromString, astQuotedKey, astUnquotedKey } from "./key";
-import AstString from "./string";
+import { getInlineRange } from "../../parser/utils";
+import AstKey, { astKey, astKeyFromString, astQuotedKey, astUnquotedKey } from "../../ast/key";
+import AstString from "../../ast/string";
 
 describe("astKey", () => {
   test("should properly create quoted key", () => {

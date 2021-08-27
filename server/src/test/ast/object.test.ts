@@ -1,11 +1,11 @@
-import { getInlineRange, getRange } from "../parser/utils";
-import { astLBracket, astRBracket } from "./bracket";
-import { astLf } from "./endOfLine";
-import { astIndent } from "./indent";
-import { astUnquotedKey } from "./key";
-import AstObject, { astObject } from "./object";
-import { astStringProperty } from "./property";
-import { astUnquotedString } from "./string";
+import { getInlineRange, getRange } from "../../parser/utils";
+import { astLBracket, astRBracket } from "../../ast/bracket";
+import { astLf } from "../../ast/endOfLine";
+import { astIndent } from "../../ast/indent";
+import { astUnquotedKey } from "../../ast/key";
+import AstObject, { astObject } from "../../ast/object";
+import { astStringProperty } from "../../ast/property";
+import { astUnquotedString } from "../../ast/string";
 
 describe("astObject", () => {
   test("should create an object node", () => {

@@ -1,5 +1,5 @@
 import { FormattingOptions } from "vscode-languageserver/node";
-import { getIndent, repeatStr } from "./utils";
+import { getIndent, repeatStr } from "../../capabilities/utils";
 
 // repeatStr
 describe("repeatStr", () => {

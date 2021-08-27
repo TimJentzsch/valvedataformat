@@ -3,11 +3,10 @@ import AstBracket, { astBracket, astLBracket, astRBracket } from "../../ast/brac
 
 describe('astBracket', () => {
   test('should properly create left bracket node', () => {
-    const actual = astBracket("{", "left", getInlineRange(0, 0, 1));
+    const actual = astBracket("left", getInlineRange(0, 0, 1));
     const expected: AstBracket = {
       type: "bracket",
       children: [],
-      value: "{",
       bracketType: "left",
       range: getInlineRange(0, 0, 1),
     };
@@ -16,11 +15,10 @@ describe('astBracket', () => {
   });
 
   test('should properly create right bracket node', () => {
-    const actual = astBracket("}", "right", getInlineRange(0, 0, 1));
+    const actual = astBracket("right", getInlineRange(0, 0, 1));
     const expected: AstBracket = {
       type: "bracket",
       children: [],
-      value: "}",
       bracketType: "right",
       range: getInlineRange(0, 0, 1),
     };
@@ -35,7 +33,6 @@ describe('astLBracket', () => {
     const expected: AstBracket = {
       type: "bracket",
       children: [],
-      value: "{",
       bracketType: "left",
       range: getInlineRange(0, 0, 1),
     };
@@ -50,7 +47,6 @@ describe('astRBracket', () => {
     const expected: AstBracket = {
       type: "bracket",
       children: [],
-      value: "}",
       bracketType: "right",
       range: getInlineRange(0, 0, 1),
     };

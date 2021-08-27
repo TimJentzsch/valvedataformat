@@ -7,7 +7,7 @@ import {
 } from "typescript-parsec";
 import { Position, Range } from "vscode-languageserver/node";
 import AstNode from "../ast/node";
-import { tokenizer, VDFToken } from "../lexer/lexer";
+import { tokenizer, VdfToken } from "../lexer/lexer";
 
 /** Converts a token position to a document range.
  *
@@ -84,6 +84,6 @@ export function getRangeFromNodeList(
 }
 
 /** Apply the parser to the given input string. */
-export function applyParser<T>(parser: Parser<VDFToken, T>, input: string): T {
+export function applyParser<T>(parser: Parser<VdfToken, T>, input: string): T {
   return expectSingleResult(expectEOF(parser.parse(tokenizer.parse(input))));
 }

@@ -4,7 +4,7 @@ import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
 import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
-import { VDFToken } from "../lexer/lexer";
+import { VdfToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
 import { InlineTrivia, MultilineTrivia } from "../ast/trivia";
 import AstProperty, {
@@ -23,40 +23,40 @@ import AstRoot, { astRoot } from "../ast/root";
 // ====================================================================
 
 /** Parse a comment. */
-export const commentParser = rule<VDFToken, AstComment>();
+export const commentParser = rule<VdfToken, AstComment>();
 
 /** Parse an opening bracket. */
-export const lBracketParser = rule<VDFToken, AstBracket>();
+export const lBracketParser = rule<VdfToken, AstBracket>();
 
 /** Parse a closing bracket. */
-export const rBracketParser = rule<VDFToken, AstBracket>();
+export const rBracketParser = rule<VdfToken, AstBracket>();
 
 /** Parse a string literal value. */
-export const stringParser = rule<VDFToken, AstString>();
+export const stringParser = rule<VdfToken, AstString>();
 
 /** Parse a property key. */
-export const keyParser = rule<VDFToken, AstKey>();
+export const keyParser = rule<VdfToken, AstKey>();
 
 /** Parse spaces and tabs (no line endings). */
-export const indentParser = rule<VDFToken, AstIndent>();
+export const indentParser = rule<VdfToken, AstIndent>();
 
 /** Parse line endings. */
-export const endOfLineParser = rule<VDFToken, AstEndOfLine>();
+export const endOfLineParser = rule<VdfToken, AstEndOfLine>();
 
 /** Parse inline trivia (spaces, tabs and comments). */
-export const inlineTriviaParser = rule<VDFToken, InlineTrivia[]>();
+export const inlineTriviaParser = rule<VdfToken, InlineTrivia[]>();
 
 /** Parse multiline trivia (spaces, tabs, comments and line endings). */
-export const multilineTriviaParser = rule<VDFToken, MultilineTrivia[]>();
+export const multilineTriviaParser = rule<VdfToken, MultilineTrivia[]>();
 
 /** Parse properties of an object. */
-export const propertyParser = rule<VDFToken, AstProperty>();
+export const propertyParser = rule<VdfToken, AstProperty>();
 
 /** Parse an object. */
-export const objectParser = rule<VDFToken, AstObject>();
+export const objectParser = rule<VdfToken, AstObject>();
 
 /** Parse the root, i.e. a VDF document. */
-export const rootParser = rule<VDFToken, AstRoot>();
+export const rootParser = rule<VdfToken, AstRoot>();
 
 // ====================================================================
 // DEFINITIONS
@@ -66,7 +66,7 @@ export const rootParser = rule<VDFToken, AstRoot>();
 // Comment
 // --------------------------------------------------------------------
 commentParser.setPattern(
-  apply(tok(VDFToken.comment), (token) => {
+  apply(tok(VdfToken.comment), (token) => {
     const value = token.text.slice(2);
     const range = getRangeFromToken(token);
 
@@ -80,7 +80,7 @@ commentParser.setPattern(
 
 // Opening bracket
 lBracketParser.setPattern(
-  apply(tok(VDFToken.lBracket), (token) => {
+  apply(tok(VdfToken.lBracket), (token) => {
     const range = getRangeFromToken(token);
 
     return astLBracket(range);
@@ -89,7 +89,7 @@ lBracketParser.setPattern(
 
 // Closing bracket
 rBracketParser.setPattern(
-  apply(tok(VDFToken.rBracket), (token) => {
+  apply(tok(VdfToken.rBracket), (token) => {
     const range = getRangeFromToken(token);
 
     return astRBracket(range);
@@ -102,7 +102,7 @@ rBracketParser.setPattern(
 stringParser.setPattern(
   alt(
     // Quoted string
-    apply(tok(VDFToken.quotedString), (token) => {
+    apply(tok(VdfToken.quotedString), (token) => {
       const text = token.text;
       const isTerminated = text.length >= 2 && text[text.length - 1] === '"';
       const value = isTerminated
@@ -113,7 +113,7 @@ stringParser.setPattern(
       return astQuotedString(value, range, isTerminated);
     }),
     // Unquoted string
-    apply(tok(VDFToken.unquotedString), (token) => {
+    apply(tok(VdfToken.unquotedString), (token) => {
       const value = token.text;
       const range = getRangeFromToken(token);
 
@@ -135,7 +135,7 @@ keyParser.setPattern(
 // Indent (spaces and tabs)
 // --------------------------------------------------------------------
 indentParser.setPattern(
-  apply(tok(VDFToken.space), (token) => {
+  apply(tok(VdfToken.space), (token) => {
     const value = token.text;
     const range = getRangeFromToken(token);
 
@@ -147,7 +147,7 @@ indentParser.setPattern(
 // End of line
 // --------------------------------------------------------------------
 endOfLineParser.setPattern(
-  apply(tok(VDFToken.endOfLine), (token) => {
+  apply(tok(VdfToken.endOfLine), (token) => {
     const value = token.text;
     const eolType = token.text === "\n" ? "LF" : "CRLF";
     const range = getRangeFromToken(token);

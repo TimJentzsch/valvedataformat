@@ -1,6 +1,6 @@
 import { buildLexer, Token } from "typescript-parsec";
 
-export enum VDFToken {
+export enum VdfToken {
   comment,
   quotedString,
   unquotedString,
@@ -12,23 +12,23 @@ export enum VDFToken {
 
 export const tokenizer = buildLexer([
   // Comments start with two slashes and go to the end of the line
-  [true, /^\/\/.*/g, VDFToken.comment],
+  [true, /^\/\/.*/g, VdfToken.comment],
   // Quoted strings are between double quotes
   // The end quote is optional for error tolarance
-  [true, /^\"[^"\n]*\"?/g, VDFToken.quotedString],
+  [true, /^\"[^"\n]*\"?/g, VdfToken.quotedString],
   // Unquoted strings do not contain quotes, whitespace, or brackets
-  [true, /^[^\s\"{}]+/g, VDFToken.unquotedString],
+  [true, /^[^\s\"{}]+/g, VdfToken.unquotedString],
   // Opening bracket
-  [true, /^{/g, VDFToken.lBracket],
+  [true, /^{/g, VdfToken.lBracket],
   // Closing bracket
-  [true, /^}/g, VDFToken.rBracket],
+  [true, /^}/g, VdfToken.rBracket],
   // End of line (line break)
-  [true, /^\r?\n/g, VDFToken.endOfLine],
+  [true, /^\r?\n/g, VdfToken.endOfLine],
   // Whitespace (without line breaks)
-  [true, /^[ \t]+/g, VDFToken.space],
+  [true, /^[ \t]+/g, VdfToken.space],
 ]);
 
-export function getTokenStream(input: string): Token<VDFToken>[] {
+export function getTokenStream(input: string): Token<VdfToken>[] {
   const stream = [];
 
   let next = tokenizer.parse(input);

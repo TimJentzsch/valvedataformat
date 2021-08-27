@@ -1,4 +1,4 @@
-import { getTokenStream, VDFToken } from "../../lexer/lexer";
+import { getTokenStream, VdfToken } from "../../lexer/lexer";
 
 /** Makes the whitespace in the input visible to display the test names. */
 function showWhitespace(input: string): string {
@@ -22,7 +22,7 @@ describe("should tokenize single comment", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.comment]);
+      expect(actual).toEqual([VdfToken.comment]);
     });
   }
 });
@@ -40,7 +40,7 @@ describe("should tokenize single quoted string", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.quotedString]);
+      expect(actual).toEqual([VdfToken.quotedString]);
     });
   }
 });
@@ -59,7 +59,7 @@ describe("should tokenize single unquoted string", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.quotedString]);
+      expect(actual).toEqual([VdfToken.quotedString]);
     });
   }
 });
@@ -71,7 +71,7 @@ describe("should tokenize single left bracket", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.lBracket]);
+      expect(actual).toEqual([VdfToken.lBracket]);
     });
   }
 });
@@ -83,7 +83,7 @@ describe("should tokenize single right bracket", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.rBracket]);
+      expect(actual).toEqual([VdfToken.rBracket]);
     });
   }
 });
@@ -95,7 +95,7 @@ describe("should tokenize single line break", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.endOfLine]);
+      expect(actual).toEqual([VdfToken.endOfLine]);
     });
   }
 });
@@ -107,7 +107,7 @@ describe("should tokenize single whitespace", () => {
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VDFToken.space]);
+      expect(actual).toEqual([VdfToken.space]);
     });
   }
 });
@@ -116,67 +116,67 @@ describe("should tokenize single whitespace", () => {
 describe("should tokenize key-value pairs", () => {
   // An array of the input strings and expected output
   // The output is a list of token kinds and matched string
-  const params: Array<[string, Array<[VDFToken, string]>]> = [
+  const params: Array<[string, Array<[VdfToken, string]>]> = [
     [
       "key value",
       [
-        [VDFToken.unquotedString, "key"],
-        [VDFToken.space, " "],
-        [VDFToken.unquotedString, "value"],
+        [VdfToken.unquotedString, "key"],
+        [VdfToken.space, " "],
+        [VdfToken.unquotedString, "value"],
       ],
     ],
     [
       '"key" "value"',
       [
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.space, " "],
-        [VDFToken.quotedString, '"value"'],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.space, " "],
+        [VdfToken.quotedString, '"value"'],
       ],
     ],
     [
       'key "value"',
       [
-        [VDFToken.unquotedString, "key"],
-        [VDFToken.space, " "],
-        [VDFToken.quotedString, '"value"'],
+        [VdfToken.unquotedString, "key"],
+        [VdfToken.space, " "],
+        [VdfToken.quotedString, '"value"'],
       ],
     ],
     [
       '"key" value',
       [
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.space, " "],
-        [VDFToken.unquotedString, "value"],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.space, " "],
+        [VdfToken.unquotedString, "value"],
       ],
     ],
     [
       '"key""value"',
       [
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.quotedString, '"value"'],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.quotedString, '"value"'],
       ],
     ],
     [
       'key"value"',
       [
-        [VDFToken.unquotedString, "key"],
-        [VDFToken.quotedString, '"value"'],
+        [VdfToken.unquotedString, "key"],
+        [VdfToken.quotedString, '"value"'],
       ],
     ],
     [
       '"key\n',
       [
-        [VDFToken.quotedString, '"key'],
-        [VDFToken.endOfLine, "\n"],
+        [VdfToken.quotedString, '"key'],
+        [VdfToken.endOfLine, "\n"],
       ],
     ],
     [
       '"key" "value\n',
       [
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.space, " "],
-        [VDFToken.quotedString, '"value'],
-        [VDFToken.endOfLine, "\n"],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.space, " "],
+        [VdfToken.quotedString, '"value'],
+        [VdfToken.endOfLine, "\n"],
       ],
     ],
   ];
@@ -196,33 +196,33 @@ describe("should tokenize key-value pairs", () => {
 describe("should tokenize objects", () => {
   // An array of the input strings and expected output
   // The output is a list of token kinds and matched string
-  const params: Array<[string, Array<[VDFToken, string]>]> = [
+  const params: Array<[string, Array<[VdfToken, string]>]> = [
     [
       "{}",
       [
-        [VDFToken.lBracket, "{"],
-        [VDFToken.rBracket, "}"],
+        [VdfToken.lBracket, "{"],
+        [VdfToken.rBracket, "}"],
       ],
     ],
     [
       "{ }",
       [
-        [VDFToken.lBracket, "{"],
-        [VDFToken.space, " "],
-        [VDFToken.rBracket, "}"],
+        [VdfToken.lBracket, "{"],
+        [VdfToken.space, " "],
+        [VdfToken.rBracket, "}"],
       ],
     ],
     [
       '{\n\t"key"\t"value"\n}',
       [
-        [VDFToken.lBracket, "{"],
-        [VDFToken.endOfLine, "\n"],
-        [VDFToken.space, "\t"],
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.space, "\t"],
-        [VDFToken.quotedString, '"value"'],
-        [VDFToken.endOfLine, "\n"],
-        [VDFToken.rBracket, "}"],
+        [VdfToken.lBracket, "{"],
+        [VdfToken.endOfLine, "\n"],
+        [VdfToken.space, "\t"],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.space, "\t"],
+        [VdfToken.quotedString, '"value"'],
+        [VdfToken.endOfLine, "\n"],
+        [VdfToken.rBracket, "}"],
       ],
     ],
   ];
@@ -242,29 +242,29 @@ describe("should tokenize objects", () => {
 describe("should tokenize comments before others", () => {
   // An array of the input strings and expected output
   // The output is a list of token kinds and matched string
-  const params: Array<[string, Array<[VDFToken, string]>]> = [
+  const params: Array<[string, Array<[VdfToken, string]>]> = [
     [
       '// Comment "key" "value"',
-      [[VDFToken.comment, '// Comment "key" "value"']],
+      [[VdfToken.comment, '// Comment "key" "value"']],
     ],
     [
       '"key" // "value"',
       [
-        [VDFToken.quotedString, '"key"'],
-        [VDFToken.space, " "],
-        [VDFToken.comment, '// "value"'],
+        [VdfToken.quotedString, '"key"'],
+        [VdfToken.space, " "],
+        [VdfToken.comment, '// "value"'],
       ],
     ],
     [
       "// Comment\n",
       [
-        [VDFToken.comment, "// Comment"],
-        [VDFToken.endOfLine, "\n"],
+        [VdfToken.comment, "// Comment"],
+        [VdfToken.endOfLine, "\n"],
       ],
     ],
     [
       '"open string // Comment',
-      [[VDFToken.quotedString, '"open string // Comment']],
+      [[VdfToken.quotedString, '"open string // Comment']],
     ],
   ];
 

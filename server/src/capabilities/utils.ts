@@ -5,6 +5,7 @@ import AstObject from "../ast/object";
 import { PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
+import { repeatStr } from "../utils/stringUtils";
 
 /** Get the length of a string-like node (i.e. a key or a string). */
 export function getStringLikeLength(str?: AstKey | AstString): number {
@@ -44,17 +45,6 @@ export function getMaxValueLength(obj: AstObject | AstRoot): number {
       return getStringLikeLength(property.value);
     })
   );
-}
-
-/** Repeat the string the given amount of times. */
-export function repeatStr(str: string, count: number): string {
-  let res = "";
-
-  for (let i = 0; i < count; i++) {
-    res += str;
-  }
-
-  return res;
 }
 
 /** Get the indent of the given length, based on the given options. */

@@ -1,15 +1,14 @@
-import { getInlineRange, getRange } from "../../parser/utils";
-import AstEndOfLine, { astCrLf, astEndOfLine, astLf } from "../../ast/endOfLine";
+import { getRange } from "../../parser/utils";
+import AstEndOfLine, { astCrLf, astEndOfLine, astLf, EolType } from "../../ast/endOfLine";
 import { NodeType } from "../../ast/baseNode";
 
 describe("astEndOfLine", () => {
   test("should properly create LF node", () => {
-    const actual = astEndOfLine("\n", "LF", getRange(0, 0, 1, 0));
+    const actual = astEndOfLine(EolType.lf, getRange(0, 0, 1, 0));
     const expected: AstEndOfLine = {
       type: NodeType.endOfLine,
       children: [],
-      value: "\n",
-      eolType: "LF",
+      eolType: EolType.lf,
       range: getRange(0, 0, 1, 0),
     };
 
@@ -17,12 +16,11 @@ describe("astEndOfLine", () => {
   });
 
   test("should properly create CRLF node", () => {
-    const actual = astEndOfLine("\r\n", "CRLF", getRange(0, 0, 1, 0));
+    const actual = astEndOfLine(EolType.crlf, getRange(0, 0, 1, 0));
     const expected: AstEndOfLine = {
       type: NodeType.endOfLine,
       children: [],
-      value: "\r\n",
-      eolType: "CRLF",
+      eolType: EolType.crlf,
       range: getRange(0, 0, 1, 0),
     };
 
@@ -36,8 +34,7 @@ describe("astLf", () => {
     const expected: AstEndOfLine = {
       type: NodeType.endOfLine,
       children: [],
-      value: "\n",
-      eolType: "LF",
+      eolType: EolType.lf,
       range: getRange(0, 0, 1, 0),
     };
 
@@ -51,8 +48,7 @@ describe("astCrLf", () => {
     const expected: AstEndOfLine = {
       type: NodeType.endOfLine,
       children: [],
-      value: "\r\n",
-      eolType: "CRLF",
+      eolType: EolType.crlf,
       range: getRange(0, 0, 1, 0),
     };
 

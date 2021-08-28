@@ -1,6 +1,6 @@
 import { alt, apply, opt_sc, rep_sc, rule, seq, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
-import AstEndOfLine, { astEndOfLine } from "../ast/endOfLine";
+import AstEndOfLine, { astEndOfLine, EolType } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
 import AstIndent, { astIndent } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
@@ -148,11 +148,10 @@ indentParser.setPattern(
 // --------------------------------------------------------------------
 endOfLineParser.setPattern(
   apply(tok(VdfToken.endOfLine), (token) => {
-    const value = token.text;
-    const eolType = token.text === "\n" ? "LF" : "CRLF";
+    const eolType = token.text === "\n" ? EolType.lf : EolType.crlf;
     const range = getRangeFromToken(token);
 
-    return astEndOfLine(value, eolType, range);
+    return astEndOfLine(eolType, range);
   })
 );
 

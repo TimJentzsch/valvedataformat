@@ -6,10 +6,17 @@ import AstObject from "./object";
 import AstString from "./string";
 import { InlineTrivia, MultilineTrivia } from "./trivia";
 
+export enum PropertyType {
+  /** A property with a string value. */
+  string,
+  /** A property with an object value. */
+  object,
+}
+
 /** A string property, e.g. "key" "value". */
 export interface AstStringProperty extends AstBaseNode {
   type: NodeType.property;
-  valueType: "string";
+  propertyType: PropertyType.string;
   /** The key of the property. */
   key: AstKey;
   /** The value of the property. Can be undefined for incomplete documents. */
@@ -19,7 +26,7 @@ export interface AstStringProperty extends AstBaseNode {
 /** An object property, e.g. "key" {}. */
 export interface AstObjectProperty extends AstBaseNode {
   type: NodeType.property;
-  valueType: "object";
+  propertyType: PropertyType.object;
   /** The key of the property. Can be undefined for incomplete documents. */
   key?: AstKey;
   /** The value of the property. */
@@ -44,7 +51,7 @@ export function astStringProperty(
 
     const property: AstStringProperty = {
       type: NodeType.property,
-      valueType: "string",
+      propertyType: PropertyType.string,
       key,
       value,
       children,
@@ -68,7 +75,7 @@ export function astObjectProperty(
 
     const property: AstObjectProperty = {
       type: NodeType.property,
-      valueType: "object",
+      propertyType: PropertyType.object,
       key,
       value,
       children,

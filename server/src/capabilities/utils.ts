@@ -2,6 +2,7 @@ import { FormattingOptions } from "vscode-languageserver/node";
 import AstKey from "../ast/key";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
+import { PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
 
@@ -36,7 +37,7 @@ export function getMaxValueLength(obj: AstObject | AstRoot): number {
   return Math.max(
     0,
     ...obj.properties.map((property) => {
-      if (property.valueType === "object") {
+      if (property.propertyType === PropertyType.object) {
         return 0;
       }
 

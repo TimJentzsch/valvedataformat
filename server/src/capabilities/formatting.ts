@@ -2,7 +2,7 @@ import { TextEdit, FormattingOptions, Range } from "vscode-languageserver/node";
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
-import AstProperty, { AstStringProperty } from "../ast/property";
+import AstProperty, { AstStringProperty, PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
 import {
   getStringLikeLength,
@@ -72,7 +72,7 @@ export async function formatProperty(
   maxKeyLength: number = 0,
   maxValueLength: number = 0
 ): Promise<TextEdit[]> {
-  if (property.valueType === "string") {
+  if (property.propertyType === PropertyType.string) {
     return formatStringProperty(
       property,
       options,

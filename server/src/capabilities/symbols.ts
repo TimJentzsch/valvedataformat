@@ -2,7 +2,7 @@ import { DocumentSymbol, SymbolKind } from "vscode-languageserver/node";
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
-import AstProperty from "../ast/property";
+import AstProperty, { PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
 import { executeForNodeList } from "./utils";
@@ -66,7 +66,7 @@ export async function getPropertySymbols(
       : value?.range ?? property.range;
 
   const kind =
-    property.valueType === "object" ? SymbolKind.Object : SymbolKind.Property;
+    property.propertyType === PropertyType.object ? SymbolKind.Object : SymbolKind.Property;
 
   const symbol: DocumentSymbol = {
     name: property.key?.value ?? "Property",

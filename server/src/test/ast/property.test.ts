@@ -2,7 +2,7 @@ import { getInlineRange } from "../../parser/utils";
 import { astComment } from "../../ast/comment";
 import { astSpaces } from "../../ast/indent";
 import { astUnquotedKey } from "../../ast/key";
-import AstProperty, {  astStringProperty } from "../../ast/property";
+import AstProperty, {  astStringProperty, PropertyType } from "../../ast/property";
 import { astQuotedString } from "../../ast/string";
 import { NodeType } from "../../ast/baseNode";
 
@@ -14,7 +14,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [], value);
     const expected: AstProperty = {
       type: NodeType.property,
-      valueType: "string",
+      propertyType: PropertyType.string,
       key,
       value,
       children: [key, value],
@@ -32,7 +32,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [betweenTrivia], value);
     const expected: AstProperty = {
       type: NodeType.property,
-      valueType: "string",
+      propertyType:  PropertyType.string,
       key,
       value,
       children: [key, betweenTrivia, value],
@@ -50,7 +50,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, undefined, value, [postTrivia]);
     const expected: AstProperty = {
       type: NodeType.property,
-      valueType: "string",
+      propertyType:  PropertyType.string,
       key,
       value,
       children: [key, value, postTrivia],
@@ -69,7 +69,7 @@ describe("astStringProperty", () => {
     const actual = astStringProperty(key, [betweenTrivia], value, [postTrivia]);
     const expected: AstProperty = {
       type: NodeType.property,
-      valueType: "string",
+      propertyType:  PropertyType.string,
       key,
       value,
       children: [key, betweenTrivia, value, postTrivia],

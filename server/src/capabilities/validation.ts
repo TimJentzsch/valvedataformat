@@ -3,7 +3,7 @@ import { NodeType } from "../ast/baseNode";
 import AstKey from "../ast/key";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
-import AstProperty from "../ast/property";
+import AstProperty, { PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
 import AstString from "../ast/string";
 import { executeForNodeList } from "./utils";
@@ -63,7 +63,7 @@ export async function validateProperty(
 ): Promise<Diagnostic[]> {
   const childDiagnostics = await validateChildren(property.children);
 
-  if (property.valueType === "string" && property.value === undefined) {
+  if (property.propertyType === PropertyType.string && property.value === undefined) {
     const key = property.key;
 
     const missingValueDiagnostic: Diagnostic = {
@@ -75,7 +75,7 @@ export async function validateProperty(
     const end = Date.now();
 
     return [missingValueDiagnostic].concat(childDiagnostics);
-  } else if (property.valueType === "object" && property.key === undefined) {
+  } else if (property.propertyType === PropertyType.object && property.key === undefined) {
     const value = property.value;
 
     const missingValueDiagnostic: Diagnostic = {

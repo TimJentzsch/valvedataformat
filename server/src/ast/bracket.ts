@@ -1,7 +1,10 @@
 import { Range } from "vscode-languageserver/node";
 import AstBaseNode, { NodeType } from "./baseNode";
 
-export type BracketType = "left" | "right";
+export enum BracketType {
+  left,
+  right
+};
 
 /** A bracket for an object. */
 export default interface AstBracket extends AstBaseNode {
@@ -26,10 +29,10 @@ export function astBracket(
 
 /** Create an AST node for a left bracket ({). */
 export function astLBracket(range: Range): AstBracket {
-  return astBracket("left", range);
+  return astBracket(BracketType.left, range);
 }
 
 /** Create an AST node for a right bracket (}). */
 export function astRBracket(range: Range): AstBracket {
-  return astBracket("right", range);
+  return astBracket(BracketType.right, range);
 }

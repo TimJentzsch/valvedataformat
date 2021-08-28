@@ -1,14 +1,14 @@
 import { getInlineRange } from "../../parser/utils";
-import AstBracket, { astBracket, astLBracket, astRBracket } from "../../ast/bracket";
+import AstBracket, { astBracket, astLBracket, astRBracket, BracketType } from "../../ast/bracket";
 import { NodeType } from "../../ast/baseNode";
 
 describe('astBracket', () => {
   test('should properly create left bracket node', () => {
-    const actual = astBracket("left", getInlineRange(0, 0, 1));
+    const actual = astBracket(BracketType.left, getInlineRange(0, 0, 1));
     const expected: AstBracket = {
       type: NodeType.bracket,
       children: [],
-      bracketType: "left",
+      bracketType: BracketType.left,
       range: getInlineRange(0, 0, 1),
     };
 
@@ -16,11 +16,11 @@ describe('astBracket', () => {
   });
 
   test('should properly create right bracket node', () => {
-    const actual = astBracket("right", getInlineRange(0, 0, 1));
+    const actual = astBracket(BracketType.right, getInlineRange(0, 0, 1));
     const expected: AstBracket = {
       type: NodeType.bracket,
       children: [],
-      bracketType: "right",
+      bracketType: BracketType.right,
       range: getInlineRange(0, 0, 1),
     };
 
@@ -34,7 +34,7 @@ describe('astLBracket', () => {
     const expected: AstBracket = {
       type: NodeType.bracket,
       children: [],
-      bracketType: "left",
+      bracketType: BracketType.left,
       range: getInlineRange(0, 0, 1),
     };
 
@@ -48,7 +48,7 @@ describe('astRBracket', () => {
     const expected: AstBracket = {
       type: NodeType.bracket,
       children: [],
-      bracketType: "right",
+      bracketType: BracketType.right,
       range: getInlineRange(0, 0, 1),
     };
 

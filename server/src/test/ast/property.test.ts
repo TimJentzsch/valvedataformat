@@ -1,6 +1,6 @@
 import { getInlineRange } from "../../parser/utils";
 import { astComment } from "../../ast/comment";
-import { astIndent } from "../../ast/indent";
+import { astSpaces } from "../../ast/indent";
 import { astUnquotedKey } from "../../ast/key";
 import AstProperty, {  astStringProperty } from "../../ast/property";
 import { astQuotedString } from "../../ast/string";
@@ -26,7 +26,7 @@ describe("astStringProperty", () => {
 
   test("should create string property with between trivia", () => {
     const key = astUnquotedKey("key", getInlineRange(0, 0, 3));
-    const betweenTrivia = astIndent(" ", getInlineRange(0, 3, 4));
+    const betweenTrivia = astSpaces(1, getInlineRange(0, 3, 4));
     const value = astQuotedString("value", getInlineRange(0, 4, 11));
 
     const actual = astStringProperty(key, [betweenTrivia], value);
@@ -62,7 +62,7 @@ describe("astStringProperty", () => {
 
   test("should create string property with between and post trivia", () => {
     const key = astUnquotedKey("key", getInlineRange(0, 0, 3));
-    const betweenTrivia = astIndent(" ", getInlineRange(0, 3, 4));
+    const betweenTrivia = astSpaces(1, getInlineRange(0, 3, 4));
     const value = astQuotedString("value", getInlineRange(0, 4, 11));
     const postTrivia = astComment(" Comment", getInlineRange(0, 11, 21));
 

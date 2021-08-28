@@ -7,7 +7,8 @@ export enum VdfToken {
   lBracket,
   rBracket,
   endOfLine,
-  space,
+  spaces,
+  tabs,
 }
 
 export const tokenizer = buildLexer([
@@ -24,8 +25,10 @@ export const tokenizer = buildLexer([
   [true, /^}/g, VdfToken.rBracket],
   // End of line (line break)
   [true, /^\r?\n/g, VdfToken.endOfLine],
-  // Whitespace (without line breaks)
-  [true, /^[ \t]+/g, VdfToken.space],
+  // Spaces
+  [true, /^ +/g, VdfToken.spaces],
+  // Tabs
+  [true, /^\t+/g, VdfToken.tabs],
 ]);
 
 export function getTokenStream(input: string): Token<VdfToken>[] {

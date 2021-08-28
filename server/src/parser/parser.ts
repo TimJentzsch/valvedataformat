@@ -2,7 +2,7 @@ import { alt, apply, opt_sc, rep_sc, rule, seq, tok } from "typescript-parsec";
 import AstComment, { astComment } from "../ast/comment";
 import AstEndOfLine, { astEndOfLine, EolType } from "../ast/endOfLine";
 import AstKey, { astKeyFromString } from "../ast/key";
-import AstIndent, { astIndent } from "../ast/indent";
+import AstIndent, { astSpaces, astTabs } from "../ast/indent";
 import AstString, { astQuotedString, astUnquotedString } from "../ast/string";
 import { VdfToken } from "../lexer/lexer";
 import { getRangeFromToken } from "./utils";
@@ -135,12 +135,18 @@ keyParser.setPattern(
 // Indent (spaces and tabs)
 // --------------------------------------------------------------------
 indentParser.setPattern(
-  apply(tok(VdfToken.space), (token) => {
-    const value = token.text;
-    const range = getRangeFromToken(token);
-
-    return astIndent(value, range);
-  })
+  alt(
+    apply(tok(VdfToken.spaces), (token) => {
+      const range = getRangeFromToken(token);
+  
+      return astSpaces(token.text.length, range);
+    }),
+    apply(tok(VdfToken.tabs), (token) => {
+      const range = getRangeFromToken(token);
+  
+      return astTabs(token.text.length, range);
+    }),
+  )
 );
 
 // --------------------------------------------------------------------

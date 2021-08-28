@@ -1,7 +1,7 @@
 import { getInlineRange, getRange } from "../../parser/utils";
 import { astLBracket, astRBracket } from "../../ast/bracket";
 import { astLf } from "../../ast/endOfLine";
-import { astIndent } from "../../ast/indent";
+import { astTabs } from "../../ast/indent";
 import { astUnquotedKey } from "../../ast/key";
 import AstObject, { astObject } from "../../ast/object";
 import { astStringProperty } from "../../ast/property";
@@ -13,12 +13,12 @@ describe("astObject", () => {
     const lBracket = astLBracket(getInlineRange(0, 0, 1));
     const property = astStringProperty(
       astUnquotedKey("key", getInlineRange(1, 1, 4)),
-      [astIndent("\t", getInlineRange(1, 4, 5))],
+      [astTabs(1, getInlineRange(1, 4, 5))],
       astUnquotedString("value", getInlineRange(1, 5, 10))
     );
     const content = [
       astLf(getRange(0, 1, 1, 0)),
-      astIndent("\t", getInlineRange(1, 0, 1)),
+      astTabs(1, getInlineRange(1, 0, 1)),
       property,
       astLf(getRange(1, 10, 2, 0)),
     ];

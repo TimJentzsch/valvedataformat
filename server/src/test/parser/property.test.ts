@@ -1,7 +1,7 @@
 import { astLBracket, astRBracket } from "../../ast/bracket";
 import { astComment } from "../../ast/comment";
 import { astLf } from "../../ast/endOfLine";
-import { astIndent } from "../../ast/indent";
+import { astSpaces, astTabs } from "../../ast/indent";
 import { astQuotedKey, astUnquotedKey } from "../../ast/key";
 import { astObject } from "../../ast/object";
 import AstProperty, {
@@ -21,7 +21,7 @@ describe("propertyParser", () => {
         "key value",
         astStringProperty(
           astUnquotedKey("key", getInlineRange(0, 0, 3)),
-          [astIndent(" ", getInlineRange(0, 3, 4))],
+          [astSpaces(1, getInlineRange(0, 3, 4))],
           astUnquotedString("value", getInlineRange(0, 4, 9))
         ),
       ],
@@ -29,7 +29,7 @@ describe("propertyParser", () => {
         "key\tvalue",
         astStringProperty(
           astUnquotedKey("key", getInlineRange(0, 0, 3)),
-          [astIndent("\t", getInlineRange(0, 3, 4))],
+          [astTabs(1, getInlineRange(0, 3, 4))],
           astUnquotedString("value", getInlineRange(0, 4, 9))
         ),
       ],
@@ -37,7 +37,7 @@ describe("propertyParser", () => {
         '"key" "value"',
         astStringProperty(
           astQuotedKey("key", getInlineRange(0, 0, 5)),
-          [astIndent(" ", getInlineRange(0, 5, 6))],
+          [astSpaces(1, getInlineRange(0, 5, 6))],
           astQuotedString("value", getInlineRange(0, 6, 13))
         ),
       ],
@@ -53,7 +53,7 @@ describe("propertyParser", () => {
         '"key" "value',
         astStringProperty(
           astQuotedKey("key", getInlineRange(0, 0, 5)),
-          [astIndent(" ", getInlineRange(0, 5, 6))],
+          [astSpaces(1, getInlineRange(0, 5, 6))],
           astQuotedString("value", getInlineRange(0, 6, 12), false)
         ),
       ],
@@ -67,10 +67,10 @@ describe("propertyParser", () => {
         '"key" "value" // Comment',
         astStringProperty(
           astQuotedKey("key", getInlineRange(0, 0, 5)),
-          [astIndent(" ", getInlineRange(0, 5, 6))],
+          [astSpaces(1, getInlineRange(0, 5, 6))],
           astQuotedString("value", getInlineRange(0, 6, 13)),
           [
-            astIndent(" ", getInlineRange(0, 13, 14)),
+            astSpaces(1, getInlineRange(0, 13, 14)),
             astComment(" Comment", getInlineRange(0, 14, 24)),
           ]
         ),
@@ -78,7 +78,7 @@ describe("propertyParser", () => {
       [
         "key // Comment",
         astStringProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
-          astIndent(" ", getInlineRange(0, 3, 4)),
+          astSpaces(1, getInlineRange(0, 3, 4)),
           astComment(" Comment", getInlineRange(0, 4, 14)),
         ]),
       ],
@@ -99,7 +99,7 @@ describe("propertyParser", () => {
         "key {}",
         astObjectProperty(
           astUnquotedKey("key", getInlineRange(0, 0, 3)),
-          [astIndent(" ", getInlineRange(0, 3, 4))],
+          [astSpaces(1, getInlineRange(0, 3, 4))],
           astObject(
             astLBracket(getInlineRange(0, 4, 5)),
             [],
@@ -111,16 +111,16 @@ describe("propertyParser", () => {
         "key { key value }",
         astObjectProperty(
           astUnquotedKey("key", getInlineRange(0, 0, 3)),
-          [astIndent(" ", getInlineRange(0, 3, 4))],
+          [astSpaces(1, getInlineRange(0, 3, 4))],
           astObject(
             astLBracket(getInlineRange(0, 4, 5)),
             [
-              astIndent(" ", getInlineRange(0, 5, 6)),
+              astSpaces(1, getInlineRange(0, 5, 6)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(0, 6, 9)),
-                [astIndent(" ", getInlineRange(0, 9, 10))],
+                [astSpaces(1, getInlineRange(0, 9, 10))],
                 astUnquotedString("value", getInlineRange(0, 10, 15)),
-                [astIndent(" ", getInlineRange(0, 15, 16))]
+                [astSpaces(1, getInlineRange(0, 15, 16))]
               ),
             ],
             astRBracket(getInlineRange(0, 16, 17))
@@ -135,12 +135,12 @@ describe("propertyParser", () => {
           astObject(
             astLBracket(getInlineRange(1, 0, 1)),
             [
-              astIndent(" ", getInlineRange(1, 1, 2)),
+              astSpaces(1, getInlineRange(1, 1, 2)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(1, 2, 5)),
-                [astIndent(" ", getInlineRange(1, 5, 6))],
+                [astSpaces(1, getInlineRange(1, 5, 6))],
                 astUnquotedString("value", getInlineRange(1, 6, 11)),
-                [astIndent(" ", getInlineRange(1, 11, 12))]
+                [astSpaces(1, getInlineRange(1, 11, 12))]
               ),
             ],
             astRBracket(getInlineRange(1, 12, 13))
@@ -159,12 +159,12 @@ describe("propertyParser", () => {
           astObject(
             astLBracket(getInlineRange(2, 0, 1)),
             [
-              astIndent(" ", getInlineRange(2, 1, 2)),
+              astSpaces(1, getInlineRange(2, 1, 2)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(2, 2, 5)),
-                [astIndent(" ", getInlineRange(2, 5, 6))],
+                [astSpaces(1, getInlineRange(2, 5, 6))],
                 astUnquotedString("value", getInlineRange(2, 6, 11)),
-                [astIndent(" ", getInlineRange(2, 11, 12))]
+                [astSpaces(1, getInlineRange(2, 11, 12))]
               ),
             ],
             astRBracket(getInlineRange(2, 12, 13))
@@ -180,10 +180,10 @@ describe("propertyParser", () => {
             astLBracket(getInlineRange(1, 0, 1)),
             [
               astLf(getRange(1, 1, 2, 0)),
-              astIndent("\t", getInlineRange(2, 0, 1)),
+              astTabs(1, getInlineRange(2, 0, 1)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(2, 1, 4)),
-                [astIndent("\t", getInlineRange(2, 4, 5))],
+                [astTabs(1, getInlineRange(2, 4, 5))],
                 astUnquotedString("value", getInlineRange(2, 5, 10))
               ),
               astLf(getRange(2, 10, 3, 0)),
@@ -201,10 +201,10 @@ describe("propertyParser", () => {
             astLBracket(getInlineRange(1, 0, 1)),
             [
               astLf(getRange(1, 1, 2, 0)),
-              astIndent("\t", getInlineRange(2, 0, 1)),
+              astTabs(1, getInlineRange(2, 0, 1)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(2, 1, 4)),
-                [astIndent("\t", getInlineRange(2, 4, 5))],
+                [astTabs(1, getInlineRange(2, 4, 5))],
                 astUnquotedString("value", getInlineRange(2, 5, 10))
               ),
               astLf(getRange(2, 10, 3, 0)),
@@ -233,12 +233,12 @@ describe("propertyParser", () => {
           astObject(
             astLBracket(getInlineRange(0, 0, 1)),
             [
-              astIndent(" ", getInlineRange(0, 1, 2)),
+              astSpaces(1, getInlineRange(0, 1, 2)),
               astStringProperty(
                 astUnquotedKey("key", getInlineRange(0, 2, 5)),
-                [astIndent(" ", getInlineRange(0, 5, 6))],
+                [astSpaces(1, getInlineRange(0, 5, 6))],
                 astUnquotedString("value", getInlineRange(0, 6, 11)),
-                [astIndent(" ", getInlineRange(0, 11, 12))]
+                [astSpaces(1, getInlineRange(0, 11, 12))]
               ),
             ],
             astRBracket(getInlineRange(0, 12, 13))

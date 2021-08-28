@@ -1,4 +1,4 @@
-import AstIndent, { astIndent } from "../../ast/indent";
+import AstIndent, { astSpaces, astTabs } from "../../ast/indent";
 import { indentParser } from "../../parser/parser";
 import { applyParser, getInlineRange } from "../../parser/utils";
 
@@ -7,27 +7,19 @@ describe("should parse indent", () => {
   const params: Array<[string, AstIndent]> = [
     [
       " ",
-      astIndent(" ", getInlineRange(0, 0, 1)),
+      astSpaces(1, getInlineRange(0, 0, 1)),
     ],
     [
       "\t",
-      astIndent("\t", getInlineRange(0, 0, 1)),
+      astTabs(1, getInlineRange(0, 0, 1)),
     ],
     [
       "    ",
-      astIndent("    ", getInlineRange(0, 0, 4)),
+      astSpaces(4, getInlineRange(0, 0, 4)),
     ],
     [
       "\t\t\t\t",
-      astIndent("\t\t\t\t", getInlineRange(0, 0, 4)),
-    ],
-    [
-      " \t \t",
-      astIndent(" \t \t", getInlineRange(0, 0, 4)),
-    ],
-    [
-      "\t \t ",
-      astIndent("\t \t ", getInlineRange(0, 0, 4)),
+      astTabs(4, getInlineRange(0, 0, 4)),
     ],
   ];
 

@@ -100,14 +100,26 @@ describe("should tokenize single line break", () => {
   }
 });
 
-// Whitespace
-describe("should tokenize single whitespace", () => {
-  const params = [" ", "\t", "    ", "\t\t", "\t  \t  ", "  \t  \t"];
+// Spaces
+describe("should tokenize single spaces", () => {
+  const params = [" ", "  ", "    "];
 
   for (const input of params) {
     test(showWhitespace(input), () => {
       const actual = getTokenStream(input).map((token) => token.kind);
-      expect(actual).toEqual([VdfToken.space]);
+      expect(actual).toEqual([VdfToken.spaces]);
+    });
+  }
+});
+
+// Tabs
+describe("should tokenize single tabs", () => {
+  const params = ["\t", "\t\t", "\t\t\t\t"];
+
+  for (const input of params) {
+    test(showWhitespace(input), () => {
+      const actual = getTokenStream(input).map((token) => token.kind);
+      expect(actual).toEqual([VdfToken.tabs]);
     });
   }
 });
@@ -121,7 +133,7 @@ describe("should tokenize key-value pairs", () => {
       "key value",
       [
         [VdfToken.unquotedString, "key"],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.unquotedString, "value"],
       ],
     ],
@@ -129,7 +141,7 @@ describe("should tokenize key-value pairs", () => {
       '"key" "value"',
       [
         [VdfToken.quotedString, '"key"'],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.quotedString, '"value"'],
       ],
     ],
@@ -137,7 +149,7 @@ describe("should tokenize key-value pairs", () => {
       'key "value"',
       [
         [VdfToken.unquotedString, "key"],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.quotedString, '"value"'],
       ],
     ],
@@ -145,7 +157,7 @@ describe("should tokenize key-value pairs", () => {
       '"key" value',
       [
         [VdfToken.quotedString, '"key"'],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.unquotedString, "value"],
       ],
     ],
@@ -174,7 +186,7 @@ describe("should tokenize key-value pairs", () => {
       '"key" "value\n',
       [
         [VdfToken.quotedString, '"key"'],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.quotedString, '"value'],
         [VdfToken.endOfLine, "\n"],
       ],
@@ -208,7 +220,7 @@ describe("should tokenize objects", () => {
       "{ }",
       [
         [VdfToken.lBracket, "{"],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.rBracket, "}"],
       ],
     ],
@@ -217,9 +229,9 @@ describe("should tokenize objects", () => {
       [
         [VdfToken.lBracket, "{"],
         [VdfToken.endOfLine, "\n"],
-        [VdfToken.space, "\t"],
+        [VdfToken.tabs, "\t"],
         [VdfToken.quotedString, '"key"'],
-        [VdfToken.space, "\t"],
+        [VdfToken.tabs, "\t"],
         [VdfToken.quotedString, '"value"'],
         [VdfToken.endOfLine, "\n"],
         [VdfToken.rBracket, "}"],
@@ -251,7 +263,7 @@ describe("should tokenize comments before others", () => {
       '"key" // "value"',
       [
         [VdfToken.quotedString, '"key"'],
-        [VdfToken.space, " "],
+        [VdfToken.spaces, " "],
         [VdfToken.comment, '// "value"'],
       ],
     ],

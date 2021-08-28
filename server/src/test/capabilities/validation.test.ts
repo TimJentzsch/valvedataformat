@@ -4,7 +4,7 @@ import { getInlineRange } from "../../parser/utils";
 import { validateKey, validateObject, validateProperty, validateString } from "../../capabilities/validation";
 import AstString, { astQuotedString, astUnquotedString } from "../../ast/string";
 import AstProperty, { astObjectProperty, astStringProperty } from "../../ast/property";
-import { astIndent } from "../../ast/indent";
+import { astIndent, astSpaces } from "../../ast/indent";
 import AstObject, { astObject } from "../../ast/object";
 import { astLBracket, astRBracket } from "../../ast/bracket";
 
@@ -78,7 +78,7 @@ describe("validateProperty", () => {
       "should not have errors for valid unquoted string property",
       astStringProperty(
         astUnquotedKey("key", getInlineRange(0, 0, 3)),
-        [astIndent(" ", getInlineRange(0, 3, 4))],
+        [astSpaces(1, getInlineRange(0, 3, 4))],
         astUnquotedString("value", getInlineRange(0, 4, 9))
       ),
       [],
@@ -86,7 +86,7 @@ describe("validateProperty", () => {
     [
       "should have error for string property without value",
       astStringProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
-        astIndent(" ", getInlineRange(0, 3, 4)),
+        astSpaces(1, getInlineRange(0, 3, 4)),
       ]),
       [getInlineRange(0, 0, 3)],
     ],
@@ -94,7 +94,7 @@ describe("validateProperty", () => {
       "should have errors for unterminated quoted key and value",
       astStringProperty(
         astQuotedKey("key", getInlineRange(0, 0, 4), false),
-        [astIndent(" ", getInlineRange(0, 4, 5))],
+        [astSpaces(1, getInlineRange(0, 4, 5))],
         astQuotedString("value", getInlineRange(0, 5, 11), false)
       ),
       [getInlineRange(0, 3, 4), getInlineRange(0, 10, 11)],

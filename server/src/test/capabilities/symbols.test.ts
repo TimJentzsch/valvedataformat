@@ -1,6 +1,6 @@
 import { DocumentSymbol, SymbolKind } from "vscode-languageserver/node";
 import { astLBracket, astRBracket } from "../../ast/bracket";
-import { astIndent } from "../../ast/indent";
+import { astTabs } from "../../ast/indent";
 import { astUnquotedKey } from "../../ast/key";
 import AstNode from "../../ast/node";
 import { astObject } from "../../ast/object";
@@ -29,7 +29,7 @@ describe("getNodeSymbols", () => {
       "should give key name for string property node",
       astStringProperty(
         astUnquotedKey("key", getInlineRange(0, 0, 3)),
-        [astIndent("\t", getInlineRange(0, 3, 4))],
+        [astTabs(1, getInlineRange(0, 3, 4))],
         astUnquotedString("value", getInlineRange(0, 4, 9))
       ),
       [
@@ -54,7 +54,7 @@ describe("getNodeSymbols", () => {
       "should give key name for object property node",
       astObjectProperty(
         astUnquotedKey("key", getInlineRange(0, 0, 3)),
-        [astIndent("\t", getInlineRange(0, 3, 4))],
+        [astTabs(1, getInlineRange(0, 3, 4))],
         astObject(
           astLBracket(getInlineRange(0, 4, 5)),
           [],
@@ -75,7 +75,7 @@ describe("getNodeSymbols", () => {
       "should give key name for object property node",
       astObjectProperty(
         astUnquotedKey("key", getInlineRange(0, 0, 3)),
-        [astIndent("\t", getInlineRange(0, 3, 4))],
+        [astTabs(1, getInlineRange(0, 3, 4))],
         astObject(
           astLBracket(getInlineRange(0, 4, 5)),
           [],
@@ -99,7 +99,7 @@ describe("getNodeSymbols", () => {
         [
           astStringProperty(
             astUnquotedKey("key", getInlineRange(0, 1, 4)),
-            [astIndent("\t", getInlineRange(0, 4, 5))],
+            [astTabs(1, getInlineRange(0, 4, 5))],
             astQuotedString("value", getInlineRange(0, 5, 12))
           ),
         ],

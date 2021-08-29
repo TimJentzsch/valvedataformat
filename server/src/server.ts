@@ -15,8 +15,7 @@ import {
 } from "vscode-languageserver/node";
 
 import { TextDocument } from "vscode-languageserver-textdocument";
-import { applyParser } from "./parser/utils";
-import { rootParser } from "./parser/parser";
+import { parseContent } from "./parser/utils";
 import validateNode from "./capabilities/validation";
 import AstRoot from "./ast/root";
 import getNodeSymbols from "./capabilities/symbols";
@@ -149,7 +148,7 @@ documents.onDidChangeContent((change) => {
 function parseTextDocument(document: TextDocument): AstRoot {
   const start = Date.now();
   console.debug(`Parsing AST for ${document.uri}...`);
-  const rootNode = applyParser(rootParser, document.getText());
+  const rootNode = parseContent(document.getText());
   documentAsts.set(document.uri, rootNode);
   const end = Date.now();
   console.debug(`Parsed AST for ${document.uri} in ${end - start} ms.`);

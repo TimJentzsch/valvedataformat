@@ -2,7 +2,7 @@ import { astComment } from "../../ast/comment";
 import { astLf } from "../../ast/endOfLine";
 import { astSpaces } from "../../ast/indent";
 import { InlineTrivia, MultilineTrivia } from "../../ast/trivia";
-import { inlineTriviaParser, multilineTriviaParser } from "../../parser/parser";
+import { multilineTriviaParser, inlineTriviaParser } from "../../parser/parser";
 import { applyParser, getInlineRange, getRange } from "../../parser/utils";
 
 // Inline trivia parsing

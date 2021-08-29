@@ -1,5 +1,6 @@
 import { getRangeFromNodeList } from "../parser/utils";
 import AstBaseNode, { NodeType } from "./baseNode";
+import AstIndent from "./indent";
 import AstKey from "./key";
 import AstNode from "./node";
 import AstObject from "./object";
@@ -19,6 +20,7 @@ export interface AstStringProperty extends AstBaseNode {
   propertyType: PropertyType.string;
   /** The key of the property. */
   key: AstKey;
+  betweenIndent: AstIndent[];
   /** The value of the property. Can be undefined for incomplete documents. */
   value?: AstString;
 }
@@ -40,12 +42,12 @@ export default AstProperty;
 /** Create a new AST string property node. */
 export function astStringProperty(
   key: AstKey,
-  betweenTrivia: InlineTrivia[] = [],
+  betweenIndent: AstIndent[] = [],
   value: AstString | undefined = undefined,
   postTrivia: InlineTrivia[] = []
 ) {
   const children = [key as AstNode]
-    .concat(betweenTrivia)
+    .concat(betweenIndent)
     .concat(value !== undefined ? [value] : [])
     .concat(postTrivia);
 
@@ -53,6 +55,7 @@ export function astStringProperty(
       type: NodeType.property,
       propertyType: PropertyType.string,
       key,
+      betweenIndent,
       value,
       children,
       range: getRangeFromNodeList(children),

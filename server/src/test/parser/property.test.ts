@@ -77,10 +77,12 @@ describe("propertyParser", () => {
       ],
       [
         "key // Comment",
-        astStringProperty(astUnquotedKey("key", getInlineRange(0, 0, 3)), [
-          astSpaces(1, getInlineRange(0, 3, 4)),
-          astComment(" Comment", getInlineRange(0, 4, 14)),
-        ]),
+        astStringProperty(
+          astUnquotedKey("key", getInlineRange(0, 0, 3)),
+          [astSpaces(1, getInlineRange(0, 3, 4))],
+          undefined,
+          [astComment(" Comment", getInlineRange(0, 4, 14))]
+        ),
       ],
     ];
 

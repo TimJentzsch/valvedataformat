@@ -138,14 +138,14 @@ indentParser.setPattern(
   alt(
     apply(tok(VdfToken.spaces), (token) => {
       const range = getRangeFromToken(token);
-  
+
       return astSpaces(token.text.length, range);
     }),
     apply(tok(VdfToken.tabs), (token) => {
       const range = getRangeFromToken(token);
-  
+
       return astTabs(token.text.length, range);
-    }),
+    })
   )
 );
 
@@ -164,7 +164,6 @@ endOfLineParser.setPattern(
 // --------------------------------------------------------------------
 // Trivia
 // --------------------------------------------------------------------
-
 // Inline trivia
 inlineTriviaParser.setPattern(rep_sc(alt(commentParser, indentParser)));
 // Multiline trivia
@@ -182,36 +181,31 @@ propertyParser.setPattern(
     apply(
       seq(
         keyParser,
-        inlineTriviaParser,
+        rep_sc(indentParser),
         // The value is optional (for incomplete documents)
         opt_sc(
           // The value with optional trailing trivia
-          seq(
-            // The value is either a string or an object
+          // The value is either a string or an object
+          alt(
+            stringParser,
+            // If the value is an object, we have two possibilites:
             alt(
-              stringParser,
-              // If the value is an object, we have two possibilites:
-              alt(
-                // It's either on the same line and we can parse it directly.
-                objectParser,
-                // Or we hit a line break. In that case we can have additional trivia with line breaks.
-                seq(endOfLineParser, multilineTriviaParser, objectParser)
-              )
-            ),
-            // Optional trailing whitespace (no line breaks)
-            inlineTriviaParser
+              // It's either on the same line and we can parse it directly.
+              objectParser,
+              // Or we hit a line break. In that case we can have additional trivia with line breaks.
+              seq(endOfLineParser, multilineTriviaParser, objectParser)
+            )
           )
-        )
+        ),
+        // Optional trailing whitespace (no line breaks)
+        inlineTriviaParser
       ),
-      ([key, betweenInlineTrivia, rest]) => {
-        const valueStuff = rest ? rest[0] : undefined;
-        const postTrivia = rest ? rest[1] : [];
-
+      ([key, betweenIndent, valueStuff, postTrivia]) => {
         if (valueStuff === undefined) {
           // No value provided
           return astStringProperty(
             key,
-            betweenInlineTrivia,
+            betweenIndent,
             undefined,
             postTrivia
           );
@@ -220,7 +214,7 @@ propertyParser.setPattern(
         if (Array.isArray(valueStuff)) {
           // Object value due to line break
           const [endOfLine, multiTrivia, value] = valueStuff;
-          const betweenTrivia = (betweenInlineTrivia as MultilineTrivia[])
+          const betweenTrivia = (betweenIndent as MultilineTrivia[])
             .concat([endOfLine])
             .concat(multiTrivia);
 
@@ -231,7 +225,7 @@ propertyParser.setPattern(
           // Object value due to bracket
           return astObjectProperty(
             key,
-            betweenInlineTrivia,
+            betweenIndent,
             valueStuff,
             postTrivia
           );
@@ -240,7 +234,7 @@ propertyParser.setPattern(
         // String value
         return astStringProperty(
           key,
-          betweenInlineTrivia,
+          betweenIndent,
           valueStuff,
           postTrivia
         );

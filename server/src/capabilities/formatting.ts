@@ -13,41 +13,44 @@ import {
   getMaxValueLength,
 } from "./utils";
 
+export interface NodeFormattingOptions extends FormattingOptions {
+  /** The current level of indent. */
+  indent?: number;
+  /** The current column.
+   * Columns differ from the character in a position when tabs are used.
+   * One tab is always one character, but has as many columns as the tab size used.
+   */
+  column?: number;
+}
+
+export interface PropertyFormattingOptions extends NodeFormattingOptions {
+  /** The maximum length of the keys in the current object. */
+  maxKeyLength?: number;
+  /** The maximum length of the values in the current object. */
+  maxValueLength?: number;
+}
+
 /** Format the given node. */
 export default async function formatNode(
   node: AstNode,
-  options: FormattingOptions,
-  curIndent: number = 0
+  options: NodeFormattingOptions
 ): Promise<TextEdit[]> {
   switch (node.type) {
     case NodeType.root:
-      return formatRoot(node, options, curIndent);
+      return formatRoot(node, options);
     case NodeType.object:
-      return formatObject(node, options, curIndent);
+      return formatObject(node, options);
     case NodeType.property:
-      const propOptions: PropertyFormattingOptions = {
-        maxKeyLength: 0,
-        maxValueLength: 0,
-        curColumn: 0,
-      };
-      return formatProperty(node, options, propOptions, curIndent);
+      return formatProperty(node, options);
     default:
       return [];
   }
 }
 
-export interface PropertyFormattingOptions {
-  maxKeyLength: number;
-  maxValueLength: number;
-  curColumn: number;
-}
-
 /** Format the given string node. */
 export async function formatStringProperty(
   property: AstStringProperty,
-  options: FormattingOptions,
-  propOptions: PropertyFormattingOptions,
-  curIndent: number = 0,
+  options: PropertyFormattingOptions
 ): Promise<TextEdit[]> {
   const edits: TextEdit[] = [];
 
@@ -60,8 +63,9 @@ export async function formatStringProperty(
 
   // Line up all property values
   const keyLength = getStringLikeLength(property.key);
-  const neededBetweenIndent = 1 + (propOptions.maxKeyLength - keyLength);
-  const keyEndColumn = curIndent * options.tabSize + keyLength;
+  const neededBetweenIndent =
+    1 + ((options.maxKeyLength ?? keyLength) - keyLength);
+  const keyEndColumn = (options.indent ?? 0) * options.tabSize + keyLength;
   let indentNeeded = getNeededIndentlength(
     options,
     keyEndColumn,
@@ -133,46 +137,33 @@ export async function formatStringProperty(
 /** Format the given property node. */
 export async function formatProperty(
   property: AstProperty,
-  options: FormattingOptions,
-  propOptions: PropertyFormattingOptions,
-  curIndent: number = 0,
+  options: PropertyFormattingOptions
 ): Promise<TextEdit[]> {
   if (property.propertyType === PropertyType.string) {
-    return formatStringProperty(
-      property,
-      options,
-      propOptions,
-      curIndent,
-    );
+    return formatStringProperty(property, options);
   }
 
-  return formatNode(property.value, options, curIndent);
+  return formatNode(property.value, options);
 }
 
 /** Format the given object node. */
 export async function formatObject(
   obj: AstObject,
-  options: FormattingOptions,
-  curIndent: number = 0
+  options: NodeFormattingOptions
 ): Promise<TextEdit[]> {
   const maxKeyLength = getMaxKeyLength(obj);
   const maxValueLength = getMaxValueLength(obj);
 
   const propOptions: PropertyFormattingOptions = {
+    ...options,
     maxKeyLength,
     maxValueLength,
-    curColumn: (curIndent + 1) * options.tabSize,
+    indent: (options.indent ?? 0) + 1,
+    column: (options.column ?? 0) + options.tabSize,
   };
 
   const propertyEditsCollection = await Promise.all(
-    obj.properties.map((property) =>
-      formatProperty(
-        property,
-        options,
-        propOptions,
-        curIndent + 1,
-      )
-    )
+    obj.properties.map((property) => formatProperty(property, propOptions))
   );
 
   const propertyEdits = ([] as TextEdit[]).concat(...propertyEditsCollection);
@@ -183,22 +174,19 @@ export async function formatObject(
 /** Format the given root node. */
 export async function formatRoot(
   root: AstRoot,
-  options: FormattingOptions,
-  curIndent: number = 0
+  options: FormattingOptions
 ): Promise<TextEdit[]> {
   const maxKeyLength = getMaxKeyLength(root);
   const maxValueLength = getMaxValueLength(root);
 
   const propOptions: PropertyFormattingOptions = {
+    ...options,
     maxKeyLength,
     maxValueLength,
-    curColumn: curIndent * options.tabSize,
   };
 
   const propertyEditsCollection = await Promise.all(
-    root.properties.map((property) =>
-      formatProperty(property, options, propOptions, curIndent)
-    )
+    root.properties.map((property) => formatProperty(property, propOptions))
   );
 
   const propertyEdits = ([] as TextEdit[]).concat(...propertyEditsCollection);

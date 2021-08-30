@@ -1,4 +1,5 @@
 import { FormattingOptions } from "vscode-languageserver/node";
+import AstIndent, { IndentType } from "../ast/indent";
 import AstKey from "../ast/key";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
@@ -47,15 +48,28 @@ export function getMaxValueLength(obj: AstObject | AstRoot): number {
   );
 }
 
-/** Calculate how much indent is needed. */
-export function getNeededIndentlength(
-  options: FormattingOptions,
-  startColumn: number,
-  length: number
-): number {
-  const size = options.tabSize;
-  const endColumn = Math.ceil((startColumn + length) / size) * size;
-  return endColumn - startColumn;
+/** Calculates the next column that is aligned with the tab marks. */
+export function nextIndentColumn(column: number, options: FormattingOptions): number {
+  return Math.ceil(column / options.tabSize) * options.tabSize;
+}
+
+/** Get the column after the indent is applied at the start column. */
+export function getColumnAfterIndent(startColumn: number, indent: AstIndent, options: FormattingOptions): number {
+  if (indent.indentType === IndentType.spaces) {
+    return startColumn + indent.count;
+  }
+
+  // The first tab lines up to the next column, the others apply the tab size
+  return nextIndentColumn(startColumn + 1, options) + (indent.count - 1) * options.tabSize;
+}
+
+/** Get the number of indent characters needed to get from the start to the goal column. */
+export function getNeededIndentCount(startColumn: number, goalColumn: number, options: FormattingOptions): number {
+  if (options.insertSpaces) {
+    return goalColumn - startColumn;
+  }
+
+  return Math.ceil((goalColumn - startColumn) / options.tabSize);
 }
 
 /** Execute the given function for a list of nodes. */

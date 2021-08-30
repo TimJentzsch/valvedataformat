@@ -8,9 +8,11 @@ import AstRoot from "../ast/root";
 import { repeatStr } from "../utils/stringUtils";
 import {
   getStringLikeLength,
-  getNeededIndentlength,
   getMaxKeyLength,
   getMaxValueLength,
+  nextIndentColumn,
+  getColumnAfterIndent,
+  getNeededIndentCount,
 } from "./utils";
 
 export interface NodeFormattingOptions extends FormattingOptions {
@@ -61,49 +63,64 @@ export async function formatStringProperty(
     return [];
   }
 
-  // Line up all property values
   const keyLength = getStringLikeLength(property.key);
-  const neededBetweenIndent =
-    1 + ((options.maxKeyLength ?? keyLength) - keyLength);
-  const keyEndColumn = (options.indent ?? 0) * options.tabSize + keyLength;
-  let indentNeeded = getNeededIndentlength(
-    options,
-    keyEndColumn,
-    neededBetweenIndent
-  );
+  const column = options.column ?? 0;
+  const maxKeyLength = options.maxKeyLength ?? keyLength;
+
+  // Line up all property values
+  const keyColumn = column + keyLength;
+  const goalColumn = nextIndentColumn(column + maxKeyLength + 1, options);
+
+  let curColumn = keyColumn;
+
   const wantedIndentType = options.insertSpaces
     ? IndentType.spaces
     : IndentType.tabs;
 
   for (const indent of property.betweenIndent) {
     if (indent.indentType === wantedIndentType) {
-      const startChar = indent.range.start.character;
       // There is already some indent that we can use
-      const length =
-        indent.indentType === IndentType.spaces
-          ? indent.count
-          : Math.ceil(startChar / options.tabSize) * options.tabSize -
-            startChar +
-            (indent.count - 1) * options.tabSize;
+      const columnAfterIndent = getColumnAfterIndent(
+        curColumn,
+        indent,
+        options
+      );
 
-      if (length <= indentNeeded) {
-        // Keep the indent and decrease needed indent
-        indentNeeded -= length;
+      if (columnAfterIndent <= goalColumn) {
+        // It's not too much indent
+        curColumn = columnAfterIndent;
+
+        if (curColumn === goalColumn) {
+          // We have enough indent, delete the rest
+          const range: Range = {
+            start: indent.range.end,
+            end: value.range.start,
+          };
+          edits.push({
+            range,
+            newText: "",
+          });
+          break;
+        }
       } else {
-        // There is too much indent, we need to delete some
+        // It's too much indent, delete the excess
+        const excessColumns = columnAfterIndent - goalColumn;
+        // The number of indent characters that have to be deleted
+        const excessIndent = options.insertSpaces
+          ? excessColumns
+          : Math.ceil(excessColumns / options.tabSize);
+        const indentEnd = indent.range.end;
         const range: Range = {
           start: {
-            line: indent.range.end.line,
-            character: indent.range.end.character - (length - indentNeeded),
+            line: indentEnd.line,
+            character: indentEnd.character - excessIndent,
           },
-          // Also delete the rest of the indent items
           end: value.range.start,
         };
         edits.push({
           range,
           newText: "",
         });
-        indentNeeded = 0;
         break;
       }
     } else {
@@ -115,12 +132,12 @@ export async function formatStringProperty(
     }
   }
 
-  if (indentNeeded > 0) {
+  if (curColumn < goalColumn) {
     // There isn't enough indent, we need to add some
-    const count = options.insertSpaces
-      ? indentNeeded
-      : Math.ceil(indentNeeded / options.tabSize);
-    const newText = repeatStr(options.insertSpaces ? " " : "\t", count);
+    const newText = repeatStr(
+      options.insertSpaces ? " " : "\t",
+      getNeededIndentCount(curColumn, goalColumn, options)
+    );
     const range: Range = {
       start: value.range.start,
       end: value.range.start,

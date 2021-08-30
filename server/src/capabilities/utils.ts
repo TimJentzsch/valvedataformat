@@ -47,23 +47,15 @@ export function getMaxValueLength(obj: AstObject | AstRoot): number {
   );
 }
 
-/** Get the indent of the given length, based on the given options. */
-export function getIndent(
+/** Calculate how much indent is needed. */
+export function getNeededIndentlength(
   options: FormattingOptions,
   startColumn: number,
   length: number
-): string {
+): number {
   const size = options.tabSize;
-  // First calculate the column that we need to reach.
-  // This has to be a multiple of the tabSize.
   const endColumn = Math.ceil((startColumn + length) / size) * size;
-  const actualLength = endColumn - startColumn;
-  const count = options.insertSpaces
-    ? actualLength
-    : Math.ceil(actualLength / size);
-  const indent = options.insertSpaces ? " " : "\t";
-
-  return repeatStr(indent, count);
+  return endColumn - startColumn;
 }
 
 /** Execute the given function for a list of nodes. */

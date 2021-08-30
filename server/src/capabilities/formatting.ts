@@ -1,12 +1,14 @@
 import { TextEdit, FormattingOptions, Range } from "vscode-languageserver/node";
 import { NodeType } from "../ast/baseNode";
+import { IndentType } from "../ast/indent";
 import AstNode from "../ast/node";
 import AstObject from "../ast/object";
 import AstProperty, { AstStringProperty, PropertyType } from "../ast/property";
 import AstRoot from "../ast/root";
+import { repeatStr } from "../utils/stringUtils";
 import {
   getStringLikeLength,
-  getIndent,
+  getNeededIndentlength,
   getMaxKeyLength,
   getMaxValueLength,
 } from "./utils";
@@ -50,16 +52,70 @@ export async function formatStringProperty(
   const keyLength = getStringLikeLength(property.key);
   const neededBetweenIndent = 1 + (maxKeyLength - keyLength);
   const keyEndColumn = curIndent * options.tabSize + keyLength;
-  const betweenIndent = getIndent(options, keyEndColumn, neededBetweenIndent);
-  const betweenRange: Range = {
-    start: key.range.end,
-    end: value.range.start,
-  };
+  let indentNeeded = getNeededIndentlength(
+    options,
+    keyEndColumn,
+    neededBetweenIndent
+  );
+  const wantedIndentType = options.insertSpaces
+    ? IndentType.spaces
+    : IndentType.tabs;
 
-  edits.push({
-    range: betweenRange,
-    newText: betweenIndent,
-  });
+  for (const indent of property.betweenIndent) {
+    if (indent.indentType === wantedIndentType) {
+      const startChar = indent.range.start.character;
+      // There is already some indent that we can use
+      const length =
+        indent.indentType === IndentType.spaces
+          ? indent.count
+          : Math.ceil(startChar / options.tabSize) * options.tabSize -
+            startChar +
+            (indent.count - 1) * options.tabSize;
+
+      if (length <= indentNeeded) {
+        // Keep the indent and decrease needed indent
+        indentNeeded -= length;
+      } else {
+        // There is too much indent, we need to delete some
+        const range: Range = {
+          start: {
+            line: indent.range.end.line,
+            character: indent.range.end.character - (length - indentNeeded),
+          },
+          // Also delete the rest of the indent items
+          end: value.range.start,
+        };
+        edits.push({
+          range,
+          newText: "",
+        });
+        indentNeeded = 0;
+        break;
+      }
+    } else {
+      // The indent is of the wrong type, delete it
+      edits.push({
+        range: indent.range,
+        newText: "",
+      });
+    }
+  }
+
+  if (indentNeeded > 0) {
+    // There isn't enough indent, we need to add some
+    const count = options.insertSpaces
+      ? indentNeeded
+      : Math.ceil(indentNeeded / options.tabSize);
+    const newText = repeatStr(options.insertSpaces ? " " : "\t", count);
+    const range: Range = {
+      start: value.range.start,
+      end: value.range.start,
+    };
+    edits.push({
+      range,
+      newText,
+    });
+  }
 
   return edits;
 }

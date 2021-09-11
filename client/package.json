@@ -10,8 +10,10 @@
   "scripts": {
     "compile": "tsc -b",
     "lint": "yarn run eslint --ext ts",
-    "pretest": "yarn run compile && yarn run lint",
-    "test": "sh ./scripts/e2e-tests.sh"
+    "pree2e": "yarn run compile",
+    "e2e": "sh ./scripts/e2e-tests.sh",
+    "pretest": "yarn run compile",
+    "test": "echo \"No client tests defined yet!\""
   },
   "engines": {
     "vscode": "^1.59.0"

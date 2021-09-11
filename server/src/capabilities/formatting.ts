@@ -124,6 +124,7 @@ export async function formatStringProperty(
           range,
           newText: "",
         });
+        curColumn = goalColumn;
         break;
       }
     } else {

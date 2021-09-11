@@ -12,7 +12,7 @@
 	"scripts": {
     "compile": "tsc -b",
     "lint": "eslint --ext ts",
-    "pretest": "yarn run compile && yarn run lint",
+    "pretest": "yarn run compile",
 		"test": "jest ./src",
 		"prebench": "yarn run compile",
     "bench": "sh ./scripts/bench.sh"

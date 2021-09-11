@@ -1,12 +1,10 @@
-import { FormattingOptions, commands } from "vscode";
+import { commands } from "vscode";
 import * as assert from "assert";
 import {
   getDocUri,
   activate,
   getDocumentText,
   setDocumentText,
-  sleep,
-  mergeConfigs,
   setEditorOptions,
 } from "./helper";
 

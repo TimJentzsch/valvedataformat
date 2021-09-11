@@ -74,6 +74,8 @@
     "test-server": "cd server && yarn test && cd ..",
     "test-client": "cd client && yarn test && cd ..",
     "test": "yarn run test-server",
+    "coverage-server": "cd server && yarn coverage && cd ..",
+    "coverage": "yarn run coverage-server",
     "e2e-client": "cd client && yarn e2e && cd ..",
     "e2e": "yarn run e2e-client",
     "bench-server": "cd server && yarn bench && cd ..",

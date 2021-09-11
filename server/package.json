@@ -14,6 +14,8 @@
     "lint": "eslint --ext ts",
     "pretest": "yarn run compile",
 		"test": "jest ./src",
+		"precoverage": "yarn run compile",
+		"coverage": "jest ./src --coverage",
 		"prebench": "yarn run compile",
     "bench": "sh ./scripts/bench.sh"
 	},

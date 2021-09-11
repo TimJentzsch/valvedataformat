@@ -6,7 +6,8 @@
     "**/out": true,
     "**/node_modules": true,
     "**/yarn.lock": true,
-    "**/.vscode-test": true
+    "**/.vscode-test": true,
+    "**/coverage": true
   },
   "search.exclude": {
     "**/out": true

@@ -1,0 +1,24 @@
+name: Coverage
+on: [push]
+jobs:
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Check test coverage
+        run: yarn coverage
+        env:
+          CI: true
+
+      - name: Upload coverage data
+        uses: codecov/codecov-action@v2
+        with:
+          directory: server

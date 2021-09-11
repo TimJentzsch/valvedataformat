@@ -1,4 +1,4 @@
-# Valve Data Format (VDF) [![License](https://img.shields.io/github/license/TimJentzsch/vdf-extension)](LICENSE)
+# Valve Data Format (VDF) [![Test status](https://img.shields.io/github/workflow/status/TimJentzsch/vdf-extension/Coverage/main)](https://github.com/TimJentzsch/vdf-extension/actions/workflows/coverage.yml) [![Test coverage](https://img.shields.io/codecov/c/github/TimJentzsch/vdf-extension/main)](https://github.com/TimJentzsch/vdf-extension/actions/workflows/coverage.yml) [![License](https://img.shields.io/github/license/TimJentzsch/vdf-extension)](LICENSE)
 
 > **DISCLAIMER**: This is a community-made extension and is not affiliated with Valve Cooperation.
 

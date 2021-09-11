@@ -10,7 +10,7 @@ export function applyEdits(content: string, edits: TextEdit[]): string {
     const pre = res.slice(0, start + offset);
     const post = res.slice(end + offset);
     res = pre + edit.newText + post;
-    offset += end - start - edit.newText.length;
+    offset += edit.newText.length - (end - start);
   }
 
   return res;

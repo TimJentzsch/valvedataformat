@@ -1,7 +1,7 @@
-import { FormattingOptions } from "vscode-languageserver/node";
+import { FormattingOptions, TextEdit } from "vscode-languageserver/node";
 import formatNode from "../../capabilities/formatting";
 import { rootParser } from "../../parser/parser";
-import { applyParser } from "../../parser/utils";
+import { applyParser, getInlineRange } from "../../parser/utils";
 import { applyEdits } from "../utils";
 
 const defaultOptions: FormattingOptions = {
@@ -41,6 +41,74 @@ describe("formatNode", () => {
       });
     }
   });
+
+  describe("format incorrect text", () => {
+    // Test name, input, expected edits, options
+    const params: Array<[string, string, TextEdit[], FormattingOptions?]> = [
+      [
+        "should add missing value tab indent",
+        '"key"\n{\n\t"asd"\t"value"\n\t"asdefgh"\t"value"\n}\n',
+        [
+          {
+            newText: "\t",
+            range: getInlineRange(2, 7),
+          },
+        ],
+      ],
+      [
+        "should add missing value space indent",
+        '"key"\n{\n    "asd" "value"\n    "asdefgh" "value"\n}\n',
+        [
+          {
+            newText: "      ",
+            range: getInlineRange(2, 10),
+          },
+          {
+            newText: "  ",
+            range: getInlineRange(3, 14),
+          },
+        ],
+        spaceOptions,
+      ],
+      [
+        "should delete extra value tab indent",
+        '"key"\n{\n\t"asd"\t\t\t\t\t"value"\n\t"asdefgh"\t\t\t"value"\n}\n',
+        [
+          {
+            newText: "",
+            range: getInlineRange(2, 8, 11),
+          },
+          {
+            newText: "",
+            range: getInlineRange(3, 11, 13),
+          },
+        ],
+      ],
+      [
+        "should delete extra value space indent",
+        '"key"\n{\n    "asd"         "value"\n    "asdefgh"      "value"\n}\n',
+        [
+          {
+            newText: "",
+            range: getInlineRange(2, 16, 18),
+          },
+          {
+            newText: "",
+            range: getInlineRange(3, 16, 19),
+          },
+        ],
+        spaceOptions,
+      ],
+    ];
+
+    for (const [name, input, expected, options] of params) {
+      test(name, async () => {
+        const rootNode = applyParser(rootParser, input);
+        const actual = await formatNode(rootNode, options ?? defaultOptions);
+        expect(actual).toEqual(expected);
+      });
+    }
+  });
 });
 
 // Formatting
@@ -58,6 +126,7 @@ describe("formatting", () => {
     ],
     ['"key"\t{}', '"key"\t{}'],
     ['"key"\n{\n\t"key"\t"value"\n}', '"key"\n{\n\t"key"\t"value"\n}'],
+    ['"key"\n{\n\t"key"\t\t\t"value"\n}', '"key"\n{\n\t"key"\t"value"\n}'],
   ];
 
   for (const [input, expected, options] of params) {

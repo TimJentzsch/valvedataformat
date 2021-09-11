@@ -91,15 +91,18 @@ export async function formatStringProperty(
         curColumn = columnAfterIndent;
 
         if (curColumn === goalColumn) {
-          // We have enough indent, delete the rest
-          const range: Range = {
-            start: indent.range.end,
-            end: value.range.start,
-          };
-          edits.push({
-            range,
-            newText: "",
-          });
+          // We have enough indent
+          if (indent.range.end.character < value.range.start.character) {
+            // There is more indent, delete the rest
+            const range: Range = {
+              start: indent.range.end,
+              end: value.range.start,
+            };
+            edits.push({
+              range,
+              newText: "",
+            });
+          }
           break;
         }
       } else {

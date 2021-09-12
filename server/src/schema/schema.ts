@@ -5,9 +5,16 @@ type VdfSchema = {
   $schema?: string;
 } & VdfInnerSchema;
 
-type VdfInnerSchema = boolean | SchemaObject | SchemaString | SchemaInteger | SchemaBoolean;
+type VdfInnerSchema =
+  | {}
+  | boolean
+  | VdfObjectSchema
+  | VdfStringSchema
+  | VdfIntegerSchema
+  | VdfBooleanSchema
+  | VdfNullSchema;
 
-interface VdfSchemaBase {
+interface VdfBaseSchema {
   /** A short title for the data. */
   title?: string;
   /** A longer explanation for the data. */
@@ -29,7 +36,7 @@ interface VdfSchemaBase {
 /** A VDF object.
  * @see https://json-schema.org/understanding-json-schema/reference/object.html
  */
-interface SchemaObject extends VdfSchemaBase {
+interface VdfObjectSchema extends VdfBaseSchema {
   type: "object";
   /** Schema definitions for the object's properties. */
   properties?: {
@@ -54,7 +61,7 @@ interface SchemaObject extends VdfSchemaBase {
 /** A VDF string.
  * @see https://json-schema.org/understanding-json-schema/reference/string.html
  */
-interface SchemaString extends VdfSchemaBase {
+interface VdfStringSchema extends VdfBaseSchema {
   type: "string";
   /** The minimum length of the string. */
   minLength?: number;
@@ -69,7 +76,7 @@ interface SchemaString extends VdfSchemaBase {
 /** Base for numeric VDF types.
  *  @see https://json-schema.org/understanding-json-schema/reference/numeric.html
  */
-interface SchmeaNumeric extends VdfSchemaBase {
+interface VdfNumericBaseSchema extends VdfBaseSchema {
   /** Restrict the number to be a multiple of another number. */
   multipleOf?: number;
   /** The inclusive miniumum value of the number. */
@@ -85,27 +92,27 @@ interface SchmeaNumeric extends VdfSchemaBase {
 /** A VDF integer.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#integer
  */
-interface SchemaInteger extends SchmeaNumeric {
+interface VdfIntegerSchema extends VdfNumericBaseSchema {
   type: "integer";
 }
 
 /** A VDF floating point number.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#number
  */
- interface SchemaNumber extends SchmeaNumeric {
+interface VdfNumberSchema extends VdfNumericBaseSchema {
   type: "number";
 }
 
 /** A VDF boolean.
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
- interface SchemaBoolean extends VdfSchemaBase {
+interface VdfBooleanSchema extends VdfBaseSchema {
   type: "boolean";
 }
 
 /** A VDF null value.
  * @see https://json-schema.org/understanding-json-schema/reference/null.html
  */
- interface SchemaNull extends VdfSchemaBase {
+interface VdfNullSchema extends VdfBaseSchema {
   type: "null";
 }

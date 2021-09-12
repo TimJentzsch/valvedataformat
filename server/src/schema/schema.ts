@@ -1,9 +1,11 @@
-interface VdfSchema extends VdfSchemaBase {
+type VdfSchema = {
+  /** The ID of the schema. */
   $id?: string;
+  /** The ID of the used meta schema. */
   $schema?: string;
-}
+} & VdfInnerSchema;
 
-type VdfInnerSchmea = boolean | SchemaObject | SchemaString | SchemaInteger | SchemaBoolean;
+type VdfInnerSchema = boolean | SchemaObject | SchemaString | SchemaInteger | SchemaBoolean;
 
 interface VdfSchemaBase {
   /** A short title for the data. */
@@ -31,14 +33,14 @@ interface SchemaObject extends VdfSchemaBase {
   type: "object";
   /** Schema definitions for the object's properties. */
   properties?: {
-    [propertyName: string]: VdfInnerSchmea;
+    [propertyName: string]: VdfInnerSchema;
   };
   /** Schema definitions for the properties matching a specific pattern. */
   patternProperties?: {
-    [propertyPattern: string]: VdfInnerSchmea;
+    [propertyPattern: string]: VdfInnerSchema;
   };
   /** Schema definitions for additional properties. */
-  additionalProperties?: VdfInnerSchmea;
+  additionalProperties?: VdfInnerSchema;
   /** A list of required properties. */
   required?: string[];
   /** A pattern that the property names need to follow. */

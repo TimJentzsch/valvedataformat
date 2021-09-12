@@ -3,7 +3,7 @@ interface VdfSchema extends VdfSchemaBase {
   $schema?: string;
 }
 
-type VdfInnerSchmea = boolean | SchemaObject | SchemaString | SchemaInteger;
+type VdfInnerSchmea = boolean | SchemaObject | SchemaString | SchemaInteger | SchemaBoolean;
 
 interface VdfSchemaBase {
   title?: string;
@@ -78,4 +78,18 @@ interface SchemaInteger extends SchmeaNumeric {
  */
  interface SchemaNumber extends SchmeaNumeric {
   type: "number";
+}
+
+/** A VDF boolean.
+ * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
+ */
+ interface SchemaBoolean extends VdfSchemaBase {
+  type: "boolean";
+}
+
+/** A VDF null value.
+ * @see https://json-schema.org/understanding-json-schema/reference/null.html
+ */
+ interface SchemaNull extends VdfSchemaBase {
+  type: "null";
 }

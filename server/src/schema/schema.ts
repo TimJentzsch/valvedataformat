@@ -3,7 +3,7 @@ interface VdfSchema extends VdfSchemaBase {
   $schema?: string;
 }
 
-type VdfInnerSchmea = boolean | SchemaObject;
+type VdfInnerSchmea = boolean | SchemaObject | SchemaString | SchemaInteger;
 
 interface VdfSchemaBase {
   title?: string;
@@ -48,4 +48,34 @@ interface SchemaString extends VdfSchemaBase {
   pattern?: string;
   /** The format of the string. */
   format?: string;
+}
+
+/** Base for numeric VDF types.
+ *  @see https://json-schema.org/understanding-json-schema/reference/numeric.html
+ */
+interface SchmeaNumeric extends VdfSchemaBase {
+  /** Restrict the number to be a multiple of another number. */
+  multipleOf?: number;
+  /** The inclusive miniumum value of the number. */
+  minimum?: number;
+  /** The exclusive miniumum value of the number. */
+  exclusiveMinimum?: number;
+  /** The inclusive maximum value of the number. */
+  maximum?: number;
+  /** The exclusive maximum value of the number. */
+  exclusiveMaxmimum?: number;
+}
+
+/** A VDF integer.
+ * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#integer
+ */
+interface SchemaInteger extends SchmeaNumeric {
+  type: "integer";
+}
+
+/** A VDF floating point number.
+ * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#number
+ */
+ interface SchemaNumber extends SchmeaNumeric {
+  type: "number";
 }

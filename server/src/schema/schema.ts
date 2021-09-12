@@ -6,8 +6,22 @@ interface VdfSchema extends VdfSchemaBase {
 type VdfInnerSchmea = boolean | SchemaObject | SchemaString | SchemaInteger | SchemaBoolean;
 
 interface VdfSchemaBase {
+  /** A short title for the data. */
   title?: string;
+  /** A longer explanation for the data. */
   description?: string;
+  /** The default value for the data. */
+  default?: any;
+  /** Example values for the data. */
+  examples?: any[];
+  /** Indicate whether the data is deprecated. */
+  deprecated?: boolean;
+  /** An internal comment for the data. */
+  $comment?: string;
+  /** An enumeration of allowed values for the data. */
+  enum?: any[];
+  /** Restrict the data to a single value. */
+  const?: any;
 }
 
 /** A VDF object.

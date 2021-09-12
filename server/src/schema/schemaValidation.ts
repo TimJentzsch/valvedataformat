@@ -59,7 +59,7 @@ export default async function validateNodeSchema(
 export async function validateNullSchema(
   node: AstNode
 ): Promise<SchemaValidation> {
-  if (node.type !== NodeType.string || node.value !== "") {
+  if (node.type !== NodeType.string || node.content !== "") {
     return {
       schemaAst: node,
       diagnostics: [
@@ -83,7 +83,7 @@ export async function validateBooleanSchema(
   if (
     node.type !== NodeType.string ||
     // True and false are represented by 1 and 0.
-    (node.value !== "1" && node.value !== "0")
+    (node.content !== "1" && node.content !== "0")
   ) {
     return {
       schemaAst: node,

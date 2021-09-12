@@ -11,7 +11,7 @@ describe("astKey", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
 
@@ -25,7 +25,7 @@ describe("astKey", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
 
@@ -41,7 +41,7 @@ describe("astQuotedKey", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
 
@@ -55,7 +55,7 @@ describe("astQuotedKey", () => {
       children: [],
       isQuoted: true,
       isTerminated: false,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 6),
     };
 
@@ -71,7 +71,7 @@ describe("astUnquotedKey", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
 
@@ -86,7 +86,7 @@ describe("astKeyFromString", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
     const actual = astKeyFromString(astString);
@@ -95,7 +95,7 @@ describe("astKeyFromString", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
 
@@ -108,7 +108,7 @@ describe("astKeyFromString", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
     const actual = astKeyFromString(astString);
@@ -117,7 +117,7 @@ describe("astKeyFromString", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
 

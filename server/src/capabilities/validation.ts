@@ -69,7 +69,7 @@ export async function validateProperty(
     const missingValueDiagnostic: Diagnostic = {
       severity: DiagnosticSeverity.Error,
       range: key.range,
-      message: `The key "${key.value}" has no value.`,
+      message: `The key "${key.content}" has no value.`,
     };
 
     const end = Date.now();
@@ -105,7 +105,7 @@ export async function validateString(str: AstString): Promise<Diagnostic[]> {
           },
           end,
         },
-        message: `Missing closing quotation marks for value "${str.value}".`,
+        message: `Missing closing quotation marks for value "${str.content}".`,
       },
     ];
   }
@@ -128,7 +128,7 @@ export async function validateKey(key: AstKey): Promise<Diagnostic[]> {
           },
           end,
         },
-        message: `Missing closing quotation marks for key "${key.value}".`,
+        message: `Missing closing quotation marks for key "${key.content}".`,
       },
     ];
   }

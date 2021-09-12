@@ -12,7 +12,7 @@ export default interface AstString extends AstBaseNode {
    */
   isTerminated: boolean;
   /** The content of the string. */
-  value: string;
+  content: string;
 }
 
 /** Create an AST node for a string. */
@@ -27,7 +27,7 @@ export function astString(
     children: [],
     isQuoted,
     isTerminated,
-    value,
+    content: value,
     range,
   };
 }

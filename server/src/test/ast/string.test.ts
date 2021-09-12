@@ -14,7 +14,7 @@ describe("astString", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
 
@@ -28,7 +28,7 @@ describe("astString", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
 
@@ -44,7 +44,7 @@ describe("astQuotedString", () => {
       children: [],
       isQuoted: true,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 7),
     };
 
@@ -58,7 +58,7 @@ describe("astQuotedString", () => {
       children: [],
       isQuoted: true,
       isTerminated: false,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 6),
     };
 
@@ -74,7 +74,7 @@ describe("astUnquotedString", () => {
       children: [],
       isQuoted: false,
       isTerminated: true,
-      value: "value",
+      content: "value",
       range: getInlineRange(0, 0, 5),
     };
 

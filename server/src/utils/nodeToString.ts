@@ -52,22 +52,22 @@ export function childNodesToString(children: AstNode[]): string {
 export function astStringToString(node: AstString): string {
   if (node.isQuoted) {
     if (node.isTerminated) {
-      return `"${node.value}"`;
+      return `"${node.content}"`;
     }
-    return `"${node.value}`;
+    return `"${node.content}`;
   }
-  return node.value;
+  return node.content;
 }
 
 /** Convert a key node to a string. */
 export function astKeyToString(node: AstKey): string {
   if (node.isQuoted) {
     if (node.isTerminated) {
-      return `"${node.value}"`;
+      return `"${node.content}"`;
     }
-    return `"${node.value}`;
+    return `"${node.content}`;
   }
-  return node.value;
+  return node.content;
 }
 
 /** Convert an indent node to a string. */
@@ -80,7 +80,7 @@ export function astIndentToString(node: AstIndent): string {
 
 /** Convert a comment node to a string. */
 export function astCommentToString(node: AstComment): string {
-  return `// ${node.value}`;
+  return `// ${node.content}`;
 }
 
 /** Convert an end of line node to a string. */

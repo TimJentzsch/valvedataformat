@@ -14,7 +14,7 @@ export function getStringLikeLength(str?: AstKey | AstString): number {
     return 0;
   }
 
-  const contentLength = str.value.length;
+  const contentLength = str.content.length;
 
   // Account for the quotation marks
   return str.isQuoted

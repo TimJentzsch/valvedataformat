@@ -8,7 +8,7 @@ describe("astComment", () => {
     const expected: AstComment = {
       type: NodeType.comment,
       children: [],
-      value: " Comment",
+      content: " Comment",
       range: getInlineRange(0, 0, 10),
     };
 

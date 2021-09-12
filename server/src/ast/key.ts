@@ -13,7 +13,7 @@ export default interface AstKey extends AstBaseNode {
    */
   isTerminated: boolean;
   /** The content of the key. */
-  value: string;
+  content: string;
 }
 
 /** Create an AST node for a property key. */
@@ -28,7 +28,7 @@ export function astKey(
     children: [],
     isQuoted,
     isTerminated,
-    value,
+    content: value,
     range,
   };
 }
@@ -51,7 +51,7 @@ export function astUnquotedKey(value: string, range: Range): AstKey {
 export function astKeyFromString(astString: AstString): AstKey {
   return astKey(
     astString.isQuoted,
-    astString.value,
+    astString.content,
     astString.range,
     astString.isTerminated
   );

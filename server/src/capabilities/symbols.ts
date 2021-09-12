@@ -69,7 +69,7 @@ export async function getPropertySymbols(
     property.propertyType === PropertyType.object ? SymbolKind.Object : SymbolKind.Property;
 
   const symbol: DocumentSymbol = {
-    name: property.key?.value ?? "Property",
+    name: property.key?.content ?? "Property",
     kind,
     range: property.range,
     selectionRange,
@@ -83,7 +83,7 @@ export async function getPropertySymbols(
 export async function getStringSymbols(
   str: AstString
 ): Promise<DocumentSymbol[]> {
-  const value = str.value;
+  const value = str.content;
   const symbol: DocumentSymbol = {
     name: value,
     kind: SymbolKind.String,

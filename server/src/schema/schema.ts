@@ -1,12 +1,11 @@
-type VdfSchema = {
+export type VdfSchema = {
   /** The ID of the schema. */
   $id?: string;
   /** The ID of the used meta schema. */
   $schema?: string;
 } & VdfInnerSchema;
 
-type VdfInnerSchema =
-  | {}
+export type VdfInnerSchema =
   | boolean
   | VdfObjectSchema
   | VdfStringSchema
@@ -14,7 +13,7 @@ type VdfInnerSchema =
   | VdfBooleanSchema
   | VdfNullSchema;
 
-interface VdfBaseSchema {
+export interface VdfBaseSchema {
   /** A short title for the data. */
   title?: string;
   /** A longer explanation for the data. */
@@ -36,7 +35,7 @@ interface VdfBaseSchema {
 /** A VDF object.
  * @see https://json-schema.org/understanding-json-schema/reference/object.html
  */
-interface VdfObjectSchema extends VdfBaseSchema {
+export interface VdfObjectSchema extends VdfBaseSchema {
   type: "object";
   /** Schema definitions for the object's properties. */
   properties?: {
@@ -61,7 +60,7 @@ interface VdfObjectSchema extends VdfBaseSchema {
 /** A VDF string.
  * @see https://json-schema.org/understanding-json-schema/reference/string.html
  */
-interface VdfStringSchema extends VdfBaseSchema {
+export interface VdfStringSchema extends VdfBaseSchema {
   type: "string";
   /** The minimum length of the string. */
   minLength?: number;
@@ -76,7 +75,7 @@ interface VdfStringSchema extends VdfBaseSchema {
 /** Base for numeric VDF types.
  *  @see https://json-schema.org/understanding-json-schema/reference/numeric.html
  */
-interface VdfNumericBaseSchema extends VdfBaseSchema {
+export interface VdfNumericBaseSchema extends VdfBaseSchema {
   /** Restrict the number to be a multiple of another number. */
   multipleOf?: number;
   /** The inclusive miniumum value of the number. */
@@ -92,27 +91,27 @@ interface VdfNumericBaseSchema extends VdfBaseSchema {
 /** A VDF integer.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#integer
  */
-interface VdfIntegerSchema extends VdfNumericBaseSchema {
+export interface VdfIntegerSchema extends VdfNumericBaseSchema {
   type: "integer";
 }
 
 /** A VDF floating point number.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#number
  */
-interface VdfNumberSchema extends VdfNumericBaseSchema {
+export interface VdfNumberSchema extends VdfNumericBaseSchema {
   type: "number";
 }
 
 /** A VDF boolean.
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
-interface VdfBooleanSchema extends VdfBaseSchema {
+export interface VdfBooleanSchema extends VdfBaseSchema {
   type: "boolean";
 }
 
 /** A VDF null value.
  * @see https://json-schema.org/understanding-json-schema/reference/null.html
  */
-interface VdfNullSchema extends VdfBaseSchema {
+export interface VdfNullSchema extends VdfBaseSchema {
   type: "null";
 }

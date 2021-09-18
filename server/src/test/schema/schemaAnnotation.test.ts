@@ -128,6 +128,12 @@ describe("annotateSchema", () => {
         properties: {
           key: { type: "string" },
         },
+        patternProperties: {
+          "\\d+": { type: "integer" },
+        },
+        additionalProperties: {
+          type: "boolean",
+        },
       },
       astObject(
         astLBracket(getInlineRange(0, 0, 1)),
@@ -137,8 +143,18 @@ describe("annotateSchema", () => {
             [],
             astQuotedString("value", getInlineRange(0, 6, 13))
           ),
+          astStringProperty(
+            astQuotedKey("1234", getInlineRange(0, 13, 19)),
+            [],
+            astQuotedString("56789", getInlineRange(0, 19, 26))
+          ),
+          astStringProperty(
+            astQuotedKey("foo", getInlineRange(0, 26, 31)),
+            [],
+            astQuotedString("1", getInlineRange(0, 31, 32))
+          ),
         ],
-        astRBracket(getInlineRange(0, 13, 14))
+        astRBracket(getInlineRange(0, 32, 33))
       ),
       astObject(
         astLBracket(getInlineRange(0, 0, 1)),
@@ -150,12 +166,32 @@ describe("annotateSchema", () => {
               type: "string",
             })
           ),
+          astStringProperty(
+            astQuotedKey("1234", getInlineRange(0, 13, 19)),
+            [],
+            astQuotedString("56789", getInlineRange(0, 19, 26), true, {
+              type: "integer",
+            })
+          ),
+          astStringProperty(
+            astQuotedKey("foo", getInlineRange(0, 26, 31)),
+            [],
+            astQuotedString("1", getInlineRange(0, 31, 32), true, {
+              type: "boolean",
+            })
+          ),
         ],
-        astRBracket(getInlineRange(0, 13, 14)),
+        astRBracket(getInlineRange(0, 32, 33)),
         {
           type: "object",
           properties: {
             key: { type: "string" },
+          },
+          patternProperties: {
+            "\\d+": { type: "integer" },
+          },
+          additionalProperties: {
+            type: "boolean",
           },
         }
       ),

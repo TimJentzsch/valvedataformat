@@ -1,11 +1,4 @@
-export type VdfSchema = {
-  /** The ID of the schema. */
-  $id?: string;
-  /** The ID of the used meta schema. */
-  $schema?: string;
-} & VdfInnerSchema;
-
-export type VdfInnerSchema =
+export type VdfSchema =
   | boolean
   | VdfEmptySchema
   | VdfObjectSchema
@@ -34,6 +27,16 @@ export interface VdfBaseSchema {
   const?: any;
 }
 
+/** A VDF root schema. Based on the object schema.
+ * @see https://json-schema.org/understanding-json-schema/reference/object.html
+ */
+export type VdfRootSchema = {
+  /** The ID of the schema. */
+  $id?: string;
+  /** The ID of the used meta schema. */
+  $schema?: string;
+} & VdfObjectSchema;
+
 /** An empty VDF schma.
  * Always valid.
  */
@@ -41,21 +44,21 @@ export interface VdfEmptySchema extends VdfBaseSchema {
   type: undefined;
 }
 
-/** A VDF object.
+/** A VDF object schema.
  * @see https://json-schema.org/understanding-json-schema/reference/object.html
  */
 export interface VdfObjectSchema extends VdfBaseSchema {
   type: "object";
   /** Schema definitions for the object's properties. */
   properties?: {
-    [propertyName: string]: VdfInnerSchema;
+    [propertyName: string]: VdfSchema;
   };
   /** Schema definitions for the properties matching a specific pattern. */
   patternProperties?: {
-    [propertyPattern: string]: VdfInnerSchema;
+    [propertyPattern: string]: VdfSchema;
   };
   /** Schema definitions for additional properties. */
-  additionalProperties?: VdfInnerSchema;
+  additionalProperties?: VdfSchema;
   /** A list of required properties. */
   required?: string[];
   /** A pattern that the property names need to follow. */
@@ -66,7 +69,7 @@ export interface VdfObjectSchema extends VdfBaseSchema {
   maxProperties?: number;
 }
 
-/** A VDF string.
+/** A VDF string schema.
  * @see https://json-schema.org/understanding-json-schema/reference/string.html
  */
 export interface VdfStringSchema extends VdfBaseSchema {
@@ -81,7 +84,7 @@ export interface VdfStringSchema extends VdfBaseSchema {
   format?: string;
 }
 
-/** Base for numeric VDF types.
+/** Base for numeric VDF type schemas.
  *  @see https://json-schema.org/understanding-json-schema/reference/numeric.html
  */
 export interface VdfNumericBaseSchema extends VdfBaseSchema {
@@ -97,28 +100,28 @@ export interface VdfNumericBaseSchema extends VdfBaseSchema {
   exclusiveMaxmimum?: number;
 }
 
-/** A VDF integer.
+/** A VDF integer schema.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#integer
  */
 export interface VdfIntegerSchema extends VdfNumericBaseSchema {
   type: "integer";
 }
 
-/** A VDF floating point number.
+/** A VDF floating point number schema.
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html#number
  */
 export interface VdfNumberSchema extends VdfNumericBaseSchema {
   type: "number";
 }
 
-/** A VDF boolean.
+/** A VDF boolean schema.
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
 export interface VdfBooleanSchema extends VdfBaseSchema {
   type: "boolean";
 }
 
-/** A VDF null value.
+/** A VDF null value schema.
  * @see https://json-schema.org/understanding-json-schema/reference/null.html
  */
 export interface VdfNullSchema extends VdfBaseSchema {

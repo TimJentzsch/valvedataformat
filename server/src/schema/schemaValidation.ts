@@ -5,7 +5,7 @@ import {
 } from "vscode-languageserver/node";
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
-import { VdfInnerSchema } from "./schema";
+import { VdfSchema } from "./schema";
 
 export type SchemaValidation = {
   schemaAst: AstNode;
@@ -22,7 +22,7 @@ function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
 
 export default async function validateNodeSchema(
   node: AstNode,
-  schema: VdfInnerSchema
+  schema: VdfSchema
 ): Promise<SchemaValidation> {
   if (schema === true) {
     // Always valid

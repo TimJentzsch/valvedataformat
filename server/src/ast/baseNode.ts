@@ -1,4 +1,5 @@
 import { Range } from "vscode-languageserver/node";
+import { VdfSchema } from "../schema/schema";
 import AstNode from "./node";
 
 export enum NodeType {
@@ -20,4 +21,6 @@ export default interface AstBaseNode {
   children: AstNode[];
   /** The range of the node in the full text. */
   range: Range;
+  /** The schema for this node. */
+  schema?: VdfSchema;
 }

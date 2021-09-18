@@ -3,8 +3,8 @@ import AstBaseNode, { NodeType } from "./baseNode";
 
 export enum BracketType {
   left,
-  right
-};
+  right,
+}
 
 /** A bracket for an object. */
 export default interface AstBracket extends AstBaseNode {
@@ -15,10 +15,7 @@ export default interface AstBracket extends AstBaseNode {
 }
 
 /** Create an AST node for a bracket. */
-export function astBracket(
-  bracketType: BracketType,
-  range: Range,
-): AstBracket {
+export function astBracket(bracketType: BracketType, range: Range): AstBracket {
   return {
     type: NodeType.bracket,
     children: [],

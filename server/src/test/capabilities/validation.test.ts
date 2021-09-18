@@ -154,11 +154,10 @@ describe("validateObject", () => {
   ];
 
   for (const [name, obj, expectedRanges] of params) {
-    test(name, () => {
-      return validateObject(obj).then((diagnostics) => {
-        const actualRanges = diagnostics.map((diag) => diag.range);
-        expect(actualRanges).toEqual(expectedRanges);
-      });
+    test(name, async () => {
+      const diagnostics = await validateObject(obj);
+      const actualRanges = diagnostics.map((diag) => diag.range);
+      expect(actualRanges).toEqual(expectedRanges);
     });
   }
 });

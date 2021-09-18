@@ -5,9 +5,8 @@ import {
 } from "vscode-languageserver/node";
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
-import AstProperty from "../ast/property";
 import { executeForNodeList } from "../capabilities/utils";
-import { VdfObjectSchema, VdfRootSchema, VdfSchema } from "./schema";
+import { VdfObjectSchema } from "./schema";
 
 function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
   return {
@@ -18,9 +17,10 @@ function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
 }
 
 export default async function validateNodeSchema(
-  node: AstNode,
-  schema?: VdfSchema
+  node: AstNode
 ): Promise<Diagnostic[]> {
+  const schema = node.schema;
+
   if (schema === false) {
     // Always invalid
     return [getSchemaDiagnostic(node.range, `No ${node.type} allowed.`)];
@@ -37,6 +37,8 @@ export default async function validateNodeSchema(
       return validateBooleanSchema(node);
     case "null":
       return validateNullSchema(node);
+    case "object":
+      return validateObjectSchema(node, schema);
     default:
       return [];
   }
@@ -86,7 +88,13 @@ export async function validateObjectSchema(
   const diagnostics = await executeForNodeList(
     node.properties,
     async (node) => {
-      return validatePropertySchema(node, schema);
+      const value = node.value;
+
+      if (value !== undefined) {
+        return validateNodeSchema(value);
+      }
+
+      return [];
     }
   );
 
@@ -101,41 +109,4 @@ export async function validateObjectSchema(
   }
 
   return diagnostics;
-}
-
-export async function validatePropertySchema(
-  property: AstProperty,
-  schema: VdfObjectSchema | VdfRootSchema
-): Promise<Diagnostic[]> {
-  const value = property.value;
-  const keyName = property.key?.content;
-
-  if (value === undefined || keyName === undefined) {
-    // We don't know which schema to apply, ignore the property
-    return [];
-  }
-
-  const exactMatch = Object.entries(schema.properties ?? {}).find(
-    ([schemaKey]) => {
-      return schemaKey === keyName;
-    }
-  );
-  if (exactMatch !== undefined) {
-    // The property matches a fixed name property schema
-    return validateNodeSchema(value, exactMatch[1]);
-  }
-
-  const patternMatch = Object.entries(schema.patternProperties ?? {}).find(
-    ([schemaKeyPattern]) => {
-      const schemaKeyRegex = new RegExp(schemaKeyPattern);
-      return schemaKeyRegex.test(keyName);
-    }
-  );
-  if (patternMatch !== undefined) {
-    // The property matches a pattern property schema
-    return validateNodeSchema(value, patternMatch[1]);
-  }
-
-  // It's an additional property
-  return validateNodeSchema(value, schema.additionalProperties);
 }

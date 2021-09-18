@@ -7,6 +7,7 @@ export type VdfSchema = {
 
 export type VdfInnerSchema =
   | boolean
+  | VdfEmptySchema
   | VdfObjectSchema
   | VdfStringSchema
   | VdfIntegerSchema
@@ -14,6 +15,7 @@ export type VdfInnerSchema =
   | VdfNullSchema;
 
 export interface VdfBaseSchema {
+  type?: "object" | "string" | "integer" | "number" | "boolean" | "null";
   /** A short title for the data. */
   title?: string;
   /** A longer explanation for the data. */
@@ -30,6 +32,13 @@ export interface VdfBaseSchema {
   enum?: any[];
   /** Restrict the data to a single value. */
   const?: any;
+}
+
+/** An empty VDF schma.
+ * Always valid.
+ */
+export interface VdfEmptySchema extends VdfBaseSchema {
+  type: undefined;
 }
 
 /** A VDF object.

@@ -27,16 +27,6 @@ export interface VdfBaseSchema {
   const?: any;
 }
 
-/** A VDF root schema. Based on the object schema.
- * @see https://json-schema.org/understanding-json-schema/reference/object.html
- */
-export type VdfRootSchema = {
-  /** The ID of the schema. */
-  $id?: string;
-  /** The ID of the used meta schema. */
-  $schema?: string;
-} & VdfObjectSchema;
-
 /** An empty VDF schma.
  * Always valid.
  */
@@ -67,6 +57,16 @@ export interface VdfObjectSchema extends VdfBaseSchema {
   minProperties?: number;
   /** The maximum number of properties. */
   maxProperties?: number;
+}
+
+/** A VDF root schema. Based on the object schema.
+ * @see https://json-schema.org/understanding-json-schema/reference/object.html
+ */
+export interface VdfRootSchema extends VdfObjectSchema {
+  /** The ID of the schema. */
+  $id?: string;
+  /** The ID of the used meta schema. */
+  $schema?: string;
 }
 
 /** A VDF string schema.

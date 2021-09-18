@@ -63,7 +63,8 @@ describe("validateStringSchema", () => {
       astObject(
         astLBracket(getInlineRange(0, 0, 1)),
         [],
-        astRBracket(getInlineRange(0, 1, 2))
+        astRBracket(getInlineRange(0, 1, 2)),
+        { type: "string" }
       ),
       [getInlineRange(0, 0, 2)],
     ],

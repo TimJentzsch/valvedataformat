@@ -6,7 +6,7 @@ import {
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import { executeForNodeList } from "../capabilities/utils";
-import { VdfObjectSchema } from "./schema";
+import { VdfObjectSchema, VdfStringSchema } from "./schema";
 
 function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
   return {
@@ -37,6 +37,8 @@ export default async function validateNodeSchema(
       return validateBooleanSchema(node);
     case "null":
       return validateNullSchema(node);
+    case "string":
+      return validateStringSchema(node, schema);
     case "object":
       return validateObjectSchema(node, schema);
     default:
@@ -74,6 +76,72 @@ export async function validateBooleanSchema(
   }
 
   return [];
+}
+
+export async function validateStringSchema(
+  node: AstNode,
+  schema: VdfStringSchema
+): Promise<Diagnostic[]> {
+  if (node.type !== NodeType.string) {
+    return [getSchemaDiagnostic(node.range, `Expected string value.`)];
+  }
+
+  const diagnostics: Diagnostic[] = [];
+  const content = node.content;
+
+  // Check constant value
+  const cst = schema.const;
+  if (cst !== undefined && content !== cst) {
+    diagnostics.push(
+      getSchemaDiagnostic(node.range, `Expected constant value "${cst}".`)
+    );
+  }
+
+  // Check enum value
+  const enm = schema.enum;
+  if (enm !== undefined && !enm.includes(content)) {
+    const enumStr = enm.map((value) => `"${value}"`).join(", ");
+    diagnostics.push(
+      getSchemaDiagnostic(node.range, `Expected one value of [${enumStr}].`)
+    );
+  }
+
+  // Check length
+  const length = content.length;
+  const minLength = schema.minLength;
+  const maxLength = schema.maxLength;
+  if (minLength !== undefined && length < minLength) {
+    diagnostics.push(
+      getSchemaDiagnostic(
+        node.range,
+        `The string length (${length}) is smaller than the minimum length (${minLength}).`
+      )
+    );
+  }
+  if (maxLength !== undefined && length > maxLength) {
+    diagnostics.push(
+      getSchemaDiagnostic(
+        node.range,
+        `The string length (${length}) is bigger than the maximum length (${maxLength}).`
+      )
+    );
+  }
+
+  // Check pattern
+  const pattern = schema.pattern;
+  if (pattern !== undefined) {
+    const regex = new RegExp(pattern);
+    if (!regex.test(content)) {
+      diagnostics.push(
+        getSchemaDiagnostic(
+          node.range,
+          `The string doesn't match the pattern "${pattern}".`
+        )
+      );
+    }
+  }
+
+  return diagnostics;
 }
 
 export async function validateObjectSchema(

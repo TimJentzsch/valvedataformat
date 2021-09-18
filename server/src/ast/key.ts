@@ -1,4 +1,5 @@
 import { Range } from "vscode-languageserver/node";
+import { VdfSchema } from "../schema/schema";
 import AstBaseNode, { NodeType } from "./baseNode";
 import AstString from "./string";
 
@@ -21,7 +22,8 @@ export function astKey(
   isQuoted: boolean,
   value: string,
   range: Range,
-  isTerminated: boolean = true
+  isTerminated: boolean = true,
+  schema?: VdfSchema
 ): AstKey {
   return {
     type: NodeType.key,
@@ -37,14 +39,19 @@ export function astKey(
 export function astQuotedKey(
   value: string,
   range: Range,
-  isTerminated: boolean = true
+  isTerminated: boolean = true,
+  schema?: VdfSchema
 ): AstKey {
-  return astKey(true, value, range, isTerminated);
+  return astKey(true, value, range, isTerminated, schema);
 }
 
 /** Create an AST node for an unquoted key. */
-export function astUnquotedKey(value: string, range: Range): AstKey {
-  return astKey(false, value, range);
+export function astUnquotedKey(
+  value: string,
+  range: Range,
+  schema?: VdfSchema
+): AstKey {
+  return astKey(false, value, range, true, schema);
 }
 
 /** Convert a string node to a key node. */
@@ -53,6 +60,7 @@ export function astKeyFromString(astString: AstString): AstKey {
     astString.isQuoted,
     astString.content,
     astString.range,
-    astString.isTerminated
+    astString.isTerminated,
+    astString.schema
   );
 }

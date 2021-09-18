@@ -1,4 +1,5 @@
 import { getRangeFromNodeList } from "../parser/utils";
+import { VdfSchema } from "../schema/schema";
 import AstBaseNode, { NodeType } from "./baseNode";
 import AstBracket from "./bracket";
 import AstNode from "./node";
@@ -19,7 +20,8 @@ export default interface AstObject extends AstBaseNode {
 export function astObject(
   lBracket?: AstBracket,
   content: AstNode[] = [],
-  rBracket?: AstBracket
+  rBracket?: AstBracket,
+  schema?: VdfSchema
 ): AstObject {
   const children: AstNode[] = (
     lBracket !== undefined ? [lBracket as AstNode] : []
@@ -40,6 +42,7 @@ export function astObject(
     lBracket,
     rBracket,
     range,
+    schema,
   };
 
   return obj;

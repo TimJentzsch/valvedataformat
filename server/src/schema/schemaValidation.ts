@@ -7,11 +7,6 @@ import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import { VdfSchema } from "./schema";
 
-export type SchemaValidation = {
-  schemaAst: AstNode;
-  diagnostics: Diagnostic[];
-};
-
 function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
   return {
     range,
@@ -22,24 +17,16 @@ function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
 
 export default async function validateNodeSchema(
   node: AstNode,
-  schema: VdfSchema
-): Promise<SchemaValidation> {
-  if (schema === true) {
-    // Always valid
-    return {
-      schemaAst: node,
-      diagnostics: [],
-    };
-  }
-
+  schema?: VdfSchema
+): Promise<Diagnostic[]> {
   if (schema === false) {
     // Always invalid
-    return {
-      schemaAst: node,
-      diagnostics: [
-        getSchemaDiagnostic(node.range, `No ${node.type} allowed.`),
-      ],
-    };
+    return [getSchemaDiagnostic(node.range, `No ${node.type} allowed.`)];
+  }
+
+  if (schema === true || schema === undefined || schema.type === undefined) {
+    // Always valid
+    return [];
   }
 
   // Validate the given schema
@@ -49,55 +36,38 @@ export default async function validateNodeSchema(
     case "null":
       return validateNullSchema(node);
     default:
-      return {
-        schemaAst: node,
-        diagnostics: [],
-      };
+      return [];
   }
 }
 
-export async function validateNullSchema(
-  node: AstNode
-): Promise<SchemaValidation> {
+export async function validateNullSchema(node: AstNode): Promise<Diagnostic[]> {
   if (node.type !== NodeType.string || node.content !== "") {
-    return {
-      schemaAst: node,
-      diagnostics: [
-        getSchemaDiagnostic(
-          node.range,
-          `Expected null value, use an empty string.`
-        ),
-      ],
-    };
+    return [
+      getSchemaDiagnostic(
+        node.range,
+        `Expected null value, use an empty string.`
+      ),
+    ];
   }
 
-  return {
-    schemaAst: node,
-    diagnostics: [],
-  };
+  return [];
 }
 
 export async function validateBooleanSchema(
   node: AstNode
-): Promise<SchemaValidation> {
+): Promise<Diagnostic[]> {
   if (
     node.type !== NodeType.string ||
     // True and false are represented by 1 and 0.
     (node.content !== "1" && node.content !== "0")
   ) {
-    return {
-      schemaAst: node,
-      diagnostics: [
-        getSchemaDiagnostic(
-          node.range,
-          `Expected boolean value. Use a string with a "1" (true) or "0" (false) as content.`
-        ),
-      ],
-    };
+    return [
+      getSchemaDiagnostic(
+        node.range,
+        `Expected boolean value. Use a string with a "1" (true) or "0" (false) as content.`
+      ),
+    ];
   }
 
-  return {
-    schemaAst: node,
-    diagnostics: [],
-  };
+  return [];
 }

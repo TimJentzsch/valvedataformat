@@ -1,4 +1,5 @@
 import { Range } from "vscode-languageserver/node";
+import { VdfSchema } from "../schema/schema";
 import AstBaseNode, { NodeType } from "./baseNode";
 
 /** A string literal value. */
@@ -18,30 +19,37 @@ export default interface AstString extends AstBaseNode {
 /** Create an AST node for a string. */
 export function astString(
   isQuoted: boolean,
-  value: string,
+  content: string,
   range: Range,
-  isTerminated: boolean = true
+  isTerminated: boolean = true,
+  schema?: VdfSchema
 ): AstString {
   return {
     type: NodeType.string,
     children: [],
     isQuoted,
     isTerminated,
-    content: value,
+    content,
     range,
+    schema,
   };
 }
 
 /** Create an AST node for a quoted string. */
 export function astQuotedString(
-  value: string,
+  content: string,
   range: Range,
-  isTerminated: boolean = true
+  isTerminated: boolean = true,
+  schema?: VdfSchema
 ): AstString {
-  return astString(true, value, range, isTerminated);
+  return astString(true, content, range, isTerminated, schema);
 }
 
 /** Create an AST node for an unquoted string. */
-export function astUnquotedString(value: string, range: Range): AstString {
-  return astString(false, value, range);
+export function astUnquotedString(
+  value: string,
+  range: Range,
+  schema?: VdfSchema
+): AstString {
+  return astString(false, value, range, true, schema);
 }

@@ -4,6 +4,7 @@ export type VdfSchema =
   | VdfObjectSchema
   | VdfStringSchema
   | VdfIntegerSchema
+  | VdfNumberSchema
   | VdfBooleanSchema
   | VdfNullSchema;
 

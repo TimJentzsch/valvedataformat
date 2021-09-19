@@ -6,7 +6,7 @@ import {
 import { NodeType } from "../ast/baseNode";
 import AstNode from "../ast/node";
 import { executeForNodeList } from "../capabilities/utils";
-import { VdfObjectSchema, VdfStringSchema } from "./schema";
+import { VdfBooleanSchema, VdfObjectSchema, VdfStringSchema } from "./schema";
 
 function getSchemaDiagnostic(range: Range, message: string): Diagnostic {
   return {
@@ -34,7 +34,7 @@ export default async function validateNodeSchema(
   // Validate the given schema
   switch (schema.type) {
     case "boolean":
-      return validateBooleanSchema(node);
+      return validateBooleanSchema(node, schema);
     case "null":
       return validateNullSchema(node);
     case "string":
@@ -60,7 +60,8 @@ export async function validateNullSchema(node: AstNode): Promise<Diagnostic[]> {
 }
 
 export async function validateBooleanSchema(
-  node: AstNode
+  node: AstNode,
+  schema: VdfBooleanSchema
 ): Promise<Diagnostic[]> {
   if (
     node.type !== NodeType.string ||
@@ -75,7 +76,27 @@ export async function validateBooleanSchema(
     ];
   }
 
-  return [];
+  const diagnostics: Diagnostic[] = [];
+  const content = node.content;
+
+  // Check constant value
+  const cst = schema.const;
+  if (cst !== undefined && content !== cst) {
+    diagnostics.push(
+      getSchemaDiagnostic(node.range, `Expected constant value "${cst}".`)
+    );
+  }
+
+  // Check enum value
+  const enm = schema.enum;
+  if (enm !== undefined && !enm.includes(content)) {
+    const enumStr = enm.map((value) => `"${value}"`).join(", ");
+    diagnostics.push(
+      getSchemaDiagnostic(node.range, `Expected one value of [${enumStr}].`)
+    );
+  }
+
+  return diagnostics;
 }
 
 export async function validateStringSchema(

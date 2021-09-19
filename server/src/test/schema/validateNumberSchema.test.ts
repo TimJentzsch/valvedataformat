@@ -53,12 +53,13 @@ describe("validateNumberSchema", () => {
     ],
     [
       "should return no errors for valid complex schema",
-      astUnquotedString("23.0", getInlineRange(0, 0, 4), {
+      astUnquotedString("20.0", getInlineRange(0, 0, 4), {
         type: "number",
-        minimum: 23,
-        exclusiveMinimum: 22,
-        maximum: 23,
-        exclusiveMaxmimum: 24,
+        minimum: 20.0,
+        exclusiveMinimum: 19.9,
+        maximum: 20.0,
+        exclusiveMaxmimum: 20.1,
+        multipleOf: 5,
       }),
       [],
     ],
@@ -152,6 +153,14 @@ describe("validateNumberSchema", () => {
       astUnquotedString("23.1", getInlineRange(0, 0, 4), {
         type: "number",
         exclusiveMaxmimum: 23.1,
+      }),
+      [getInlineRange(0, 0, 4)],
+    ],
+    [
+      "should return error for multipleOf violation",
+      astUnquotedString("23.1", getInlineRange(0, 0, 4), {
+        type: "number",
+        multipleOf: 5,
       }),
       [getInlineRange(0, 0, 4)],
     ],

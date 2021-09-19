@@ -192,6 +192,17 @@ export async function validateNumericSchema(
     );
   }
 
+  // Check multiple
+  const multipleOf = schema.multipleOf;
+  if (multipleOf !== undefined && num % multipleOf !== 0) {
+    diagnostics.push(
+      getSchemaDiagnostic(
+        node.range,
+        `The value (${num}) is not a multiple of (${multipleOf}).`
+      )
+    );
+  }
+
   return diagnostics;
 }
 

@@ -122,8 +122,8 @@ export async function validateNumericSchema(
   const content = node.content;
   const regex =
     schema.type === "integer"
-      ? new RegExp(/^\d+(?.0+)?$/)
-      : new RegExp(/^\d+(?.\d+)?$/);
+      ? new RegExp(/^\d+(?:\.0+)?$/)
+      : new RegExp(/^\d+(?:\.\d+)?$/);
 
   if (!regex.test(content)) {
     return [
@@ -139,7 +139,7 @@ export async function validateNumericSchema(
 
   // Check constant value
   const cst = schema.const;
-  if (cst !== undefined && content !== cst) {
+  if (cst !== undefined && num !== cst) {
     diagnostics.push(
       getSchemaDiagnostic(node.range, `Expected constant value "${cst}".`)
     );
@@ -147,7 +147,7 @@ export async function validateNumericSchema(
 
   // Check enum value
   const enm = schema.enum;
-  if (enm !== undefined && !enm.includes(content)) {
+  if (enm !== undefined && !enm.includes(num)) {
     const enumStr = enm.map((value) => `"${value}"`).join(", ");
     diagnostics.push(
       getSchemaDiagnostic(node.range, `Expected one value of [${enumStr}].`)

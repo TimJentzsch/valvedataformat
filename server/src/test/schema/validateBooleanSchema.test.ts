@@ -6,7 +6,7 @@ import { astQuotedString, astUnquotedString } from "../../ast/string";
 import { getInlineRange } from "../../parser/utils";
 import validateNodeSchema from "../../schema/schemaValidation";
 
-describe("validateStringSchema", () => {
+describe("validateBooleanSchema", () => {
   // The name of the test, the node to validate, the expected diagnostic ranges
   const params: Array<[string, AstNode, Range[]]> = [
     [

@@ -123,6 +123,70 @@ describe("validateObjectSchema", () => {
       astUnquotedString("content", getInlineRange(0, 0, 7), { type: "object" }),
       [getInlineRange(0, 0, 7)],
     ],
+    [
+      "should return error for minProperties violation",
+      astObject(
+        astLBracket(getInlineRange(0, 0, 1)),
+        [],
+        astRBracket(getInlineRange(0, 1, 2)),
+        { type: "object", minProperties: 1 }
+      ),
+      [getInlineRange(0, 0, 2)],
+    ],
+    [
+      "should return error for maxProperties violation",
+      astObject(
+        astLBracket(getInlineRange(0, 0, 1)),
+        [
+          astLf(getRange(0, 1, 1, 0)),
+          astStringProperty(
+            astQuotedKey("key", getInlineRange(1, 0, 5)),
+            [astTabs(1, getInlineRange(1, 5, 6))],
+            astQuotedString("value", getInlineRange(1, 6, 13))
+          ),
+          astLf(getRange(1, 13, 2, 0)),
+        ],
+        astRBracket(getInlineRange(2, 0, 1)),
+        { type: "object", maxProperties: 0 }
+      ),
+      [getRange(0, 0, 2, 1)],
+    ],
+    [
+      "should return error for required property violation with closing bracket",
+      astObject(
+        astLBracket(getInlineRange(0, 0, 1)),
+        [],
+        astRBracket(getInlineRange(0, 1, 2)),
+        { type: "object", required: ["foo"] }
+      ),
+      [getInlineRange(0, 1, 2)],
+    ],
+    [
+      "should return error for required property violation without closing bracket",
+      astObject(astLBracket(getInlineRange(0, 0, 1)), [], undefined, {
+        type: "object",
+        required: ["foo"],
+      }),
+      [getInlineRange(0, 0, 1)],
+    ],
+    [
+      "should return error for propertyNames violation",
+      astObject(
+        astLBracket(getInlineRange(0, 0, 1)),
+        [
+          astLf(getRange(0, 1, 1, 0)),
+          astStringProperty(
+            astQuotedKey("key", getInlineRange(1, 0, 5)),
+            [astTabs(1, getInlineRange(1, 5, 6))],
+            astQuotedString("value", getInlineRange(1, 6, 13))
+          ),
+          astLf(getRange(1, 13, 2, 0)),
+        ],
+        astRBracket(getInlineRange(2, 0, 1)),
+        { type: "object", propertyNames: "^\\d+$" }
+      ),
+      [getInlineRange(1, 0, 5)],
+    ],
   ];
 
   for (const [name, node, expectedRanges] of params) {

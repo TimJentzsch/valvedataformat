@@ -294,13 +294,70 @@ export async function validateObjectSchema(
     }
   );
 
-  const keys = node.properties.map((property) => property.key?.content);
   // Check if required properties are present
-  for (const requiredProperty of schema.required ?? []) {
-    if (!keys.includes(requiredProperty)) {
+  const keys = node.properties.map((property) => property.key?.content);
+  const missingProperties: string[] = (schema.required ?? []).filter((req) => {
+    return !keys.includes(req);
+  });
+  if (missingProperties.length > 0) {
+    const missingPropertyStr = missingProperties
+      .map((mis) => `"${mis}"`)
+      .join(", ");
+    if (node.type === NodeType.object) {
+      // Try to annotate the closing bracket of the object
       diagnostics.push(
-        getSchemaDiagnostic(node.range, `Missing property ${requiredProperty}.`)
+        getSchemaDiagnostic(
+          (node.rBracket ?? node).range,
+          `Missing required properties: [${missingPropertyStr}].`
+        )
       );
+    } else {
+      diagnostics.push(
+        getSchemaDiagnostic(
+          node.range,
+          `Missing required properties: [${missingPropertyStr}].`
+        )
+      );
+    }
+  }
+
+  // Check property counts
+  const minProperties = schema.minProperties;
+  const maxProperties = schema.maxProperties;
+  const propertyCount = node.properties.length;
+  if (minProperties !== undefined && propertyCount < minProperties) {
+    diagnostics.push(
+      getSchemaDiagnostic(
+        node.range,
+        `The object has ${propertyCount} properties, but must have at least ${minProperties}.`
+      )
+    );
+  }
+  if (maxProperties !== undefined && propertyCount > maxProperties) {
+    diagnostics.push(
+      getSchemaDiagnostic(
+        node.range,
+        `The object has ${propertyCount} properties, but must have at most ${maxProperties}.`
+      )
+    );
+  }
+
+  // Check key names
+  const propertyNames = schema.propertyNames;
+  if (propertyNames !== undefined) {
+    const nameRegex = new RegExp(propertyNames);
+
+    for (const property of node.properties) {
+      const key = property.key;
+
+      if (key !== undefined && !nameRegex.test(key.content)) {
+        diagnostics.push(
+          getSchemaDiagnostic(
+            key.range,
+            `The key "${key.content}" doesn't match the pattern "${propertyNames}".`
+          )
+        );
+      }
     }
   }
 

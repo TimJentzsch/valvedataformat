@@ -5,7 +5,8 @@ import { astTabs } from "../../ast/indent";
 import { astQuotedKey } from "../../ast/key";
 import AstNode from "../../ast/node";
 import { astObject } from "../../ast/object";
-import { astStringProperty } from "../../ast/property";
+import { astObjectProperty, astStringProperty } from "../../ast/property";
+import { astRoot } from "../../ast/root";
 import { astQuotedString, astUnquotedString } from "../../ast/string";
 import { getInlineRange, getRange } from "../../parser/utils";
 import annotateSchema from "../../schema/schemaAnnotation";
@@ -49,8 +50,12 @@ describe("validateObjectSchema", () => {
               astQuotedString("content", getInlineRange(3, 6, 15))
             ),
             astLf(getRange(3, 15, 4, 0)),
+            astStringProperty(astQuotedKey("102", getInlineRange(4, 0, 5)), [
+              astTabs(1, getInlineRange(4, 5, 6)),
+            ]),
+            astLf(getRange(4, 15, 5, 0)),
           ],
-          astRBracket(getInlineRange(4, 0, 1))
+          astRBracket(getInlineRange(5, 0, 1))
         ),
         {
           type: "object",
@@ -160,6 +165,20 @@ describe("validateObjectSchema", () => {
         { type: "object", required: ["foo"] }
       ),
       [getInlineRange(0, 1, 2)],
+    ],
+    [
+      "should return error for required property violation for root node",
+      astRoot(
+        [
+          astObjectProperty(
+            undefined,
+            [],
+            astObject(astLBracket(getInlineRange(0, 0, 1)))
+          ),
+        ],
+        { type: "object", required: ["foo"], propertyNames: "^\\d+$" }
+      ),
+      [getInlineRange(0, 0, 1)],
     ],
     [
       "should return error for required property violation without closing bracket",

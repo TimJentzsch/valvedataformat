@@ -1,4 +1,5 @@
 import { getInlineRange, getRangeFromNodeList } from "../parser/utils";
+import { VdfSchema } from "../schema/schema";
 import AstBaseNode, { NodeType } from "./baseNode";
 import AstNode from "./node";
 import AstProperty from "./property";
@@ -11,9 +12,7 @@ export default interface AstRoot extends AstBaseNode {
 }
 
 /** Create a new AST root node. */
-export function astRoot(
-  children: AstNode[] = [],
-): AstRoot {
+export function astRoot(children: AstNode[] = [], schema?: VdfSchema): AstRoot {
   const properties: AstProperty[] = children.filter(
     (value) => (value as AstNode).type === NodeType.property
   ) as AstProperty[];
@@ -25,6 +24,7 @@ export function astRoot(
     children,
     properties,
     range,
+    schema,
   };
 
   return root;

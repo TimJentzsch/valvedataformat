@@ -51,8 +51,6 @@ export default async function validateNodeSchema(
       return validateStringSchema(node, schema);
     case "object":
       return validateObjectSchema(node, schema);
-    default:
-      return [];
   }
 }
 
